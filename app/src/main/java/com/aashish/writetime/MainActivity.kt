@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aashish.writetime.common.ui.navigation.Screen
+import com.aashish.writetime.common.ui.navigation.WriteTimeBottomBar
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,8 +21,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WriteTimeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val navController = rememberNavController()
+                val navController = rememberNavController()
+
+                Scaffold(
+                    bottomBar = {
+                        WriteTimeBottomBar(navController)
+                    },
+                    modifier = Modifier.fillMaxSize()) { innerPadding ->
 
                     NavHost(
                         modifier = Modifier.padding(innerPadding),

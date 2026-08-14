@@ -14,7 +14,7 @@ fun NavController.navigateTopLevel(targetRoute: String) {
     }
 }
 
-fun NavController.navigateToChildDestination(targetRoute: String) {
+fun NavController.navigateToCrossTabDestination(targetRoute: String) {
     navigate(targetRoute) {
         launchSingleTop = true
 
