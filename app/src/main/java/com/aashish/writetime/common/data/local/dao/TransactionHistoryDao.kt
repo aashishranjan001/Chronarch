@@ -18,5 +18,26 @@ interface TransactionHistoryDao {
         SELECT * FROM focus_points_transactions WHERE timestampMillis >= :startTimeEpoch AND timestampMillis < :endTimeEpoch 
     """
     )
-    fun getTransactions(startTimeEpoch: Long, endTimeEpoch: Long): Flow<List<FocusPointsTransactionEntity>>
+    fun getTransactions(
+        startTimeEpoch: Long,
+        endTimeEpoch: Long
+    ): Flow<List<FocusPointsTransactionEntity>>
+
+    @Query(
+        """
+            SELECT COALESCE(
+            SUM(
+                CASE
+                    WHEN transactionType = 'EARN' THEN focusPoints
+                    WHEN transactionType = 'BONUS' THEN focusPoints
+                    WHEN transactionType = 'REDEEM' THEN -focusPoints
+                    ELSE 0
+                END
+            ),
+            0
+        )
+        FROM focus_points_transactions
+        """
+    )
+    fun getAvailableBalance(): Flow<Int>
 }

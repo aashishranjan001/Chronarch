@@ -7,8 +7,8 @@ import com.aashish.writetime.common.domain.model.FocusPointTransaction
 import com.aashish.writetime.common.domain.repository.TransactionsHistoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.Instant
 import javax.inject.Inject
-import kotlin.time.Instant
 
 class TransactionsHistoryRepositoryImpl @Inject constructor(
     private val transactionHistoryDao: TransactionHistoryDao
@@ -22,10 +22,14 @@ class TransactionsHistoryRepositoryImpl @Inject constructor(
         endTime: Instant
     ): Flow<List<FocusPointTransaction>> {
         return transactionHistoryDao.getTransactions(
-            startTime.toEpochMilliseconds(),
-            endTime.toEpochMilliseconds()
+            startTime.toEpochMilli(),
+            endTime.toEpochMilli()
         ).map { transactions ->
             transactions.map { it.toDomain() }
         }
+    }
+
+    override fun getAvailableBalance(): Flow<Int> {
+        return transactionHistoryDao.getAvailableBalance()
     }
 }

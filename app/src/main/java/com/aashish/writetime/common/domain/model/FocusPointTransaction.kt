@@ -1,6 +1,6 @@
 package com.aashish.writetime.common.domain.model
 
-import kotlin.time.Instant
+import java.time.Instant
 
 data class FocusPointTransaction(
     val id: Long,

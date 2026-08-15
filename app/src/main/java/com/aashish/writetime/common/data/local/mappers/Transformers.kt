@@ -2,33 +2,31 @@ package com.aashish.writetime.common.data.local.mappers
 
 import com.aashish.writetime.common.data.local.model.FocusPointsTransactionEntity
 import com.aashish.writetime.common.data.local.model.TimerSessionEntity
-import com.aashish.writetime.common.domain.model.CompletionStatus
 import com.aashish.writetime.common.domain.model.DurationType
 import com.aashish.writetime.common.domain.model.FocusPointTransaction
 import com.aashish.writetime.common.domain.model.TimerSession
-import kotlin.time.Instant
+import java.time.Instant
 
 fun TimerSession.toEntity(): TimerSessionEntity = TimerSessionEntity(
     id = id,
     targetDurationMillis = durationType.duration.inWholeMilliseconds,
-    startedAt = startTime.toEpochMilliseconds(),
-    completedAt = endTime?.toEpochMilliseconds(),
+    startedAt = startTime.toEpochMilli(),
+    completedAt = endTime?.toEpochMilli(),
     streakProgressFraction = streakProgressFraction
 )
 
 fun TimerSessionEntity.toDomain(): TimerSession = TimerSession(
     id = id,
     durationType = DurationType.fromDuration(targetDurationMillis),
-    startTime = Instant.fromEpochMilliseconds(startedAt),
-    endTime = completedAt?.let { Instant.fromEpochMilliseconds(it) },
-    completionStatus = if (completedAt != null) CompletionStatus.COMPLETED else CompletionStatus.NOT_COMPLETED,
+    startTime = Instant.ofEpochMilli(startedAt),
+    endTime = completedAt?.let { Instant.ofEpochMilli(it) },
     streakProgressFraction = streakProgressFraction
 )
 
 fun FocusPointTransaction.toEntity(): FocusPointsTransactionEntity = FocusPointsTransactionEntity(
     transactionType = transactionType,
     focusPoints = value,
-    timestampMillis = timestamp.toEpochMilliseconds(),
+    timestampMillis = timestamp.toEpochMilli(),
     message = message
 )
 
@@ -36,6 +34,6 @@ fun FocusPointsTransactionEntity.toDomain(): FocusPointTransaction = FocusPointT
     id = id,
     value = focusPoints,
     transactionType = transactionType,
-    timestamp = Instant.fromEpochMilliseconds(timestampMillis),
+    timestamp = Instant.ofEpochMilli(timestampMillis),
     message = message
 )

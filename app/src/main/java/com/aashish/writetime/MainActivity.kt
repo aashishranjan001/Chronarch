@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.RedemptionLanding.route) {
 
                         }
-                        composable(Screen.ActionRewardsSetup.route) {
+                        composable(Screen.RewardsSetup.route) {
 
                         }
                         composable(Screen.RedemptionCorner.route) {

@@ -1,16 +1,21 @@
 package com.aashish.writetime.common.domain.model
 
-import kotlin.time.Instant
+import java.time.Instant
+
 
 data class TimerSession(
-    val id: Long = 0,
+    val id: Long,
     val startTime: Instant,
     val endTime: Instant?,
     val durationType: DurationType,
-    val completionStatus: CompletionStatus,
     val streakProgressFraction: Double
-)
+) {
+    val associatedFocusPoints
+        get() = when(durationType) {
+            DurationType.LongDuration -> 2
+            DurationType.ShortDuration -> 1
+        }
 
-enum class CompletionStatus {
-    COMPLETED, NOT_COMPLETED
+    val idealCompletionTime: Instant
+        get() = startTime.plusMillis(durationType.duration.inWholeMilliseconds)
 }
