@@ -14,5 +14,5 @@ interface RewardsDao {
     @Query("""
         SELECT * FROM rewards
     """)
-    suspend fun getRewardActions(): List<RewardEntity>
+    suspend fun getAllRewards(): List<RewardEntity>
 }

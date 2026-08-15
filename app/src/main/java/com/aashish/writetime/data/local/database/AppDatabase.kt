@@ -3,11 +3,11 @@ package com.aashish.writetime.data.local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.aashish.writetime.common.data.repository.local.dao.TimerSessionDao
-import com.aashish.writetime.common.data.repository.local.dao.TransactionHistoryDao
-import com.aashish.writetime.common.data.repository.local.mappers.FocusPointTransactionTypeConvertor
-import com.aashish.writetime.common.data.repository.local.model.FocusPointsTransactionEntity
-import com.aashish.writetime.common.data.repository.local.model.TimerSessionEntity
+import com.aashish.writetime.common.data.local.dao.TimerSessionDao
+import com.aashish.writetime.common.data.local.dao.TransactionHistoryDao
+import com.aashish.writetime.common.data.local.mappers.FocusPointTransactionTypeConvertor
+import com.aashish.writetime.common.data.local.model.FocusPointsTransactionEntity
+import com.aashish.writetime.common.data.local.model.TimerSessionEntity
 import com.aashish.writetime.data.local.database.AppDatabase.Companion.DATABASE_VERSION
 import com.aashish.writetime.redemption.data.local.dao.RewardsDao
 import com.aashish.writetime.redemption.data.local.model.RewardEntity

@@ -1,4 +1,4 @@
-package com.aashish.writetime.common.data.repository.local.mappers
+package com.aashish.writetime.common.data.local.mappers
 
 import androidx.room.TypeConverter
 import com.aashish.writetime.common.domain.model.FocusPointTransactionType

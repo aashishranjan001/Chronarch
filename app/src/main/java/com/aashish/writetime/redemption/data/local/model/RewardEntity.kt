@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 class RewardEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    val focusPointsCost: String,
+    val focusPointsCost: Int,
 )
