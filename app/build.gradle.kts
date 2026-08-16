@@ -63,6 +63,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.hilt.viewmodel.compose)
 
     // Room
     implementation(libs.androidx.room)

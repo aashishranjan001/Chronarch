@@ -13,10 +13,18 @@ import javax.inject.Inject
 class TimerSessionRepositoryImpl @Inject constructor(
     private val timerSessionDao: TimerSessionDao
 ): TimerSessionRepository {
-    override suspend fun addOrUpdateTimerSession(session: TimerSession) {
-        timerSessionDao.upsert(
+    override suspend fun addNewTimerSession(session: TimerSession) {
+        timerSessionDao.insert(
             session.toEntity()
         )
+    }
+
+    override suspend fun updateTimerSession(
+        sessionId: Long,
+        endTime: Instant,
+        streakProgressFraction: Double
+    ) {
+        timerSessionDao.updateTimerCompletion(sessionId, endTime.toEpochMilli(), streakProgressFraction)
     }
 
     override fun getTimerSessions(

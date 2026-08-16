@@ -10,12 +10,6 @@ data class TimerSession(
     val durationType: DurationType,
     val streakProgressFraction: Double
 ) {
-    val associatedFocusPoints
-        get() = when(durationType) {
-            DurationType.LongDuration -> 2
-            DurationType.ShortDuration -> 1
-        }
-
     val idealCompletionTime: Instant
         get() = startTime.plusMillis(durationType.duration.inWholeMilliseconds)
 }

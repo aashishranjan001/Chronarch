@@ -6,7 +6,9 @@ import java.time.Instant
 
 interface TimerSessionRepository {
 
-    suspend fun addOrUpdateTimerSession(session: TimerSession)
+    suspend fun addNewTimerSession(session: TimerSession)
+
+    suspend fun updateTimerSession(sessionId: Long, endTime: Instant, streakProgressFraction: Double)
 
     fun getTimerSessions(startTime: Instant, endTime: Instant): Flow<List<TimerSession>>
 }

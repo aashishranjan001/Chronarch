@@ -30,7 +30,7 @@ class GetCurrentWeekEarningsOverview @Inject constructor(
 
             WeeklyEarningOverview(
                 totalEarningOverview = EarningOverview(
-                    earnedFocusPoints = dayWiseEarningMap.values.filterNotNull().sumOf { it.earnedFocusPoints },
+                    completionFocusPoints = dayWiseEarningMap.values.filterNotNull().sumOf { it.completionFocusPoints },
                     bonusFocusPoints = dayWiseEarningMap.values.filterNotNull().sumOf { it.bonusFocusPoints },
                     redeemedFocusPoints = dayWiseEarningMap.values.filterNotNull().sumOf { it.redeemedFocusPoints }
                 ),

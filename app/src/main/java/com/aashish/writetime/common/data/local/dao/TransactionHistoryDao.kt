@@ -13,6 +13,9 @@ interface TransactionHistoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(focusPointsTransactionEntity: FocusPointsTransactionEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(focusPointsTransactionEntity: List<FocusPointsTransactionEntity>)
+
     @Query(
         """
         SELECT * FROM focus_points_transactions WHERE timestampMillis >= :startTimeEpoch AND timestampMillis < :endTimeEpoch 
@@ -28,9 +31,9 @@ interface TransactionHistoryDao {
             SELECT COALESCE(
             SUM(
                 CASE
-                    WHEN transactionType = 'EARN' THEN focusPoints
-                    WHEN transactionType = 'BONUS' THEN focusPoints
-                    WHEN transactionType = 'REDEEM' THEN -focusPoints
+                    WHEN transactionType = 'COMPLETION_CREDIT' THEN focusPoints
+                    WHEN transactionType = 'BONUS_CREDIT' THEN focusPoints
+                    WHEN transactionType = 'REDEMPTION_DEBIT' THEN -focusPoints
                     ELSE 0
                 END
             ),

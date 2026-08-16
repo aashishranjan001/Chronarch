@@ -4,17 +4,21 @@ import com.aashish.writetime.common.data.local.dao.TransactionHistoryDao
 import com.aashish.writetime.common.data.local.mappers.toDomain
 import com.aashish.writetime.common.data.local.mappers.toEntity
 import com.aashish.writetime.common.domain.model.FocusPointTransaction
-import com.aashish.writetime.common.domain.repository.TransactionsHistoryRepository
+import com.aashish.writetime.common.domain.repository.FocusPointsTransactionsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 import javax.inject.Inject
 
-class TransactionsHistoryRepositoryImpl @Inject constructor(
+class FocusPointsTransactionsRepositoryImpl @Inject constructor(
     private val transactionHistoryDao: TransactionHistoryDao
-): TransactionsHistoryRepository {
+): FocusPointsTransactionsRepository {
     override suspend fun registerTransaction(transaction: FocusPointTransaction) {
         transactionHistoryDao.insert(transaction.toEntity())
+    }
+
+    override suspend fun registerTransactions(transaction: List<FocusPointTransaction>) {
+        transactionHistoryDao.insert(transaction.map { it.toEntity() })
     }
 
     override fun getTransactions(

@@ -4,4 +4,21 @@
     <string name="weekly_overview_tab">Week</string>
     <string name="redemption_tab">Redeem</string>
     <string name="history_tab">History</string>
+
+
+    <string name="sessions">Sessions</string>
+    <string name="started">Started</string>
+    <string name="completed">Completed</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="earnings">Earnings</string>
+    <string name="focus_points">Focus Points</string>
+    <string name="streaks">Streaks</string>
+    <string name="start_timer">Start Timer</string>
+    <string name="cancel_timer">Cancel Timer</string>
+    <string name="short_duration">Short · %d min</string>
+    <string name="long_duration">Long · %d min</string>
+    <string name="no_active_timer_image">No active timer image</string>
+    <string name="complete_sessions_earn_reward">Complete Timer sessions to earn focus points</string>
+
+
 </resources>

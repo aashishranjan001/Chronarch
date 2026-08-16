@@ -11,7 +11,7 @@ class AddNewTimerSessionUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(durationType: DurationType, runningStreakProgressFraction: Double) {
-        sessionRepository.addOrUpdateTimerSession(
+        sessionRepository.addNewTimerSession(
             TimerSession(
                 id = 0,
                 startTime = Instant.now(),

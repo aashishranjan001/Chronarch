@@ -1,4 +1,4 @@
-package com.aashish.writetime.common.ui.navigation
+package com.aashish.writetime.navigation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.BottomAppBar

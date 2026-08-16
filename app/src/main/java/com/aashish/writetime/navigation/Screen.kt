@@ -1,4 +1,4 @@
-package com.aashish.writetime.common.ui.navigation
+package com.aashish.writetime.navigation
 
 sealed class Screen(val route: String) {
     object Home: Screen("home")

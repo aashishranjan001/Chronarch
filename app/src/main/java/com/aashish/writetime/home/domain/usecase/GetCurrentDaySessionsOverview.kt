@@ -21,9 +21,9 @@ class GetCurrentDaySessionsOverview @Inject constructor(
 
         return sessionRepository.getTimerSessions(startOfDayTimestamp, nextDayStartTimestamp).map { sessions ->
             SessionsOverview(
-                successfulCompletionCount = sessions.filter { it.endTime != null && it.idealCompletionTime == it.endTime}.size,
+                successfulCompletionCount = sessions.filter { it.endTime != null && it.endTime >= it.idealCompletionTime}.size,
                 cancelledCount = sessions.filter { it.endTime != null && it.idealCompletionTime > it.endTime }.size,
-                totalStreaks = countStreaks(sessions.map { it.streakProgressFraction }),
+                totalStreaks = sessions.maxOfOrNull { it.streakProgressFraction }?.toInt() ?: 0,
                 activeSession = sessions.find { it.endTime == null }?.let { session ->
                     ActiveSessionInfo(
                         id = session.id,
@@ -36,18 +36,5 @@ class GetCurrentDaySessionsOverview @Inject constructor(
                 currentStreakProgressionFraction = sessions.maxByOrNull { it.startTime }?.streakProgressFraction ?: 0.0
             )
         }
-    }
-
-    private fun countStreaks(streakProgressionList: List<Double>): Int {
-        var streakCount = 0
-        for (i in 1 until streakProgressionList.size) {
-            val currentStreakProgression = streakProgressionList[i]
-            val previousStreakProgression = streakProgressionList[i-1]
-
-            if (currentStreakProgression.toInt() - previousStreakProgression.toInt() == 1) {
-                streakCount++
-            }
-        }
-        return streakCount
     }
 }

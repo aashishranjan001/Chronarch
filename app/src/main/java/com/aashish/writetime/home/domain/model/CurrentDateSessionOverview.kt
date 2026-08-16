@@ -8,7 +8,10 @@ data class SessionsOverview(
     val totalStreaks: Int,
     val activeSession: ActiveSessionInfo?,
     val currentStreakProgressionFraction: Double
-)
+) {
+    val totalStartedCount
+        get() = successfulCompletionCount + cancelledCount
+}
 
 data class ActiveSessionInfo(
     val id: Long,

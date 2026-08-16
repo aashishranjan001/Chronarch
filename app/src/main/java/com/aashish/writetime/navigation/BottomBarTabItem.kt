@@ -1,4 +1,4 @@
-package com.aashish.writetime.common.ui.navigation
+package com.aashish.writetime.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -15,7 +15,5 @@ sealed class BottomBarTabItem(val route: String, @StringRes val labelRes: Int, v
     object WeekOverview: BottomBarTabItem(Screen.WeekOverview.route, R.string.weekly_overview_tab, Icons.Default.ViewWeek)
     object Redemption: BottomBarTabItem(Screen.RedemptionLanding.route,  R.string.redemption_tab, Icons.Default.Redeem)
     object History: BottomBarTabItem(Screen.History.route, R.string.history_tab, Icons.Default.History)
-
-
 }
 

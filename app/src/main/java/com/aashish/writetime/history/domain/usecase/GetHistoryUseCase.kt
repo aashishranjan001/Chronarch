@@ -1,7 +1,7 @@
 package com.aashish.writetime.history.domain.usecase
 
 import com.aashish.writetime.common.domain.repository.TimerSessionRepository
-import com.aashish.writetime.common.domain.repository.TransactionsHistoryRepository
+import com.aashish.writetime.common.domain.repository.FocusPointsTransactionsRepository
 import com.aashish.writetime.history.domain.model.History
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -9,7 +9,7 @@ import java.time.Instant
 import javax.inject.Inject
 
 class GetHistoryUseCase @Inject constructor(
-    private val transactionsHistoryRepository: TransactionsHistoryRepository,
+    private val focusPointsTransactionsRepository: FocusPointsTransactionsRepository,
     private val sessionRepository: TimerSessionRepository
 ) {
     operator fun invoke(): Flow<History> {
@@ -17,7 +17,7 @@ class GetHistoryUseCase @Inject constructor(
         val endTime = Instant.now()
 
         return combine(
-            transactionsHistoryRepository.getTransactions(startTime, endTime),
+            focusPointsTransactionsRepository.getTransactions(startTime, endTime),
             sessionRepository.getTimerSessions(startTime, endTime)
         ) { transactionList, sessionList ->
             History(

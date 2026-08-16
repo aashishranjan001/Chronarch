@@ -11,10 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aashish.writetime.common.ui.navigation.Screen
-import com.aashish.writetime.common.ui.navigation.WriteTimeBottomBar
+import com.aashish.writetime.navigation.Screen
+import com.aashish.writetime.navigation.WriteTimeBottomBar
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
+import com.aashish.writetime.home.presentation.HomeScreenRoute
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Home.route
                     ) {
                         composable(Screen.Home.route) {
-
+                            HomeScreenRoute()
                         }
                         composable(Screen.WeekOverview.route) {
 
