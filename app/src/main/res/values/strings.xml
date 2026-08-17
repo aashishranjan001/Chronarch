@@ -14,7 +14,7 @@
     <string name="focus_points">Focus Points</string>
     <string name="streaks">Streaks</string>
     <string name="start_timer">Start Timer</string>
-    <string name="cancel_timer">Cancel Timer</string>
+    <string name="stop_timer">Stop Timer</string>
     <string name="short_duration">Short · %d min</string>
     <string name="long_duration">Long · %d min</string>
     <string name="no_active_timer_image">No active timer image</string>

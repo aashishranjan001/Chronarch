@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -45,12 +45,12 @@ fun ActiveTimerSection(
             totalSeconds = activeTimer.duration.inWholeSeconds
         )
         Spacer(modifier = Modifier.height(spacing.medium))
-        Button (
+        OutlinedButton (
             modifier = Modifier.fillMaxWidth(),
             onClick = onCancelTimerClick
         ) {
             Text(
-                text = stringResource(R.string.cancel_timer),
+                text = stringResource(R.string.stop_timer),
                 modifier = Modifier.padding(spacing.small),
                 style = MaterialTheme.typography.titleMedium
             )
