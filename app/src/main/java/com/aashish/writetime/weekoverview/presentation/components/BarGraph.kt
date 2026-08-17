@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -34,7 +35,6 @@ import kotlin.math.roundToInt
 @Composable
 fun BarGraph(
     valuesMap: Map<String, Int>,
-    onBarClick: () -> Unit = {},
     labelTextStyle: TextStyle = MaterialTheme.typography.titleMedium,
     barColor: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier
@@ -86,14 +86,18 @@ fun BarGraph(
                             .fillMaxHeight(yValue.toFloat() / maxValue)
                             .clip(
                                 RoundedCornerShape(
-                                    topStart = spacing.small,
-                                    topEnd = spacing.small
+                                    topStart = spacing.medium,
+                                    topEnd = spacing.medium
                                 )
                             )
-                            .clickable {
-                                onBarClick()
-                            }
-                            .background(barColor)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        barColor.copy(alpha = 0.7f),
+                                        barColor
+                                    )
+                                )
+                            )
                             .weight(1f)
                     )
                     Box(

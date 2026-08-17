@@ -20,10 +20,21 @@
     <string name="no_active_timer_image">No active timer image</string>
     <string name="complete_sessions_earn_reward">Complete Timer sessions to earn focus points</string>
     <string name="confirm_stop_timer_title">Are you sure you want to stop the timer?</string>
+    <string name="finished_and_cancelled_session_count">%1$d {finished_icon} · %2$d {cancelled_icon}</string>
+    <string name="short_duration_timer">Short duration</string>
+    <string name="long_duration_timer">Long duration</string>
+    <string name="finished_session">Successful session</string>
+    <string name="cancelled_session">Cancelled session</string>
+    <string name="all_duration_timer">All duration</string>
     <string name="confirm_stop_timer_message">Cancelling this session will reset your current streak progress</string>
     <string name="action_yes">Yes</string>
     <string name="action_no">No</string>
     <string name="timer_stopped_message">Timer Stopped!</string>
+
+    <string name="task_credit_focus_points">Task Credits</string>
+    <string name="bonus_points">Bonus</string>
+    <string name="redemption_points">Redeemed points</string>
+    <string name="total_focus_points">Total</string>
 
 
 </resources>
