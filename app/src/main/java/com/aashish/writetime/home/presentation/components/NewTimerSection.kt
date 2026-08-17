@@ -36,7 +36,6 @@ fun NewTimerSection(
     val spacing = LocalSpacing.current
     Column(
         modifier = modifier
-            .fillMaxSize()
             .clip(RoundedCornerShape(spacing.medium))
             .background(
                 MaterialTheme.colorScheme.surfaceVariant
@@ -45,7 +44,7 @@ fun NewTimerSection(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Column(modifier = Modifier.fillMaxWidth().weight(1f), verticalArrangement = Arrangement.Center) {
+        Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
             Text(text = stringResource(R.string.complete_sessions_earn_reward), modifier = Modifier.fillMaxWidth(), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
             SingleChoiceSegmentedButtonRow(
                 modifier = Modifier.fillMaxWidth().padding(spacing.large)

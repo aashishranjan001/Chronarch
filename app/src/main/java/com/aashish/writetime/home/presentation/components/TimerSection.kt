@@ -3,8 +3,9 @@ package com.aashish.writetime.home.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -30,7 +31,7 @@ fun ActiveTimerSection(
     val spacing = LocalSpacing.current
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .clip(RoundedCornerShape(spacing.medium))
             .background(
                 MaterialTheme.colorScheme.surfaceVariant
@@ -40,10 +41,10 @@ fun ActiveTimerSection(
         verticalArrangement = Arrangement.Center
     ) {
         Timer(
-            modifier = Modifier.weight(1f),
             secondsRemaining = activeTimer.durationRemainingInSeconds,
             totalSeconds = activeTimer.duration.inWholeSeconds
         )
+        Spacer(modifier = Modifier.height(spacing.medium))
         Button (
             modifier = Modifier.fillMaxWidth(),
             onClick = onCancelTimerClick
