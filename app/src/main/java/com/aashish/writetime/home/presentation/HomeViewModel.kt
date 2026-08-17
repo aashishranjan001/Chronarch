@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffect = Channel<UiEffect>()
+    private val _uiEffect = Channel<HomeUiEffect>()
     val uiEffect = _uiEffect.receiveAsFlow()
 
     init {
@@ -90,17 +90,9 @@ class HomeViewModel @Inject constructor(
 
     fun onEvent(event: HomeEvent) {
         when(event) {
-            HomeEvent.CancelTimer -> {
-                viewModelScope.launch {
-                    _uiState.value.activeTimer?.let {
-                        endTimerSessionUseCase(
-                            sessionId = it.sessionId,
-                            idealCompletionTime = Instant.now().plusSeconds(it.durationRemainingInSeconds),
-                            durationType = DurationType.fromDuration(it.duration.inWholeMilliseconds),
-                            streakProgressFraction = _uiState.value.streakProgressFraction
-
-                        )
-                    }
+            HomeEvent.CancelTimerClick -> {
+                _uiState.update {
+                    it.copy(showConfirmationDialog = true)
                 }
             }
             HomeEvent.StartTimer -> {
@@ -117,6 +109,29 @@ class HomeViewModel @Inject constructor(
                     it.copy(
                         selectedNewTimerDurationType = event.durationType
                     )
+                }
+            }
+
+            HomeEvent.CancelTimerConfirmed -> {
+                _uiState.update {
+                    it.copy(showConfirmationDialog = false)
+                }
+                viewModelScope.launch {
+                    _uiState.value.activeTimer?.let {
+                        endTimerSessionUseCase(
+                            sessionId = it.sessionId,
+                            idealCompletionTime = Instant.now().plusSeconds(it.durationRemainingInSeconds),
+                            durationType = DurationType.fromDuration(it.duration.inWholeMilliseconds),
+                            streakProgressFraction = _uiState.value.streakProgressFraction
+
+                        )
+                        _uiEffect.send(HomeUiEffect.ShowTimerCancelledSnackbar)
+                    }
+                }
+            }
+            HomeEvent.CancelTimerDismissed -> {
+                _uiState.update {
+                    it.copy(showConfirmationDialog = false)
                 }
             }
         }

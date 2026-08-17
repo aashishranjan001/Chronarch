@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
+import com.aashish.writetime.common.ui.components.ConfirmationDialog
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.home.presentation.components.SessionsCard
 import com.aashish.writetime.home.presentation.components.SingleValueTile
@@ -29,11 +32,25 @@ import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun HomeScreenRoute(
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val timerCancelledMessage =
+        stringResource(R.string.timer_stopped_message)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { uiEffect ->
+            when(uiEffect) {
+                is HomeUiEffect.ShowTimerCancelledSnackbar -> {
+                    snackbarHostState.showSnackbar(timerCancelledMessage)
+                }
+                else -> {}
+            }
+        }
+    }
 
     HomeScreen(
         uiState = uiState,
@@ -86,7 +103,7 @@ fun HomeScreen(
         }
         if (uiState.activeTimer != null && uiState.activeTimer.durationRemainingInSeconds > 0) {
             ActiveTimerSection(
-                onCancelTimerClick = { onEvent(HomeEvent.CancelTimer) },
+                onCancelTimerClick = { onEvent(HomeEvent.CancelTimerClick) },
                 uiState.activeTimer,
                 modifier = modifier.weight(1f)
             )
@@ -101,6 +118,17 @@ fun HomeScreen(
                         )
                     )
                 }
+            )
+        }
+        if (uiState.showConfirmationDialog) {
+            ConfirmationDialog(
+                title = stringResource(R.string.confirm_stop_timer_title),
+                message = stringResource(R.string.confirm_stop_timer_message),
+                onPositiveClick = { onEvent(HomeEvent.CancelTimerConfirmed) },
+                onNegativeClick = { onEvent(HomeEvent.CancelTimerDismissed) },
+                positiveCtaText = stringResource(R.string.action_yes),
+                negativeCtaText = stringResource(R.string.action_no),
+                onDismissRequest = { onEvent(HomeEvent.CancelTimerDismissed) }
             )
         }
     }

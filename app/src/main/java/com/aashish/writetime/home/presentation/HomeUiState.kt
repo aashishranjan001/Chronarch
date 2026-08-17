@@ -12,7 +12,8 @@ data class HomeUiState(
     val streaksCount: Int = 0,
     val activeTimer: ActiveTimer? = null,
     val selectedNewTimerDurationType: DurationType = DurationType.ShortDuration,
-    val streakProgressFraction: Double = 0.0 // todo: revise logic for streak computation and remove this field
+    val streakProgressFraction: Double = 0.0, // todo: revise logic for streak computation and remove this field
+    val showConfirmationDialog: Boolean = false
 )
 
 data class ActiveTimer(

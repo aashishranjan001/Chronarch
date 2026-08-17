@@ -19,6 +19,11 @@
     <string name="long_duration">Long · %d min</string>
     <string name="no_active_timer_image">No active timer image</string>
     <string name="complete_sessions_earn_reward">Complete Timer sessions to earn focus points</string>
+    <string name="confirm_stop_timer_title">Are you sure you want to stop the timer?</string>
+    <string name="confirm_stop_timer_message">Cancelling this session will reset your current streak progress</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="timer_stopped_message">Timer Stopped!</string>
 
 
 </resources>
