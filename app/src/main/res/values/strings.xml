@@ -43,4 +43,7 @@
     <string name="transaction_filter_menu_item_bonus">Bonus</string>
     <string name="transaction_filter_menu_item_redeem">Redeem</string>
 
+    <string name="title_rewards_setup">Rewards Action Setup</string>
+    <string name="go_back">Back</string>
+
 </resources>
