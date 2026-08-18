@@ -91,6 +91,7 @@ fun HomeScreen(
                     value = uiState.currentDateCreditFocusPoints,
                     label = stringResource(R.string.focus_points),
                     backgroundColor = MaterialTheme.colorScheme.secondary,
+                    foregroundColor = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(spacing.medium))
@@ -99,6 +100,7 @@ fun HomeScreen(
                     value = uiState.streaksCount,
                     label = stringResource(R.string.completed),
                     backgroundColor = MaterialTheme.colorScheme.tertiary,
+                    foregroundColor = MaterialTheme.colorScheme.onTertiary,
                     modifier = Modifier.weight(1f)
                 )
             }

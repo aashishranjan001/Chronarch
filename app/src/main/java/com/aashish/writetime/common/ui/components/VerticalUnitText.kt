@@ -17,9 +17,14 @@ fun VerticalLabelledValue(
     label: String,
     valueTextStyle: TextStyle = MaterialTheme.typography.headlineLarge,
     labelTextStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         Text(text = value, style = valueTextStyle)
         Text(text = label, style = labelTextStyle)
     }

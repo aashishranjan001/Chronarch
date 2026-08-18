@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,23 +27,38 @@ fun SingleValueTile(
     value: Int,
     label: String,
     backgroundColor: Color = MaterialTheme.colorScheme.secondary,
+    foregroundColor: Color = MaterialTheme.colorScheme.onSecondary,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(spacing.medium))
-            .background(backgroundColor)
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        backgroundColor, backgroundColor.copy(alpha = 0.7f)
+                    )
+                )
+            )
             .padding(spacing.medium),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Text(text = title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = foregroundColor
+        )
         Spacer(modifier = Modifier.height(spacing.small))
         VerticalLabelledValue(
             value = value.toString(),
             label = label,
+            valueTextStyle = MaterialTheme.typography.headlineLarge.copy(color = foregroundColor),
+            labelTextStyle = MaterialTheme.typography.labelSmall.copy(color = foregroundColor),
         )
     }
 }

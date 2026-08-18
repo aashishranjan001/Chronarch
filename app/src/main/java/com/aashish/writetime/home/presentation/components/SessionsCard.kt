@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +30,8 @@ fun SessionsCard(
     totalSession: Int,
     completedSessions: Int,
     cancelledSessions: Int,
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    foregroundColor: Color = MaterialTheme.colorScheme.onPrimary,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -35,32 +39,51 @@ fun SessionsCard(
         modifier = modifier
             .clip(RoundedCornerShape(spacing.medium))
             .background(
-                MaterialTheme.colorScheme.primary
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        backgroundColor, backgroundColor.copy(alpha = 0.7f)
+                    )
+                )
             )
             .padding(spacing.medium),
         verticalArrangement = Arrangement.Center
 
     ) {
-        Text(text = stringResource(R.string.sessions), style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Text(
+            text = stringResource(R.string.sessions),
+            style = MaterialTheme.typography.titleMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = foregroundColor
+        )
         Spacer(modifier = Modifier.height(spacing.small))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            val valueTextStyle =
+                MaterialTheme.typography.headlineLarge.copy(color = foregroundColor)
+            val labelTextStyle = MaterialTheme.typography.labelSmall.copy(color = foregroundColor)
             VerticalLabelledValue(
                 value = totalSession.toString(),
                 label = stringResource(R.string.started),
+                valueTextStyle = valueTextStyle,
+                labelTextStyle = labelTextStyle,
                 modifier = Modifier.weight(1f)
             )
             VerticalLabelledValue(
                 value = completedSessions.toString(),
                 label = stringResource(R.string.completed),
+                valueTextStyle = valueTextStyle,
+                labelTextStyle = labelTextStyle,
                 modifier = Modifier.weight(1f)
             )
             VerticalLabelledValue(
                 value = cancelledSessions.toString(),
                 label = stringResource(R.string.cancelled),
+                valueTextStyle = valueTextStyle,
+                labelTextStyle = labelTextStyle,
                 modifier = Modifier.weight(1f)
             )
         }

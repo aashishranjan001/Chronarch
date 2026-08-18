@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,33 +70,36 @@ fun SessionsStatsSection(
         ) {
             SessionCompletionCountTile(
                 painter = painterResource(R.drawable.short_duration_timer),
-                contentDescription = stringResource(R.string.short_duration_timer),
+                label = stringResource(R.string.short_duration_timer),
                 completedSessionCount = shortSessionsSuccessCount,
                 cancelledSessionCount = totalShortSessionsCount - shortSessionsSuccessCount,
                 backgroundColor = MaterialTheme.colorScheme.primaryFixed,
+                foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
                 modifier = Modifier.weight(1f)
             )
             SessionCompletionCountTile(
                 painter = painterResource(R.drawable.long_duration_timer),
-                contentDescription = stringResource(R.string.long_duration_timer),
+                label = stringResource(R.string.long_duration_timer),
                 completedSessionCount = longSessionsSuccessCount,
                 cancelledSessionCount = totalLongSessionsCount - longSessionsSuccessCount,
                 backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
+                foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
                 modifier = Modifier.weight(1f)
             )
             SessionCompletionCountTile(
                 painter = painterResource(R.drawable.all_duration_timer),
-                contentDescription = stringResource(R.string.all_duration_timer),
+                label = stringResource(R.string.all_duration_timer),
                 completedSessionCount = shortSessionsSuccessCount + longSessionsSuccessCount,
                 cancelledSessionCount = totalShortSessionsCount + totalLongSessionsCount - shortSessionsSuccessCount - longSessionsSuccessCount,
                 backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
+                foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
                 modifier = Modifier.weight(1f)
             )
         }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .heightIn(max = 400.dp)
         ) {
             if (totalShortSessionsCount != 0) { // to progress to be measured when denominator is 0
                 ProgressIndicatorBox(
@@ -142,10 +146,11 @@ fun SessionsStatsSection(
 @Composable
 fun SessionCompletionCountTile(
     painter: Painter,
-    contentDescription: String,
+    label: String,
     completedSessionCount: Int,
     cancelledSessionCount: Int,
     backgroundColor: Color = MaterialTheme.colorScheme.primary,
+    foregroundColor: Color = MaterialTheme.colorScheme.onPrimary,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -160,13 +165,15 @@ fun SessionCompletionCountTile(
     ) {
         Icon(
             painter = painter,
-            contentDescription = contentDescription,
-            modifier = Modifier.size(48.dp)
+            contentDescription = label,
+            modifier = Modifier.size(48.dp),
+            tint = foregroundColor
         )
         Text(
-            text = contentDescription,
+            text = label,
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = foregroundColor
         )
         Spacer(modifier = Modifier.height(LocalSpacing.current.small))
         Text(
@@ -185,10 +192,11 @@ fun SessionCompletionCountTile(
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = stringResource(R.string.finished_session),
-                        tint = Color.Green
+                        tint = foregroundColor,
                     )
                 }
-            )
+            ),
+            color = foregroundColor
         )
         Text(
             text = buildAnnotatedString {
@@ -206,10 +214,11 @@ fun SessionCompletionCountTile(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = stringResource(R.string.cancelled_session),
-                        tint = MaterialTheme.colorScheme.error
+                        tint = foregroundColor
                     )
                 }
-            )
+            ),
+            color = foregroundColor
         )
     }
 }
