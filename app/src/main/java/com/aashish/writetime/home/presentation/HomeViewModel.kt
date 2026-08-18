@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aashish.writetime.common.domain.model.DurationType
 import com.aashish.writetime.common.domain.usecase.CalculateDailyEarningUseCase
-import com.aashish.writetime.common.ui.UiEffect
 import com.aashish.writetime.home.domain.usecase.AddNewTimerSessionUseCase
 import com.aashish.writetime.home.domain.usecase.GetCurrentDaySessionsOverview
 import com.aashish.writetime.home.domain.usecase.EndTimerSessionUseCase
@@ -24,8 +23,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    getCurrentDateEarningUseCase: CalculateDailyEarningUseCase,
-    getCurrentDaySessionsOverview: GetCurrentDaySessionsOverview,
+    private val getCurrentDateEarningUseCase: CalculateDailyEarningUseCase,
+    private val getCurrentDaySessionsOverview: GetCurrentDaySessionsOverview,
     private val endTimerSessionUseCase: EndTimerSessionUseCase,
     private val addNewTimerSessionUseCase: AddNewTimerSessionUseCase
 ): ViewModel() {
@@ -38,17 +37,24 @@ class HomeViewModel @Inject constructor(
 
     init {
 
+        observeEarningsOverview()
+        observerSessionsOverview()
+    }
+
+    private fun observeEarningsOverview() {
         viewModelScope.launch {
             getCurrentDateEarningUseCase(LocalDate.now()).collectLatest { earningOverview ->
                 _uiState.update {
                     it.copy(
-                        currentDateCreditFocusPoints = earningOverview.creditFocusPoints,
+                        currentDateCreditFocusPoints = earningOverview.taskCreditFocusPoints + earningOverview.bonusFocusPoints,
                         currentDateDebitFocusPoints = earningOverview.redeemedFocusPoints
                     )
                 }
             }
         }
+    }
 
+    private fun observerSessionsOverview() {
         viewModelScope.launch {
             getCurrentDaySessionsOverview().collectLatest { sessionsOverview ->
                 _uiState.update {

@@ -142,7 +142,6 @@ fun HomeScreen(
 }
 
 @Preview
-@PreviewScreenSizes
 @Composable
 private fun HomeScreenPreview() {
     WriteTimeTheme {

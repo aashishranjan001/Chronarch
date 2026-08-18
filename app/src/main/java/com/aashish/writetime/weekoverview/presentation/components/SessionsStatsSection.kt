@@ -95,38 +95,44 @@ fun SessionsStatsSection(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .height(400.dp)
         ) {
-            ProgressIndicatorBox(
-                value = shortSessionsSuccessCount,
-                total = totalShortSessionsCount,
-                backgroundColor = MaterialTheme.colorScheme.primaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
-                modifier = Modifier
-                    .fillMaxWidth(0.4f)
-                    .fillMaxHeight(totalShortSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
-                    .align(Alignment.BottomStart)
-            )
-            ProgressIndicatorBox(
-                value = longSessionsSuccessCount,
-                total = totalLongSessionsCount,
-                backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
-                modifier = Modifier
-                    .fillMaxWidth(0.4f)
-                    .fillMaxHeight(totalLongSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
-                    .align(Alignment.BottomCenter)
-            )
-            ProgressIndicatorBox(
-                value = shortSessionsSuccessCount + longSessionsSuccessCount,
-                total = totalShortSessionsCount + totalLongSessionsCount,
-                backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
-                modifier = Modifier
-                    .fillMaxWidth(0.4f)
-                    .fillMaxHeight()
-                    .align(Alignment.BottomEnd)
-            )
+            if (totalShortSessionsCount != 0) { // to progress to be measured when denominator is 0
+                ProgressIndicatorBox(
+                    value = shortSessionsSuccessCount,
+                    total = totalShortSessionsCount,
+                    backgroundColor = MaterialTheme.colorScheme.primaryFixed,
+                    foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
+                    modifier = Modifier
+                        .fillMaxWidth(0.4f)
+                        .fillMaxHeight(totalShortSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
+                        .align(Alignment.BottomStart)
+                )
+            }
+            if (totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
+                ProgressIndicatorBox(
+                    value = longSessionsSuccessCount,
+                    total = totalLongSessionsCount,
+                    backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
+                    foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
+                    modifier = Modifier
+                        .fillMaxWidth(0.4f)
+                        .fillMaxHeight(totalLongSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
+                        .align(Alignment.BottomCenter)
+                )
+            }
+            if (totalShortSessionsCount + totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
+                ProgressIndicatorBox(
+                    value = shortSessionsSuccessCount + longSessionsSuccessCount,
+                    total = totalShortSessionsCount + totalLongSessionsCount,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
+                    foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
+                    modifier = Modifier
+                        .fillMaxWidth(0.4f)
+                        .fillMaxHeight()
+                        .align(Alignment.BottomEnd)
+                )
+            }
         }
     }
 

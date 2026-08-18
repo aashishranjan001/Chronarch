@@ -36,5 +36,11 @@
     <string name="redemption_points">Redeemed points</string>
     <string name="total_focus_points">Total</string>
 
+    <string name="focus_points_activity">Focus Points Activity</string>
+    <string name="filter_icon">Filter</string>
+    <string name="transaction_filter_menu_item_all">All</string>
+    <string name="transaction_filter_menu_item_task_credit">Task Credit</string>
+    <string name="transaction_filter_menu_item_bonus">Bonus</string>
+    <string name="transaction_filter_menu_item_redeem">Redeem</string>
 
 </resources>

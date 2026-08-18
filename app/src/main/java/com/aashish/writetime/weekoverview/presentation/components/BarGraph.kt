@@ -1,7 +1,6 @@
 package com.aashish.writetime.weekoverview.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
-import kotlin.math.roundToInt
+import com.aashish.writetime.common.ui.toMax1DecimalPlace
 
 @Composable
 fun BarGraph(
@@ -42,20 +41,27 @@ fun BarGraph(
 
     val spacing = LocalSpacing.current
     val maxValue: Float = valuesMap.values.maxOfOrNull { it.toFloat() * 1.2f } ?: 0f
-    val yAxisLabels = mutableListOf<Float>()
-    for (i in 1..4) {
-        yAxisLabels.add(maxValue / i)
+    val yAxisLabels = buildList {
+        if (maxValue != 0f) {
+            for (i in 1..4) {
+                add(maxValue / i)
+            }
+            add(0f)
+        }
     }
-    yAxisLabels.add(0f)
 
     Column(
         modifier = modifier
             .fillMaxSize()
+            .clip(RoundedCornerShape(spacing.medium))
+            .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             .padding(spacing.medium)
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
 
             Column(
                 modifier = Modifier
@@ -66,7 +72,7 @@ fun BarGraph(
             ) {
                 yAxisLabels.forEach { label ->
                     Text(
-                        text = "${label.roundToInt()}",
+                        text = label.toDouble().toMax1DecimalPlace(),
                         modifier = Modifier.padding(end = spacing.medium),
                         style = labelTextStyle
                     )
@@ -110,9 +116,11 @@ fun BarGraph(
             }
 
         }
-        HorizontalDivider(modifier = Modifier
-            .height(4.dp)
-            .padding(start = 40.dp))
+        HorizontalDivider(
+            modifier = Modifier
+                .height(4.dp)
+                .padding(start = 40.dp)
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -132,7 +140,6 @@ fun BarGraph(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-
             }
         }
     }
@@ -146,11 +153,11 @@ private fun BarGraphPreview() {
     WriteTimeTheme {
         BarGraph(
             valuesMap = mapOf(
-                "Monday" to 22,
-                "Tuesday" to 33,
-                "Wednesday" to 18,
-                "Thursday" to 0,
-                "Friday" to 40
+                "Mon" to 22,
+                "Tue" to 33,
+                "Wed" to 18,
+                "Thu" to 0,
+                "Fri" to 40
             )
         )
     }

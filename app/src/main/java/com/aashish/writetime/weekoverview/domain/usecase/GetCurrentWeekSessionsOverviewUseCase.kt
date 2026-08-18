@@ -2,7 +2,7 @@ package com.aashish.writetime.weekoverview.domain.usecase
 
 import com.aashish.writetime.common.domain.model.DurationType
 import com.aashish.writetime.common.domain.repository.TimerSessionRepository
-import com.aashish.writetime.weekoverview.domain.model.WeeklySessionOverview
+import com.aashish.writetime.weekoverview.domain.model.WeekSessionOverview
 import com.aashish.writetime.weekoverview.domain.model.SessionCompletionCountOverview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,10 +13,10 @@ import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
-class GetCurrentWeekSessionsOverview @Inject constructor(
+class GetCurrentWeekSessionsOverviewUseCase @Inject constructor(
     private val sessionRepository: TimerSessionRepository
 ) {
-    suspend operator fun invoke(): Flow<WeeklySessionOverview> {
+    suspend operator fun invoke(): Flow<WeekSessionOverview> {
         val today = LocalDate.now()
         val startOfWeek= today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
 
@@ -30,21 +30,21 @@ class GetCurrentWeekSessionsOverview @Inject constructor(
             var longSessionsCancellationCount = 0
 
             sessions.filter { it.endTime != null }.forEach { session ->
-                val sessionIdealEndTime = session.idealCompletionTime
+                val isCancelledSession = session.endTime != null && session.endTime < session.idealCompletionTime
 
                 when(session.durationType) {
                     DurationType.LongDuration -> {
-                        if (sessionIdealEndTime == session.endTime) longSessionsSuccessfulCompletionCount++
-                        else if (sessionIdealEndTime > session.endTime) longSessionsCancellationCount++
+                        if (isCancelledSession) longSessionsCancellationCount++
+                        else longSessionsSuccessfulCompletionCount++
                     }
                     DurationType.ShortDuration -> {
-                        if (sessionIdealEndTime == session.endTime) shortSessionsSuccessfulCompletionCount++
-                        else if (sessionIdealEndTime > session.endTime) shortSessionsCancellationCount++
+                        if (isCancelledSession) shortSessionsCancellationCount++
+                        else shortSessionsSuccessfulCompletionCount++
                     }
                 }
             }
 
-            WeeklySessionOverview(
+            WeekSessionOverview(
                 shortSessionsOverview = SessionCompletionCountOverview(
                     successfulCompletionCount = shortSessionsSuccessfulCompletionCount,
                     cancelledCount = shortSessionsCancellationCount
@@ -52,10 +52,6 @@ class GetCurrentWeekSessionsOverview @Inject constructor(
                 longSessionsOverview = SessionCompletionCountOverview(
                     successfulCompletionCount = longSessionsSuccessfulCompletionCount,
                     cancelledCount = longSessionsCancellationCount
-                ),
-                allSessionsOverview = SessionCompletionCountOverview(
-                    successfulCompletionCount =  shortSessionsSuccessfulCompletionCount + longSessionsSuccessfulCompletionCount,
-                    cancelledCount = shortSessionsCancellationCount + longSessionsCancellationCount
                 )
             )
         }

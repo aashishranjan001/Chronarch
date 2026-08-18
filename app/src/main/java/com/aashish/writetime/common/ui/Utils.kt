@@ -18,3 +18,10 @@ fun toHumanReadableFormat(seconds: Long): String {
         if (ss != 0L) append("${ss}s")
     }
 }
+
+fun Double.toMax1DecimalPlace(): String {
+    return when {
+        this % 1.0 == 0.0 -> "%.0f".format(this)
+        else -> "%.1f".format(this)
+    }
+}

@@ -18,6 +18,7 @@ import com.aashish.writetime.navigation.Screen
 import com.aashish.writetime.navigation.WriteTimeBottomBar
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.home.presentation.HomeScreenRoute
+import com.aashish.writetime.weekoverview.presentation.WeekOverviewScreenRoute
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Screen.WeekOverview.route) {
-
+                            WeekOverviewScreenRoute()
                         }
                         composable(Screen.RedemptionLanding.route) {
 

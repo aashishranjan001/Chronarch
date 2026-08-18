@@ -18,7 +18,7 @@ class CalculateDailyEarningUseCase @Inject constructor(
 
         return focusPointsTransactionsRepository.getTransactions(startOfDayTimestamp, nextDayStartTimestamp).map { transaction ->
             EarningOverview(
-                completionFocusPoints = transaction.filter { it.transactionType == FocusPointTransactionType.COMPLETION_CREDIT }
+                taskCreditFocusPoints = transaction.filter { it.transactionType == FocusPointTransactionType.COMPLETION_CREDIT }
                     .sumOf { it.value },
                 bonusFocusPoints = transaction.filter { it.transactionType == FocusPointTransactionType.BONUS_CREDIT }
                     .sumOf { it.value },
