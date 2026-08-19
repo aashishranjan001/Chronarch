@@ -3,7 +3,7 @@ package com.aashish.writetime.redemption.presentation.rewards_setup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aashish.writetime.redemption.domain.usecase.AddRewardsUseCase
-import com.aashish.writetime.redemption.presentation.rewards_setup.RewardsSetupDialogType.*
+import com.aashish.writetime.redemption.presentation.rewards_setup.RewardsSetupOverlayType.*
 import com.aashish.writetime.redemption.presentation.rewards_setup.transformers.toDomainModel
 import com.aashish.writetime.redemption.presentation.rewards_setup.transformers.toEditModeRewardItem
 import com.aashish.writetime.redemption.presentation.rewards_setup.transformers.toRewardSetupItem
@@ -34,7 +34,7 @@ class SetupRewardsViewModel @Inject constructor(
             SetupRewardsEvent.BackPressed, SetupRewardsEvent.AbortSetupClick -> {
                 _uiState.update {
                     it.copy(
-                        dialog = AbortSetupConfirmation
+                        overlay = AbortSetupDialog
                     )
                 }
             }
@@ -42,7 +42,7 @@ class SetupRewardsViewModel @Inject constructor(
             SetupRewardsEvent.AddActionRewardClick -> {
                 _uiState.update {
                     it.copy(
-                        dialog = AddActionReward, currentEditingReward = EditModeRewardItem(
+                        overlay = AddRewardBottomSheet, currentEditingReward = EditModeRewardItem(
                             Uuid.random().toString(), "", ""
                         )
                     )
@@ -52,7 +52,7 @@ class SetupRewardsViewModel @Inject constructor(
             is SetupRewardsEvent.DeleteActionRewardClick -> {
                 _uiState.update {
                     it.copy(
-                        dialog = DeleteRewardConfirmation(event.reward)
+                        overlay = DeleteRewardDialog(event.reward)
                     )
                 }
             }
@@ -60,7 +60,7 @@ class SetupRewardsViewModel @Inject constructor(
             SetupRewardsEvent.SaveChangesClick -> {
                 _uiState.update {
                     it.copy(
-                        dialog = FinishSetupConfirmation
+                        overlay = FinishSetupDialog
                     )
                 }
             }
@@ -68,7 +68,7 @@ class SetupRewardsViewModel @Inject constructor(
             is SetupRewardsEvent.RewardItemClick -> {
                 _uiState.update {
                     it.copy(
-                        dialog = UpdateActionReward,
+                        overlay = UpdateRewardBottomSheet,
                         currentEditingReward = event.reward.toEditModeRewardItem()
                     )
                 }
@@ -90,49 +90,50 @@ class SetupRewardsViewModel @Inject constructor(
                 }
             }
 
-            is SetupRewardsEvent.DialogDismissed -> {
+            is SetupRewardsEvent.OverlayDismissed -> {
                 _uiState.update {
                     it.copy(
-                        dialog = null,
-                        currentEditingReward = it.currentEditingReward.takeIf { event.dialogType != AddActionReward && event.dialogType != UpdateActionReward },
+                        overlay = null,
+                        currentEditingReward = it.currentEditingReward.takeIf { event.overlayType != AddRewardBottomSheet && event.overlayType != UpdateRewardBottomSheet },
                     )
                 }
             }
 
-            is SetupRewardsEvent.DialogConfirmClicked -> {
-                when (event.dialogType) {
-                    AbortSetupConfirmation -> {
-                        _uiState.update { it.copy(dialog = null) }
-                        viewModelScope.launch { _uiEffect.send(SetupRewardsUiEffect.Finish) }
-                    }
+            is SetupRewardsEvent.OverlayConfirmClicked -> {
+                handleOverlayConfirmClicked(event.overlayType)
+            }
+        }
+    }
 
-                    AddActionReward -> {
-                        addActionReward()
-                    }
+    private fun handleOverlayConfirmClicked(overlayType: RewardsSetupOverlayType) {
+        when (overlayType) {
 
-                    is DeleteRewardConfirmation -> {
-                        _uiState.update { it.copy(
-                            dialog = null,
-                            addedRewardItems = it.addedRewardItems.mapNotNull {listItem -> if (listItem.id == event.dialogType.reward.id) null else listItem }
-                        ) }
-                        viewModelScope.launch { _uiEffect.send(SetupRewardsUiEffect.RewardDeletedSnackbar) }
-                    }
+            AddRewardBottomSheet -> addActionReward()
 
-                    FinishSetupConfirmation -> {
-                        viewModelScope.launch {
-                            addRewardsUseCase(_uiState.value.addedRewardItems.map { it.toDomainModel() })
-                            _uiState.update {
-                                it.copy(
-                                    dialog = null,
-                                )
-                            }
-                            _uiEffect.send(SetupRewardsUiEffect.Finish)
-                        }
-                    }
+            UpdateRewardBottomSheet -> updateActionReward()
 
-                    UpdateActionReward -> {
-                        updateActionReward()
+            AbortSetupDialog -> {
+                _uiState.update { it.copy(overlay = null) }
+                viewModelScope.launch { _uiEffect.send(SetupRewardsUiEffect.Finish) }
+            }
+
+            is DeleteRewardDialog -> {
+                _uiState.update { it.copy(
+                    overlay = null,
+                    addedRewardItems = it.addedRewardItems.mapNotNull {listItem -> if (listItem.id == overlayType.reward.id) null else listItem }
+                ) }
+                viewModelScope.launch { _uiEffect.send(SetupRewardsUiEffect.RewardDeletedSnackbar) }
+            }
+
+            FinishSetupDialog -> {
+                viewModelScope.launch {
+                    addRewardsUseCase(_uiState.value.addedRewardItems.map { it.toDomainModel() })
+                    _uiState.update {
+                        it.copy(
+                            overlay = null,
+                        )
                     }
+                    _uiEffect.send(SetupRewardsUiEffect.Finish)
                 }
             }
         }
@@ -147,14 +148,14 @@ class SetupRewardsViewModel @Inject constructor(
                     it.copy(
                         addedRewardItems = it.addedRewardItems + transformedRewardItem,
                         currentEditingReward = null,
-                        dialog = null
+                        overlay = null
                     )
                 }
                 _uiEffect.send(SetupRewardsUiEffect.RewardAddedSnackbar(true))
             } else {
                 _uiState.update {
                     it.copy(
-                        dialog = null
+                        overlay = null
                     )
                 }
                 _uiEffect.send(SetupRewardsUiEffect.RewardAddedSnackbar(false))
@@ -171,14 +172,14 @@ class SetupRewardsViewModel @Inject constructor(
                     it.copy(
                         addedRewardItems = it.addedRewardItems.map { listItem -> if (listItem.id == transformedRewardItem.id) transformedRewardItem else listItem },
                         currentEditingReward = null,
-                        dialog = null
+                        overlay = null
                     )
                 }
                 _uiEffect.send(SetupRewardsUiEffect.RewardUpdatedSnackbar(true))
             } else {
                 _uiState.update {
                     it.copy(
-                        dialog = null
+                        overlay = null
                     )
                 }
                 _uiEffect.send(SetupRewardsUiEffect.RewardUpdatedSnackbar(false))

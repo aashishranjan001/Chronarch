@@ -13,8 +13,8 @@ sealed class SetupRewardsEvent {
     data class CurrentRewardNameChanged(val name: String): SetupRewardsEvent()
     data class CurrentRewardCostChanged(val cost: String): SetupRewardsEvent()
 
-    data class DialogConfirmClicked(val dialogType: RewardsSetupDialogType): SetupRewardsEvent()
-    data class DialogDismissed(val dialogType: RewardsSetupDialogType): SetupRewardsEvent()
+    data class OverlayConfirmClicked(val overlayType: RewardsSetupOverlayType): SetupRewardsEvent()
+    data class OverlayDismissed(val overlayType: RewardsSetupOverlayType): SetupRewardsEvent()
 }
 
 sealed class SetupRewardsUiEffect {

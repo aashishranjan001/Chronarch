@@ -133,9 +133,9 @@ fun SetupRewardsScreen(
                     )
                 }
             }
-            uiState.dialog?.let { dialog ->
+            uiState.overlay?.let { dialog ->
                 when (dialog) {
-                    RewardsSetupDialogType.AbortSetupConfirmation -> ConfirmationDialog(
+                    RewardsSetupOverlayType.AbortSetupDialog -> ConfirmationDialog(
                         title = stringResource(
                             R.string.leave_setup_title
                         ),
@@ -144,16 +144,16 @@ fun SetupRewardsScreen(
                         negativeCtaText = stringResource(R.string.continue_setup),
                         onPositiveClick = {
                             onEvent(
-                                SetupRewardsEvent.DialogConfirmClicked(dialog)
+                                SetupRewardsEvent.OverlayConfirmClicked(dialog)
                             )
                         },
                         onNegativeClick = {
                             onEvent(
-                                SetupRewardsEvent.DialogDismissed(dialog)
+                                SetupRewardsEvent.OverlayDismissed(dialog)
                             )
                         })
 
-                    RewardsSetupDialogType.AddActionReward -> {
+                    RewardsSetupOverlayType.AddRewardBottomSheet -> {
                         uiState.currentEditingReward?.let { currentReward ->
                             RewardInputBottomSheet(
                                 rewardName = currentReward.name,
@@ -166,16 +166,16 @@ fun SetupRewardsScreen(
                                 },
                                 buttonText = stringResource(R.string.add),
                                 onDone = {
-                                    onEvent(SetupRewardsEvent.DialogConfirmClicked(dialog))
+                                    onEvent(SetupRewardsEvent.OverlayConfirmClicked(dialog))
                                 },
                                 onCancel = {
-                                    onEvent(SetupRewardsEvent.DialogDismissed(dialog))
+                                    onEvent(SetupRewardsEvent.OverlayDismissed(dialog))
                                 }
                             )
                         }
                     }
 
-                    is RewardsSetupDialogType.DeleteRewardConfirmation -> {
+                    is RewardsSetupOverlayType.DeleteRewardDialog -> {
                         ConfirmationDialog(
                             title = stringResource(R.string.delete_reward_title),
                             icon = Icons.Default.Delete,
@@ -183,16 +183,16 @@ fun SetupRewardsScreen(
                             negativeCtaText = stringResource(R.string.action_no),
                             onPositiveClick = {
                                 onEvent(
-                                    SetupRewardsEvent.DialogConfirmClicked(
-                                        dialogType = dialog
+                                    SetupRewardsEvent.OverlayConfirmClicked(
+                                        overlayType = dialog
                                     )
                                 )
                             },
-                            onNegativeClick = { onEvent(SetupRewardsEvent.DialogDismissed(dialog)) }
+                            onNegativeClick = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
                         )
                     }
 
-                    RewardsSetupDialogType.FinishSetupConfirmation -> {
+                    RewardsSetupOverlayType.FinishSetupDialog -> {
                         ConfirmationDialog(
                             title = stringResource(R.string.save_changes_title),
                             message = stringResource(R.string.save_changes_message),
@@ -201,16 +201,16 @@ fun SetupRewardsScreen(
                             negativeCtaText = stringResource(R.string.cancel),
                             onPositiveClick = {
                                 onEvent(
-                                    SetupRewardsEvent.DialogConfirmClicked(
+                                    SetupRewardsEvent.OverlayConfirmClicked(
                                         dialog
                                     )
                                 )
                             },
-                            onNegativeClick = { onEvent(SetupRewardsEvent.DialogDismissed(dialog)) }
+                            onNegativeClick = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
                         )
                     }
 
-                    RewardsSetupDialogType.UpdateActionReward -> {
+                    RewardsSetupOverlayType.UpdateRewardBottomSheet -> {
                         uiState.currentEditingReward?.let { currentReward ->
                             RewardInputBottomSheet(
                                 rewardName = currentReward.name,
@@ -223,10 +223,10 @@ fun SetupRewardsScreen(
                                 },
                                 buttonText = stringResource(R.string.update),
                                 onDone = {
-                                    onEvent(SetupRewardsEvent.DialogConfirmClicked(dialog))
+                                    onEvent(SetupRewardsEvent.OverlayConfirmClicked(dialog))
                                 },
                                 onCancel = {
-                                    onEvent(SetupRewardsEvent.DialogDismissed(dialog))
+                                    onEvent(SetupRewardsEvent.OverlayDismissed(dialog))
                                 }
                             )
                         }
