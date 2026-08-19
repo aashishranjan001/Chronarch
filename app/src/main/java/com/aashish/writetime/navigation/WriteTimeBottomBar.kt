@@ -14,19 +14,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun WriteTimeBottomBar(
     navController: NavController,
+    currentDestination: NavDestination?,
     modifier: Modifier = Modifier) {
-
-    val bottomNavTabs = listOf(
-        BottomBarTabItem.Home, BottomBarTabItem.WeekOverview, BottomBarTabItem.Redemption, BottomBarTabItem.History
-    )
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
 
     BottomAppBar(
         modifier = modifier
@@ -67,3 +60,7 @@ fun RowScope.AddItem(
         )
     )
 }
+
+val bottomNavTabs = listOf(
+    BottomBarTabItem.Home, BottomBarTabItem.WeekOverview, BottomBarTabItem.Redemption, BottomBarTabItem.History
+)

@@ -1,6 +1,6 @@
 package com.aashish.writetime.redemption.presentation.redemption_corner
 
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -17,11 +17,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aashish.writetime.R
@@ -33,6 +31,7 @@ import com.aashish.writetime.redemption.presentation.redemption_corner.component
 import com.aashish.writetime.redemption.presentation.redemption_corner.components.RewardsSetupPendingContent
 
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun RedemptionCornerScreenRoute(
     snackbarHostState: SnackbarHostState,
@@ -63,7 +62,6 @@ fun RedemptionCornerScreenRoute(
             }
         }
     }
-
 }
 
 @Composable
@@ -101,10 +99,7 @@ fun RedemptionCornerScreen(
                     modifier = Modifier
                         .padding(spacing.medium)
                         .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(
-                        space = spacing.medium,
-                        alignment = Alignment.CenterVertically
-                    )
+                    verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
                 ) {
                     items(items = uiState.rewardsList, key = { it.id }) { reward ->
                         RewardItem(

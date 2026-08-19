@@ -15,7 +15,7 @@ fun ConfirmationDialog(
     icon: ImageVector? = null,
     positiveCtaText: String,
     negativeCtaText: String,
-    onDismissRequest: () -> Unit,
+    onDismissRequest: (() -> Unit)? = null,
     onPositiveClick: () -> Unit,
     onNegativeClick: () -> Unit
 ) {
@@ -47,7 +47,7 @@ fun ConfirmationDialog(
                 Text(text = negativeCtaText)
             }
         },
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest ?: onNegativeClick
     )
 }
 

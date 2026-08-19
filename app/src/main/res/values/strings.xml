@@ -55,6 +55,31 @@
     <string name="message_redeem_x_points_for_y_action">Redeem %1$d focus points for %2$s</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
-    <string name="reward_redeemed_congratulations_message">Congrats! You’ve well earned the time to %s. Enjoy it!</string>
+    <string name="reward_redeemed_congratulations_message">Congrats! You’ve well-earned the time to %s. Enjoy it!</string>
+    <string name="save_rewards">Save rewards</string>
+    <string name="reward_name_text_label">Reward Name</string>
+    <string name="reward_name_text_input_placeholder">Enter reward name here</string>
+    <string name="reward_cost_text_label">Reward cost</string>
+    <string name="reward_cost_text_input_placeholder">Enter reward cost here</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="add_reward">Add Reward</string>
+    <string name="added_successfully">Added Successfully</string>
+    <string name="updated_successfully">Updated Successfully</string>
+    <string name="deleted_successfully">Deleted Successfully</string>
+    <string name="saved_successfully">Saved Successfully</string>
+    <string name="addition_failed">Failed to add the item. Retry!</string>
+    <string name="updated_failed">Failed to update the item. Retry!</string>
+    <string name="deletion_failed">Failed to delete the item. Retry!</string>
+    <string name="saving_failed">Failed to save information. Retry!</string>
+    <string name="leave_setup_title">Leave Setup?</string>
+    <string name="leave_setup_message">You haven’t completed the setup yet. If you leave now, your progress will be lost and you’ll need to start the setup again.?</string>
+    <string name="continue_setup">Continue Setup</string>
+    <string name="leave_setup">Leave</string>
+    <string name="delete_reward_title">Delete Reward?</string>
+    <string name="save_changes_title">Save Changes?</string>
+    <string name="save_changes_message">Your rewards will be locked after saving and can’t be edited later.</string>
 
 </resources>

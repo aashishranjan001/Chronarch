@@ -30,22 +30,14 @@ class RedemptionCornerViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-
-            _uiState.update {
-                it.copy(rewardsList = (1..20).map {
-                    RedeemableReward(id = it.toLong() ,name = "Reward $it", cost = it, isRedeemable = Random.nextBoolean())
-                })
+            getRedemptionCornerOverviewUseCase().collectLatest { overviewData ->
+                _uiState.update {
+                    it.copy(
+                        rewardsList = overviewData.rewards,
+                        availableFocusPointsBalance = overviewData.availableBalance
+                    )
+                }
             }
-
-//            getRedemptionCornerOverviewUseCase().collectLatest { overviewData ->
-//                _uiState.update {
-//                    it.copy(
-//                        rewardsList = overviewData.rewards,
-//                        availableFocusPointsBalance = overviewData.availableBalance
-//                    )
-//                }
-//            }
-
         }
     }
 

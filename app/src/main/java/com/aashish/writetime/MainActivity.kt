@@ -10,11 +10,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -23,8 +21,9 @@ import com.aashish.writetime.navigation.Screen
 import com.aashish.writetime.navigation.WriteTimeBottomBar
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.home.presentation.HomeScreenRoute
-import com.aashish.writetime.navigation.WriteTimeTopAppBar
-import com.aashish.writetime.navigation.getAppBarSpec
+import com.aashish.writetime.navigation.bottomNavTabs
+import com.aashish.writetime.redemption.presentation.redemption_corner.RedemptionCornerScreenRoute
+import com.aashish.writetime.redemption.presentation.rewards_setup.SetupRewardsScreenRoute
 import com.aashish.writetime.weekoverview.presentation.WeekOverviewScreenRoute
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,17 +37,13 @@ class MainActivity : ComponentActivity() {
             WriteTimeTheme {
                 val navController = rememberNavController()
                 val backStackEntry by navController.currentBackStackEntryAsState()
-                val staticAppBarState = backStackEntry?.destination?.getAppBarSpec()
-                val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+                val currentDestination = backStackEntry?.destination
 
                 val snackbarHostState = remember { SnackbarHostState() }
                 Scaffold(
                     bottomBar = {
-                        WriteTimeBottomBar(navController)
-                    },
-                    topBar = {
-                        staticAppBarState?.let { appBarState ->
-                           WriteTimeTopAppBar(navController, appBarState)
+                        if (bottomNavTabs.any { it.route == currentDestination?.route}) {
+                            WriteTimeBottomBar(navController, currentDestination)
                         }
                     },
                     snackbarHost = {
@@ -58,7 +53,6 @@ class MainActivity : ComponentActivity() {
                     },
                     modifier = Modifier
                         .fillMaxSize()
-                        .nestedScroll(scrollBehavior.nestedScrollConnection)
                 ) { innerPadding ->
 
                     NavHost(
@@ -83,7 +77,10 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Screen.RewardsSetup.route) {
-
+                            SetupRewardsScreenRoute(
+                                snackbarHostState = snackbarHostState,
+                                onFinish = { navController.popBackStack() },
+                            )
                         }
                         composable(Screen.History.route) {
 
