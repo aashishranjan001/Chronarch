@@ -43,7 +43,18 @@
     <string name="transaction_filter_menu_item_bonus">Bonus</string>
     <string name="transaction_filter_menu_item_redeem">Redeem</string>
 
-    <string name="title_rewards_setup">Rewards Action Setup</string>
+    <string name="title_rewards_setup">Rewards Setup</string>
+    <string name="action_setup_image">Action setup image</string>
     <string name="go_back">Back</string>
+    <string name="proceed">Proceed</string>
+    <string name="setup_actions_message">Add things you enjoy as rewards and set the focus points needed to earn them.</string>
+    <string name="note_one_time_action">Note: This is a one time setup</string>
+    <string name="rewards_icon">Rewards icon</string>
+    <string name="title_redemption_corner">Redemption Corner</string>
+    <string name="title_redeem_focus_points">Redeem focus points?</string>
+    <string name="message_redeem_x_points_for_y_action">Redeem %1$d focus points for %2$s</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="reward_redeemed_congratulations_message">Congrats! You’ve well earned the time to %s. Enjoy it!</string>
 
 </resources>

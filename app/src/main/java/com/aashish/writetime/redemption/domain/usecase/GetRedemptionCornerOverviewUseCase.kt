@@ -1,13 +1,14 @@
 package com.aashish.writetime.redemption.domain.usecase
 
 import com.aashish.writetime.common.domain.repository.FocusPointsTransactionsRepository
+import com.aashish.writetime.redemption.domain.model.RedeemableReward
 import com.aashish.writetime.redemption.domain.model.RedemptionCornerOverview
 import com.aashish.writetime.redemption.domain.repository.RewardsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetRedemptionCornerOverview @Inject constructor(
+class GetRedemptionCornerOverviewUseCase @Inject constructor(
     private val rewardsRepository: RewardsRepository,
     private val focusPointsTransactionsRepository: FocusPointsTransactionsRepository
 ) {
@@ -15,7 +16,14 @@ class GetRedemptionCornerOverview @Inject constructor(
         return focusPointsTransactionsRepository.getAvailableBalance().map { availableBalance ->
             RedemptionCornerOverview(
                 availableBalance = availableBalance,
-                rewards = rewardsRepository.getAllRewards()
+                rewards = rewardsRepository.getAllRewards().map { reward ->
+                    RedeemableReward(
+                        id = reward.id,
+                        name = reward.name,
+                        cost = reward.cost,
+                        isRedeemable = reward.cost <= availableBalance
+                    )
+                }
             )
         }
     }

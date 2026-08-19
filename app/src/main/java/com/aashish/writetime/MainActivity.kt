@@ -74,13 +74,15 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.WeekOverview.route) {
                             WeekOverviewScreenRoute()
                         }
-                        composable(Screen.RedemptionLanding.route) {
-
+                        composable(Screen.RedemptionCorner.route) {
+                            RedemptionCornerScreenRoute(
+                                snackbarHostState = snackbarHostState,
+                                onLaunchRewardsSetup = {
+                                    navController.navigate(Screen.RewardsSetup.route)
+                                }
+                            )
                         }
                         composable(Screen.RewardsSetup.route) {
-
-                        }
-                        composable(Screen.RedemptionCorner.route) {
 
                         }
                         composable(Screen.History.route) {

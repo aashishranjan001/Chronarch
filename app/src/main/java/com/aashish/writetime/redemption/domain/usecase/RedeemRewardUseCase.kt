@@ -10,14 +10,14 @@ import javax.inject.Inject
 class RedeemRewardUseCase @Inject constructor(
     private val focusPointsTransactionsRepository: FocusPointsTransactionsRepository
 ) {
-    suspend operator fun invoke(reward: Reward) {
+    suspend operator fun invoke(rewardCost: Int, rewardName: String) {
         focusPointsTransactionsRepository.registerTransaction(
             FocusPointTransaction(
                 id = 0,
-                value = reward.cost,
+                value = rewardCost,
                 transactionType = FocusPointTransactionType.REDEMPTION_DEBIT,
                 timestamp = Instant.now(),
-                message = "Claimed for reward activity: ${reward.name}"
+                message = "Claimed for reward activity: $rewardName"
             )
         )
     }

@@ -13,7 +13,7 @@ import com.aashish.writetime.R
 sealed class BottomBarTabItem(val route: String, @StringRes val labelRes: Int, val icon: ImageVector) {
     object Home: BottomBarTabItem(Screen.Home.route, R.string.home_tab, Icons.Default.Home)
     object WeekOverview: BottomBarTabItem(Screen.WeekOverview.route, R.string.weekly_overview_tab, Icons.Default.ViewWeek)
-    object Redemption: BottomBarTabItem(Screen.RedemptionLanding.route,  R.string.redemption_tab, Icons.Default.Redeem)
+    object Redemption: BottomBarTabItem(Screen.RedemptionCorner.route,  R.string.redemption_tab, Icons.Default.Redeem)
     object History: BottomBarTabItem(Screen.History.route, R.string.history_tab, Icons.Default.History)
 }
 
