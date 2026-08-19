@@ -126,7 +126,6 @@ class SetupRewardsViewModel @Inject constructor(
                                     dialog = null,
                                 )
                             }
-                            _uiEffect.send(SetupRewardsUiEffect.SetupCompletedSnackbar)
                             _uiEffect.send(SetupRewardsUiEffect.Finish)
                         }
                     }

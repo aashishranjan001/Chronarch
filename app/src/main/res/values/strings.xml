@@ -69,7 +69,6 @@
     <string name="added_successfully">Added Successfully</string>
     <string name="updated_successfully">Updated Successfully</string>
     <string name="deleted_successfully">Deleted Successfully</string>
-    <string name="saved_successfully">Saved Successfully</string>
     <string name="addition_failed">Failed to add the item. Retry!</string>
     <string name="updated_failed">Failed to update the item. Retry!</string>
     <string name="deletion_failed">Failed to delete the item. Retry!</string>

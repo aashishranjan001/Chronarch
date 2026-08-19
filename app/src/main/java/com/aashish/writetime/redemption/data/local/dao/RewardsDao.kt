@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.aashish.writetime.redemption.data.local.model.RewardEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RewardsDao {
@@ -14,5 +15,5 @@ interface RewardsDao {
     @Query("""
         SELECT * FROM rewards
     """)
-    suspend fun getAllRewards(): List<RewardEntity>
+    fun getAllRewards(): Flow<List<RewardEntity>>
 }

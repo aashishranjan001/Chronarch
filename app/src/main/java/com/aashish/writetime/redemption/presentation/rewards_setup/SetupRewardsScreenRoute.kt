@@ -54,7 +54,9 @@ fun SetupRewardsScreenRoute(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { uiEffect ->
             when (uiEffect) {
-                SetupRewardsUiEffect.Finish -> onFinish()
+                SetupRewardsUiEffect.Finish -> {
+                    onFinish()
+                }
                 is SetupRewardsUiEffect.RewardAddedSnackbar -> snackbarHostState.showSnackbar(
                     context.getString(
                         if (uiEffect.isSuccess) R.string.added_successfully else R.string.addition_failed
@@ -71,10 +73,6 @@ fun SetupRewardsScreenRoute(
                     context.getString(
                         if (uiEffect.isSuccess) R.string.updated_successfully else R.string.updated_failed
                     )
-                )
-
-                SetupRewardsUiEffect.SetupCompletedSnackbar -> snackbarHostState.showSnackbar(
-                    context.getString(R.string.saved_successfully)
                 )
             }
         }

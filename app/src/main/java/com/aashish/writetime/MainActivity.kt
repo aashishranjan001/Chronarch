@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                         composable(Screen.RewardsSetup.route) {
                             SetupRewardsScreenRoute(
                                 snackbarHostState = snackbarHostState,
-                                onFinish = { navController.popBackStack() },
+                                onFinish = { navController.popBackStack() }
                             )
                         }
                         composable(Screen.History.route) {

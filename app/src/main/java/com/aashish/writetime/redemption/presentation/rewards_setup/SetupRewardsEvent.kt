@@ -21,6 +21,5 @@ sealed class SetupRewardsUiEffect {
     data class RewardAddedSnackbar(val isSuccess: Boolean): SetupRewardsUiEffect()
     data class RewardUpdatedSnackbar(val isSuccess: Boolean): SetupRewardsUiEffect()
     data object RewardDeletedSnackbar: SetupRewardsUiEffect()
-    data object SetupCompletedSnackbar: SetupRewardsUiEffect()
     data object Finish: SetupRewardsUiEffect()
 }
