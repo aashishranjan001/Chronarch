@@ -7,6 +7,7 @@
 
 
     <string name="sessions">Sessions</string>
+    <string name="transactions">Transactions</string>
     <string name="started">Started</string>
     <string name="completed">Completed</string>
     <string name="cancelled">Cancelled</string>
@@ -36,7 +37,10 @@
     <string name="redemption_points">Redeemed points</string>
     <string name="total_focus_points">Total</string>
 
-    <string name="focus_points_activity">Focus Points Activity</string>
+    <string name="focus_points_activity">Focus Points activity</string>
+    <string name="task_credits_activity">Task credits activity</string>
+    <string name="bonus_earning_activity">Bonus earnings activity</string>
+    <string name="points_redemption_activity">Points redemption activity</string>
     <string name="filter_icon">Filter</string>
     <string name="transaction_filter_menu_item_all">All</string>
     <string name="transaction_filter_menu_item_task_credit">Task Credit</string>
@@ -80,5 +84,14 @@
     <string name="delete_reward_title">Delete Reward?</string>
     <string name="save_changes_title">Save Changes?</string>
     <string name="save_changes_message">Your rewards will be locked after saving and can’t be edited later.</string>
+
+    <string name="started_at_time">Started at %s</string>
+    <string name="target_duration">Goal: %s </string>
+    <string name="x_minutes">%d min</string>
+    <string name="x_focus_points">%d FP</string>
+    <string name="no_session_history_found_title">No session history found!</string>
+    <string name="no_session_history_found_description">Complete timer sessions to see the history here</string>
+    <string name="no_transaction_history_found_title">No transactions found!</string>
+    <string name="no_transaction_history_found_description">Complete timer sessions or redeem focus points rewards to see the history here</string>
 
 </resources>

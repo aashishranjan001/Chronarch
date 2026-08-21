@@ -17,7 +17,7 @@ class RedeemRewardUseCase @Inject constructor(
                 value = rewardCost,
                 transactionType = FocusPointTransactionType.REDEMPTION_DEBIT,
                 timestamp = Instant.now(),
-                message = "Claimed for reward activity: $rewardName"
+                message = "Claimed for reward: $rewardName"
             )
         )
     }

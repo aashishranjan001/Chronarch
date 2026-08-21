@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.aashish.writetime.navigation.Screen
 import com.aashish.writetime.navigation.WriteTimeBottomBar
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
+import com.aashish.writetime.history.presentation.HistoryScreenRoute
 import com.aashish.writetime.home.presentation.HomeScreenRoute
 import com.aashish.writetime.navigation.bottomNavTabs
 import com.aashish.writetime.redemption.presentation.redemption_corner.RedemptionCornerScreenRoute
@@ -83,7 +84,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Screen.History.route) {
-
+                            HistoryScreenRoute()
                         }
                     }
                 }

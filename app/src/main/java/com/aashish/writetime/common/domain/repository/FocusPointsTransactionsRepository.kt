@@ -10,5 +10,6 @@ interface FocusPointsTransactionsRepository {
 
 
     fun getTransactions(startTime: Instant, endTime: Instant): Flow<List<FocusPointTransaction>>
+    fun getAllTransactions(): Flow<List<FocusPointTransaction>>
     fun getAvailableBalance(): Flow<Int>
 }

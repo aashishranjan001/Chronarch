@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.formatDurationHhMmSs
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
-import com.aashish.writetime.common.ui.toHumanReadableFormat
+import com.aashish.writetime.common.ui.toHumanReadableDurationFormat
 
 @Composable
 fun Timer(
@@ -72,7 +72,7 @@ fun Timer(
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Text(text = formatDurationHhMmSs(secondsRemaining), style = MaterialTheme.typography.displayMedium)
             Spacer(modifier = Modifier.height(LocalSpacing.current.small))
-            Text(text = toHumanReadableFormat(totalSeconds), style = MaterialTheme.typography.bodyLarge)
+            Text(text = toHumanReadableDurationFormat(totalSeconds), style = MaterialTheme.typography.bodyLarge)
         }
     }
 

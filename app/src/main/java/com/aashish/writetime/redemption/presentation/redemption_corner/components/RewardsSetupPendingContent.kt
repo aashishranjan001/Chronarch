@@ -49,7 +49,7 @@ fun RewardsSetupPendingContent(
             verticalArrangement = Arrangement.Center
         ) {
             Image(
-                painter = painterResource(R.drawable.setup),
+                painter = painterResource(R.drawable.pending_setup),
                 contentDescription = stringResource(R.string.action_setup_image),
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
@@ -94,7 +94,7 @@ fun RewardsSetupPendingContent(
 }
 
 
-@PreviewScreenSizes
+@Preview
 @Composable
 private fun RewardsSetupPendingContentPreview() {
     WriteTimeTheme {

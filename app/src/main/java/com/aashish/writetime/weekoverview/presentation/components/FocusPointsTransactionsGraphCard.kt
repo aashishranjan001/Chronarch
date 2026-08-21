@@ -53,7 +53,14 @@ fun FocusPointsTransactionsGraphCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(R.string.focus_points_activity),
+                    text = stringResource(
+                        when(selectedMenuOption) {
+                            FocusPointsViewFilter.ALL -> R.string.focus_points_activity
+                            FocusPointsViewFilter.TASK_CREDIT -> R.string.task_credits_activity
+                            FocusPointsViewFilter.BONUS -> R.string.bonus_earning_activity
+                            FocusPointsViewFilter.REDEEM -> R.string.points_redemption_activity
+                        }
+                    ),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(spacing.medium))

@@ -49,7 +49,7 @@ class EndTimerSessionUseCase @Inject constructor(
                             value = associatedFocusPoints,
                             transactionType = FocusPointTransactionType.COMPLETION_CREDIT,
                             timestamp = endTime,
-                            message = "Earned for successful completion of ${durationType.duration.inWholeMinutes} min session"
+                            message = "Earned for completing ${durationType.duration.inWholeMinutes} min session"
                         )
                     )
                     if (newStreakProgressFraction.toInt() == streakProgressFraction.toInt() + 1) { // new streak achieved

@@ -60,6 +60,6 @@ fun FocusPointCurrency(value: Int, modifier: Modifier = Modifier) {
 @Composable
 private fun FocusPointCurrencyPreview() {
     WriteTimeTheme {
-        FocusPointCurrency(12)
+        FocusPointCurrency(value = 12)
     }
 }

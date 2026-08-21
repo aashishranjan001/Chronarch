@@ -21,4 +21,8 @@ interface TimerSessionDao {
 
     @Query("SELECT * FROM timer_session WHERE startedAt >= :startTimeEpoch AND startedAt < :endTimeEpoch")
     fun getSessions(startTimeEpoch: Long, endTimeEpoch: Long): Flow<List<TimerSessionEntity>>
+
+    @Query("SELECT * FROM timer_session")
+    fun getAllSessions(): Flow<List<TimerSessionEntity>>
+
 }

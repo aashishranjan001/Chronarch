@@ -33,6 +33,12 @@ class FocusPointsTransactionsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getAllTransactions(): Flow<List<FocusPointTransaction>> {
+        return transactionHistoryDao.getAllTransactions().map { transactions ->
+            transactions.map { it.toDomain() }
+        }
+    }
+
     override fun getAvailableBalance(): Flow<Int> {
         return transactionHistoryDao.getAvailableBalance()
     }

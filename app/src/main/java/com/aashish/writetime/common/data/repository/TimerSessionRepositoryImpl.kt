@@ -38,4 +38,10 @@ class TimerSessionRepositoryImpl @Inject constructor(
             sessionsList.map { it.toDomain() }
         }
     }
+
+    override fun getAllTimerSessions(): Flow<List<TimerSession>> {
+        return timerSessionDao.getAllSessions().map { sessionsList ->
+            sessionsList.map { it.toDomain() }
+        }
+    }
 }
