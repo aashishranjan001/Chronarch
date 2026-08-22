@@ -41,10 +41,12 @@
     <string name="task_credits_activity">Task credits activity</string>
     <string name="bonus_earning_activity">Bonus earnings activity</string>
     <string name="points_redemption_activity">Points redemption activity</string>
-    <string name="filter_icon">Filter</string>
+    <string name="filter">Filter</string>
+    <string name="clear_filter">Clear Filters</string>
+    <string name="apply_filters">Apply</string>
     <string name="transaction_filter_menu_item_all">All</string>
     <string name="transaction_filter_menu_item_task_credit">Task Credit</string>
-    <string name="transaction_filter_menu_item_bonus">Bonus</string>
+    <string name="transaction_filter_menu_item_bonus">Streak Bonus</string>
     <string name="transaction_filter_menu_item_redeem">Redeem</string>
 
     <string name="title_rewards_setup">Rewards Setup</string>
@@ -93,5 +95,21 @@
     <string name="no_session_history_found_description">Complete timer sessions to see the history here</string>
     <string name="no_transaction_history_found_title">No transactions found!</string>
     <string name="no_transaction_history_found_description">Complete timer sessions or redeem focus points rewards to see the history here</string>
+
+    <string name="category_completion_status">Completion Status</string>
+    <string name="category_duration_length">Duration Type</string>
+    <string name="category_transaction_type">Transaction Type</string>
+    <string name="category_date">Date</string>
+
+    <string name="option_successful_completion_status">Finished</string>
+    <string name="option_failed_completion_status">Cancelled</string>
+    <string name="option_short_duration">Short</string>
+    <string name="option_long_duration">Long</string>
+    <string name="option_task_credit_earning">Task credits</string>
+    <string name="option_bonus_earning">Streak bonus</string>
+    <string name="option_redemption_debit">Reward redemptions</string>
+    <string name="option_date_this_week">This week</string>
+    <string name="option_date_this_month">This month</string>
+    <string name="option_date_custom_range">Custom range</string>
 
 </resources>

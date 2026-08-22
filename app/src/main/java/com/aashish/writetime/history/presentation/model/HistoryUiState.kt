@@ -1,10 +1,14 @@
 package com.aashish.writetime.history.presentation.model
 
-import com.aashish.writetime.common.domain.model.FocusPointTransaction
-import com.aashish.writetime.history.domain.model.EndedTimerSession
-
 data class HistoryUiState(
     val tabs: List<HistoryTab>,
-    val transactions: List<FocusPointTransaction> = emptyList(),
-    val sessions: List<EndedTimerSession> = emptyList()
+    val allSessions: List<SessionHistoryItem> = emptyList(),
+    val allTransactions: List<TransactionHistoryItem> = emptyList(),
+    val filteredSessions: List<SessionHistoryItem> = emptyList(),
+    val filteredTransactions: List<TransactionHistoryItem> = emptyList(),
+    val appliedSessionsFilters: SessionsFilterUiState = SessionsFilterUiState(),
+    val appliedTransactionsFilters: TransactionsFilterUiState = TransactionsFilterUiState(),
+    val draftSessionsFilters: SessionsFilterUiState? = null,
+    val draftTransactionsFilters: TransactionsFilterUiState? = null,
+    val showDatePickerDialog: Boolean = false
 )

@@ -2,9 +2,17 @@ package com.aashish.writetime.history.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aashish.writetime.common.ui.isEmptyOrContains
+import com.aashish.writetime.common.ui.updateSet
 import com.aashish.writetime.history.domain.usecase.GetHistoryUseCase
+import com.aashish.writetime.history.presentation.HistoryUiEffect.*
+import com.aashish.writetime.history.presentation.model.FilterCategory
+import com.aashish.writetime.history.presentation.model.FilterOption
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
+import com.aashish.writetime.history.presentation.model.SessionsFilterUiState
+import com.aashish.writetime.history.presentation.model.TransactionsFilterUiState
+import com.aashish.writetime.history.presentation.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,9 +28,11 @@ class HistoryViewModel @Inject constructor(
     private val historyUseCase: GetHistoryUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HistoryUiState(
-        HistoryTab.entries
-    ))
+    private val _uiState = MutableStateFlow(
+        HistoryUiState(
+            HistoryTab.entries
+        )
+    )
     val uiState = _uiState.asStateFlow()
 
     private val _uiEffect = Channel<HistoryUiEffect>()
@@ -32,19 +42,228 @@ class HistoryViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             historyUseCase().collectLatest { history ->
-                _uiState.update {
-                    it.copy(transactions = history.transactions, sessions = history.sessions)
+                val allTransactions =
+                    history.transactions.map { transaction -> transaction.toUiModel() }
+                val allSessions = history.sessions.map { session -> session.toUiModel() }
+                _uiState.update { uiState ->
+                    uiState.copy(
+                        allTransactions = allTransactions,
+                        allSessions = allSessions,
+                        filteredSessions = allSessions.filter {
+                            _uiState.value.appliedSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
+                                it.toCompletionStatusFilterLabel()
+                            )
+                                    && _uiState.value.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
+                                it.toDurationFilterLabel()
+                            )
+                        },
+                        filteredTransactions = allTransactions.filter {
+                            _uiState.value.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
+                                it.toTransactionTypeFilterLabel()
+                            )
+                        }
+                    )
                 }
             }
         }
     }
 
     fun onEvent(event: HistoryEvent) {
-        when(event) {
+        when (event) {
             is HistoryEvent.TabSelect -> {
                 viewModelScope.launch {
                     _uiEffect.send(
-                        HistoryUiEffect.ScrollToTab(event.tabIndex)
+                        ScrollToTab(event.tabIndex)
+                    )
+                }
+            }
+
+            HistoryEvent.ApplySessionsFilter -> {
+                applySessionsFilter()
+            }
+
+            HistoryEvent.ApplyTransactionsFilter -> {
+                applyTransactionsFilter()
+            }
+
+            HistoryEvent.ClearSessionsFilter -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = SessionsFilterUiState()
+                    )
+                }
+            }
+
+            HistoryEvent.SessionsTabFilterMenuClick -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = it.appliedSessionsFilters.copy(
+                            selectedFilterCategory = null
+                        )
+                    )
+                }
+            }
+
+            HistoryEvent.ClearTransactionsFilter -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = TransactionsFilterUiState()
+                    )
+                }
+            }
+
+            HistoryEvent.TransactionsTabFilterMenuClick -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = it.appliedTransactionsFilters.copy(
+                            selectedFilterCategory = null
+                        )
+                    )
+                }
+            }
+
+            is HistoryEvent.FilterOptionSelected -> {
+                handleFilterOptionSelection(event.option, event.isSelected)
+            }
+
+            HistoryEvent.DismissTransactionsFilterMenu -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = null
+                    )
+                }
+            }
+
+            HistoryEvent.DismissSessionsFilterMenu -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = null
+                    )
+                }
+            }
+
+            is HistoryEvent.FilterCategorySelected -> {
+                handleFilterMenuCategoryClick(event.category)
+            }
+        }
+    }
+
+    private fun applyTransactionsFilter() {
+        _uiState.value.draftTransactionsFilters?.let { draftTransactionFilters ->
+            _uiState.update { state ->
+                state.copy(
+                    filteredTransactions = state.allTransactions.filter {
+                        draftTransactionFilters.appliedTypeFilters.isEmptyOrContains(it.toTransactionTypeFilterLabel())
+                    },
+                    appliedTransactionsFilters = draftTransactionFilters,
+                    draftTransactionsFilters = null
+                )
+            }
+        }
+    }
+
+    private fun applySessionsFilter() {
+        _uiState.value.draftSessionsFilters?.let { draftSessionsFilters ->
+            _uiState.update { state ->
+                state.copy(
+                    filteredSessions = state.allSessions.filter {
+                        draftSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
+                            it.toCompletionStatusFilterLabel()
+                        )
+                                && draftSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
+                            it.toDurationFilterLabel()
+                        )
+                    },
+                    appliedSessionsFilters = draftSessionsFilters,
+                    draftSessionsFilters = null,
+                )
+            }
+        }
+    }
+
+    private fun handleFilterMenuCategoryClick(filterCategory: FilterCategory) {
+        when (filterCategory) {
+            is FilterCategory.SessionFilter -> _uiState.update {
+                it.copy(
+                    draftSessionsFilters = it.draftSessionsFilters?.copy(
+                        selectedFilterCategory = filterCategory
+                    )
+                )
+            }
+
+            is FilterCategory.TransactionFilter -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = it.draftTransactionsFilters?.copy(
+                            selectedFilterCategory = filterCategory
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleFilterOptionSelection(filterOption: FilterOption, isSelected: Boolean) {
+        when (filterOption) {
+            is FilterOption.SessionFilter.CompletionStatus.Cancelled, is FilterOption.SessionFilter.CompletionStatus.Finished -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = it.draftSessionsFilters?.copy(
+                            appliedCompletionStatusFilters = it.draftSessionsFilters.appliedCompletionStatusFilters.updateSet(
+                                filterOption,
+                                isSelected
+                            )
+                        )
+                    )
+                }
+            }
+
+            is FilterOption.SessionFilter.Date.Custom -> {
+
+            }
+
+            is FilterOption.SessionFilter.Date.ThisMonth -> {
+
+            }
+
+            is FilterOption.SessionFilter.Date.ThisWeek -> {
+
+            }
+
+            is FilterOption.SessionFilter.DurationType.LongType, is FilterOption.SessionFilter.DurationType.ShortType -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = it.draftSessionsFilters?.copy(
+                            appliedDurationTypeFilters = it.draftSessionsFilters.appliedDurationTypeFilters.updateSet(
+                                filterOption,
+                                isSelected
+                            )
+                        )
+                    )
+                }
+            }
+
+            is FilterOption.TransactionFilter.Date.Custom -> {
+
+            }
+
+            is FilterOption.TransactionFilter.Date.ThisMonth -> {
+
+            }
+
+            is FilterOption.TransactionFilter.Date.ThisWeek -> {
+
+            }
+
+            is FilterOption.TransactionFilter.Type.TaskCredit, is FilterOption.TransactionFilter.Type.Redemption, is FilterOption.TransactionFilter.Type.Bonus -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = it.draftTransactionsFilters?.copy(
+                            appliedTypeFilters = it.draftTransactionsFilters.appliedTypeFilters.updateSet(
+                                filterOption,
+                                isSelected
+                            )
+                        )
                     )
                 }
             }

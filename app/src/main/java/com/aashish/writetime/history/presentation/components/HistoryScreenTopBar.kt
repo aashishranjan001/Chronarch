@@ -1,6 +1,5 @@
 package com.aashish.writetime.history.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +31,7 @@ fun HistoryScreenTopBar(
     tabList: List<HistoryTab>,
     currentPage: Int,
     onTabClick: (Int) -> Unit,
+    onFilterMenuClick: () -> Unit,
     modifier: Modifier = Modifier) {
     val spacing = LocalSpacing.current
 
@@ -82,11 +82,11 @@ fun HistoryScreenTopBar(
         // Filter icon and popup
         Box(modifier = Modifier.align(Alignment.CenterEnd).padding(horizontal = spacing.medium)) {
             IconButton(
-                onClick = { } //
+                onClick = onFilterMenuClick
             ) {
                 Icon(
                     imageVector = Icons.Default.Tune,
-                    contentDescription = stringResource(R.string.filter_icon)
+                    contentDescription = stringResource(R.string.filter)
                 )
             }
         }
@@ -99,7 +99,7 @@ fun HistoryScreenTopBar(
 private fun HistoryScreenTopBarPreview() {
     WriteTimeTheme {
         HistoryScreenTopBar(
-            HistoryTab.entries, 1, {}
+            HistoryTab.entries, 1, {}, {}
         )
     }
 }

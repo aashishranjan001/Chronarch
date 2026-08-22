@@ -10,14 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
-import com.aashish.writetime.common.domain.model.FocusPointTransaction
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toReadableLocalTime
+import com.aashish.writetime.history.presentation.model.TransactionHistoryItem
 
 @Composable
-fun TransactionsSection(
-    transactionList: List<FocusPointTransaction>,
+fun TransactionsHistorySection(
+    transactionList: List<TransactionHistoryItem>,
     modifier: Modifier = Modifier
 ) {
     if (transactionList.isEmpty()) {
@@ -48,8 +48,8 @@ fun TransactionsSection(
 
 @Preview
 @Composable
-private fun TransactionsSectionPreview() {
+private fun TransactionsHistorySectionPreview() {
     WriteTimeTheme {
-        TransactionsSection(emptyList())
+        TransactionsHistorySection(emptyList())
     }
 }

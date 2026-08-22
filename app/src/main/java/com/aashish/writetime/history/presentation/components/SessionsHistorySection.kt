@@ -15,11 +15,11 @@ import com.aashish.writetime.common.ui.calculatePercent
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toHumanReadableDurationFormat
 import com.aashish.writetime.common.ui.toReadableLocalTime
-import com.aashish.writetime.history.domain.model.EndedTimerSession
+import com.aashish.writetime.history.presentation.model.SessionHistoryItem
 
 @Composable
-fun SessionsSection(
-    sessionList: List<EndedTimerSession>,
+fun SessionsHistorySection(
+    sessionList: List<SessionHistoryItem>,
     modifier: Modifier = Modifier
 ) {
 
@@ -54,8 +54,8 @@ fun SessionsSection(
 
 @Preview
 @Composable
-private fun SessionsSectionPreview() {
+private fun SessionsHistorySectionPreview() {
     WriteTimeTheme {
-        SessionsSection(emptyList())
+        SessionsHistorySection(emptyList())
     }
 }

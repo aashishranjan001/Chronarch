@@ -70,7 +70,7 @@ fun FocusPointsTransactionsGraphCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Tune,
-                            contentDescription = stringResource(R.string.filter_icon)
+                            contentDescription = stringResource(R.string.filter)
                         )
                     }
                     TransactionTypeFilterMenu(

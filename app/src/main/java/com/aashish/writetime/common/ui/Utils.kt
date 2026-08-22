@@ -40,3 +40,15 @@ fun Instant.toReadableLocalTime(): String {
             DateTimeFormatter.ofPattern("dd MMM, h:mm a")
         )
 }
+
+fun <Type> Set<Type>.isEmptyOrContains(element: Type): Boolean {
+    return this.isEmpty() || this.contains(element)
+}
+
+fun <Type> Set<Type>.updateSet(element: Type, shouldKeep: Boolean): Set<Type> {
+    return if(shouldKeep) {
+        this + element
+    } else {
+        this - element
+    }
+}
