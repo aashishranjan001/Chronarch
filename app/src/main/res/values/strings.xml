@@ -93,8 +93,10 @@
     <string name="x_focus_points">%d FP</string>
     <string name="no_session_history_found_title">No session history found!</string>
     <string name="no_session_history_found_description">Complete timer sessions to see the history here</string>
+    <string name="no_filtered_session_history_found_description">Remove the filters to view all sessions</string>
     <string name="no_transaction_history_found_title">No transactions found!</string>
     <string name="no_transaction_history_found_description">Complete timer sessions or redeem focus points rewards to see the history here</string>
+    <string name="no_filtered_transaction_history_found_description">Remove the filters to view all transactions</string>
 
     <string name="category_completion_status">Completion Status</string>
     <string name="category_duration_length">Duration Type</string>

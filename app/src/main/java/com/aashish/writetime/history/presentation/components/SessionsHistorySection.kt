@@ -20,14 +20,18 @@ import com.aashish.writetime.history.presentation.model.SessionHistoryItem
 @Composable
 fun SessionsHistorySection(
     sessionList: List<SessionHistoryItem>,
+    areFiltersApplied: Boolean,
     modifier: Modifier = Modifier
 ) {
 
     if (sessionList.isEmpty()) {
         NoDataFoundContent(
-            thumbnailResId = R.drawable.no_sessions_found,
+            thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_session_history else R.drawable.no_sessions_found,
             title = stringResource(R.string.no_session_history_found_title),
-            message = stringResource(R.string.no_session_history_found_description)
+            message = stringResource(
+                if (areFiltersApplied) R.string.no_filtered_session_history_found_description else
+                    R.string.no_session_history_found_description
+            )
         )
     } else {
         val spacing = LocalSpacing.current
@@ -56,6 +60,6 @@ fun SessionsHistorySection(
 @Composable
 private fun SessionsHistorySectionPreview() {
     WriteTimeTheme {
-        SessionsHistorySection(emptyList())
+        SessionsHistorySection(emptyList(), false)
     }
 }

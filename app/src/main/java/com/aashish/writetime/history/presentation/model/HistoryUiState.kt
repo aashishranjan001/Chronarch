@@ -11,4 +11,12 @@ data class HistoryUiState(
     val draftSessionsFilters: SessionsFilterUiState? = null,
     val draftTransactionsFilters: TransactionsFilterUiState? = null,
     val showDatePickerDialog: Boolean = false
-)
+) {
+    val areSessionFilteredApplied
+        get() = appliedSessionsFilters.appliedDateFilter != null
+                || appliedSessionsFilters.appliedDurationTypeFilters.isNotEmpty()
+                || appliedSessionsFilters.appliedCompletionStatusFilters.isNotEmpty()
+
+    val areTransactionFiltersApplied
+        get() = appliedTransactionsFilters.appliedDateFilter != null || appliedTransactionsFilters.appliedTypeFilters.isNotEmpty()
+}

@@ -82,8 +82,8 @@ fun HistoryScreen(
             state = pagerState
         ) { page ->
             when (uiState.tabs[page]) {
-                HistoryTab.SESSIONS -> SessionsHistorySection(uiState.filteredSessions)
-                HistoryTab.TRANSACTIONS -> TransactionsHistorySection(uiState.filteredTransactions)
+                HistoryTab.SESSIONS -> SessionsHistorySection(uiState.filteredSessions, uiState.areSessionFilteredApplied)
+                HistoryTab.TRANSACTIONS -> TransactionsHistorySection(uiState.filteredTransactions, uiState.areTransactionFiltersApplied)
             }
         }
     }

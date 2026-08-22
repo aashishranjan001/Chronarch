@@ -18,13 +18,19 @@ import com.aashish.writetime.history.presentation.model.TransactionHistoryItem
 @Composable
 fun TransactionsHistorySection(
     transactionList: List<TransactionHistoryItem>,
+    areFiltersApplied: Boolean,
     modifier: Modifier = Modifier
 ) {
     if (transactionList.isEmpty()) {
         NoDataFoundContent(
-            thumbnailResId = R.drawable.no_transactions_found,
+            thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_transactions_found else R.drawable.no_transactions_found,
             title = stringResource(R.string.no_transaction_history_found_title),
-            message = stringResource(R.string.no_transaction_history_found_description)
+            message = stringResource(
+                if (areFiltersApplied)
+                    R.string.no_filtered_transaction_history_found_description
+                else
+                    R.string.no_transaction_history_found_description
+            )
         )
     } else {
         val spacing = LocalSpacing.current
@@ -50,6 +56,6 @@ fun TransactionsHistorySection(
 @Composable
 private fun TransactionsHistorySectionPreview() {
     WriteTimeTheme {
-        TransactionsHistorySection(emptyList())
+        TransactionsHistorySection(emptyList(), false)
     }
 }
