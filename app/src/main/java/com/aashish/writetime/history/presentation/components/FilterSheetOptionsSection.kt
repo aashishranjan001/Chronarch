@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,8 +26,9 @@ import com.aashish.writetime.history.presentation.model.FilterOptionState
 
 @Composable
 fun FilterSheetOptionsSection(
-    options: List<FilterOptionState.SelectionFilterOptionState>,
-    onOptionClick: (FilterOption, Boolean) -> Unit,
+    options: List<FilterOptionState>,
+    onFilterOptionClicked: (FilterOption, Boolean) -> Unit,
+    onDateFilterOptionSelected: (FilterOption) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -43,66 +45,71 @@ fun FilterSheetOptionsSection(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    when(option.option) {
-                        FilterOption.SessionFilter.CompletionStatus.Cancelled -> {
-                            CheckboxFilterOption(
-                                R.string.option_failed_completion_status,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
+                    when(option) {
+                        is FilterOptionState.DateFilterOptionState.CustomRange -> {}
+                        is FilterOptionState.DateFilterOptionState.FixedRange -> {
+                            when(option.option) {
+                                FilterOption.SessionFilter.Date.ThisMonth, FilterOption.TransactionFilter.Date.ThisMonth -> {
+                                    RadioFilterOption(R.string.option_date_this_month,
+                                        selected = option.isSelected,
+                                        onClick = { onDateFilterOptionSelected(option.option) }
+                                    )
+                                }
+                                FilterOption.SessionFilter.Date.ThisWeek, FilterOption.TransactionFilter.Date.ThisWeek -> {
+                                    RadioFilterOption(R.string.option_date_this_week,
+                                        selected = option.isSelected,
+                                        onClick = { onDateFilterOptionSelected(option.option) }
+                                    )
+                                }
+                                else -> {}
+                            }
                         }
-                        FilterOption.SessionFilter.CompletionStatus.Finished -> {
-                            CheckboxFilterOption(
-                                R.string.option_successful_completion_status,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.SessionFilter.DurationType.LongType -> {
-                            CheckboxFilterOption(
-                                R.string.option_long_duration,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.SessionFilter.DurationType.ShortType -> {
-                            CheckboxFilterOption(
-                                R.string.option_short_duration,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.TransactionFilter.Type.TaskCredit -> {
-                            CheckboxFilterOption(
-                                R.string.option_task_credit_earning,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.TransactionFilter.Type.Redemption -> {
-                            CheckboxFilterOption(
-                                R.string.option_redemption_debit,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.TransactionFilter.Type.Bonus -> {
-                            CheckboxFilterOption(
-                                R.string.option_bonus_earning,
-                                option.isSelected,
-                                onCheckChange = { onOptionClick(option.option, it) })
-                        }
-                        FilterOption.TransactionFilter.Date.ThisMonth -> {
-
-                        }
-                        FilterOption.TransactionFilter.Date.ThisWeek -> {
-
-                        }
-                        FilterOption.SessionFilter.Date.Custom -> {
-
-                        }
-                        FilterOption.SessionFilter.Date.ThisMonth -> {
-
-                        }
-                        FilterOption.SessionFilter.Date.ThisWeek -> {
-
-                        }
-                        FilterOption.TransactionFilter.Date.Custom -> {
-
+                        is FilterOptionState.SelectionFilterOptionState -> {
+                            when(option.option) {
+                                FilterOption.SessionFilter.CompletionStatus.Cancelled -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_failed_completion_status,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.SessionFilter.CompletionStatus.Finished -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_successful_completion_status,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.SessionFilter.DurationType.LongType -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_long_duration,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.SessionFilter.DurationType.ShortType -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_short_duration,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.TransactionFilter.Type.TaskCredit -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_task_credit_earning,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.TransactionFilter.Type.Redemption -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_redemption_debit,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                FilterOption.TransactionFilter.Type.Bonus -> {
+                                    CheckboxFilterOption(
+                                        R.string.option_bonus_earning,
+                                        option.isSelected,
+                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                }
+                                else -> {}
+                            }
                         }
                     }
                 }
@@ -112,16 +119,36 @@ fun FilterSheetOptionsSection(
 }
 
 @Composable
+fun RadioFilterOption(
+    @StringRes labelRes: Int,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier) {
+
+    RadioButton(
+        modifier = modifier,
+        selected = selected,
+        onClick = onClick
+    )
+    Spacer(modifier = Modifier.width(LocalSpacing.current.small))
+    Text(
+        text = stringResource(labelRes),
+        style = MaterialTheme.typography.bodyMedium
+    )
+}
+
+
+@Composable
 fun CheckboxFilterOption(
     @StringRes labelRes: Int,
     isChecked: Boolean,
-    onCheckChange: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier) {
 
     Checkbox(
         modifier = modifier,
         checked = isChecked,
-        onCheckedChange = onCheckChange
+        onCheckedChange = { onCheckedChange(it) }
     )
     Spacer(modifier = Modifier.width(LocalSpacing.current.small))
     Text(
@@ -139,7 +166,8 @@ private fun FilterSheetOptionsSectionPreview() {
                 FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.CompletionStatus.Finished, true),
                 FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.DurationType.LongType, false)
             ),
-            onOptionClick = { _, _ -> },
+            onFilterOptionClicked = {_, _ -> },
+            onDateFilterOptionSelected = {}
         )
     }
 }

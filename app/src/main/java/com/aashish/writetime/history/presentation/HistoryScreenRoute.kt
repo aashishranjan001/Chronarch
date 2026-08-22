@@ -103,7 +103,19 @@ fun HistoryScreen(
                 }
 
                 FilterCategory.SessionFilter.Date -> {
-                    emptyList()
+                    val appliedDateFilter = draftSessionFilters.appliedDateFilter
+                    listOf(
+                        FilterOptionState.DateFilterOptionState.FixedRange(
+                            FilterOption.SessionFilter.Date.ThisWeek, appliedDateFilter is FilterOption.SessionFilter.Date.ThisWeek
+                        ),
+                        FilterOptionState.DateFilterOptionState.FixedRange(
+                            FilterOption.SessionFilter.Date.ThisMonth, appliedDateFilter is FilterOption.SessionFilter.Date.ThisMonth
+                        ),
+                        FilterOptionState.DateFilterOptionState.CustomRange(
+                            (appliedDateFilter as? FilterOption.SessionFilter.Date.CustomRange)?.startDate,
+                            (appliedDateFilter as? FilterOption.SessionFilter.Date.CustomRange)?.endDate
+                        )
+                    )
                 }
 
                 FilterCategory.SessionFilter.DurationType -> {
@@ -135,6 +147,11 @@ fun HistoryScreen(
                         isSelected
                     )
                 )
+            },
+            onDateFilterOptionSelected = { option ->
+                onEvent(
+                    HistoryEvent.DateFilterOptionSelected(option)
+                )
             }
         )
     }
@@ -153,7 +170,21 @@ fun HistoryScreen(
                 }
             },
             options = when (draftTransactionsFilters.selectedFilterCategory) {
-                FilterCategory.TransactionFilter.Date -> emptyList()
+                FilterCategory.TransactionFilter.Date -> {
+                    val appliedDateFilter = draftTransactionsFilters.appliedDateFilter
+                    listOf(
+                        FilterOptionState.DateFilterOptionState.FixedRange(
+                            FilterOption.TransactionFilter.Date.ThisWeek, appliedDateFilter is FilterOption.TransactionFilter.Date.ThisWeek
+                        ),
+                        FilterOptionState.DateFilterOptionState.FixedRange(
+                            FilterOption.TransactionFilter.Date.ThisMonth, appliedDateFilter is FilterOption.TransactionFilter.Date.ThisMonth
+                        ),
+                        FilterOptionState.DateFilterOptionState.CustomRange(
+                            (appliedDateFilter as? FilterOption.TransactionFilter.Date.CustomRange)?.startDate,
+                            (appliedDateFilter as? FilterOption.TransactionFilter.Date.CustomRange)?.endDate
+                        )
+                    )
+                }
                 FilterCategory.TransactionFilter.Type -> {
                     FilterOption.TransactionFilter.Type.entries.map {
                         FilterOptionState.SelectionFilterOptionState(
@@ -183,6 +214,11 @@ fun HistoryScreen(
                         isSelected
                     )
                 )
+            },
+            onDateFilterOptionSelected = { option ->
+               onEvent(
+                   HistoryEvent.DateFilterOptionSelected(option)
+               )
             }
         )
     }

@@ -3,6 +3,7 @@ package com.aashish.writetime.history.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aashish.writetime.common.ui.isEmptyOrContains
+import com.aashish.writetime.common.ui.toLocalDate
 import com.aashish.writetime.common.ui.updateSet
 import com.aashish.writetime.history.domain.usecase.GetHistoryUseCase
 import com.aashish.writetime.history.presentation.HistoryUiEffect.*
@@ -21,6 +22,10 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,16 +61,62 @@ class HistoryViewModel @Inject constructor(
                                     && _uiState.value.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
                                 it.toDurationFilterLabel()
                             )
+                                    && meetsSessionDateFilterConstraint(_uiState.value.appliedSessionsFilters.appliedDateFilter, it.startTime)
                         },
                         filteredTransactions = allTransactions.filter {
                             _uiState.value.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
                                 it.toTransactionTypeFilterLabel()
                             )
+                                    && meetsTransactionsDateFilterConstraint(_uiState.value.appliedTransactionsFilters.appliedDateFilter, it.timestamp)
                         }
                     )
                 }
             }
         }
+    }
+
+    private fun meetsSessionDateFilterConstraint(
+        dateFilter: FilterOption.SessionFilter.Date?,
+        timestamp: Instant
+    ): Boolean {
+        if (dateFilter == null) return true
+
+        val today = LocalDate.now()
+
+        val (startDate, endDate) = when(dateFilter) {
+            is FilterOption.SessionFilter.Date.CustomRange -> {
+                dateFilter.startDate to dateFilter.endDate
+            }
+            FilterOption.SessionFilter.Date.ThisMonth -> {
+                today.withDayOfMonth(1) to today
+            }
+            FilterOption.SessionFilter.Date.ThisWeek -> {
+                today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)) to today
+            }
+        }
+        return timestamp.toLocalDate() in startDate..endDate
+    }
+
+    private fun meetsTransactionsDateFilterConstraint(
+        dateFilter: FilterOption.TransactionFilter.Date?,
+        timestamp: Instant
+    ): Boolean {
+        if (dateFilter == null) return true
+
+        val today = LocalDate.now()
+
+        val (startDate, endDate) = when(dateFilter) {
+            is FilterOption.TransactionFilter.Date.CustomRange -> {
+                dateFilter.startDate to dateFilter.endDate
+            }
+            FilterOption.TransactionFilter.Date.ThisMonth -> {
+                today.withDayOfMonth(1) to today
+            }
+            FilterOption.TransactionFilter.Date.ThisWeek -> {
+                today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)) to today
+            }
+        }
+        return timestamp.toLocalDate() in startDate..endDate
     }
 
     fun onEvent(event: HistoryEvent) {
@@ -126,6 +177,10 @@ class HistoryViewModel @Inject constructor(
                 handleFilterOptionSelection(event.option, event.isSelected)
             }
 
+            is HistoryEvent.DateFilterOptionSelected -> {
+                handleDateOptionSelected(event.option)
+            }
+
             HistoryEvent.DismissTransactionsFilterMenu -> {
                 _uiState.update {
                     it.copy(
@@ -145,6 +200,63 @@ class HistoryViewModel @Inject constructor(
             is HistoryEvent.FilterCategorySelected -> {
                 handleFilterMenuCategoryClick(event.category)
             }
+
+            is HistoryEvent.SessionsDaterFilterApplied -> {
+                val startDate = toLocalDate(event.to)
+                val endDate = toLocalDate(event.to)
+                _uiState.update {
+                    it.copy(
+                        showDatePickerDialog = false,
+                        appliedSessionsFilters = it.appliedSessionsFilters.copy(
+                            appliedDateFilter = FilterOption.SessionFilter.Date.CustomRange(startDate, endDate)
+                        )
+                    )
+                }
+            }
+            is HistoryEvent.TransactionsDaterFilterApplied -> {
+                val startDate = toLocalDate(event.to)
+                val endDate = toLocalDate(event.to)
+                _uiState.update {
+                    it.copy(
+                        showDatePickerDialog = false,
+                        appliedTransactionsFilters = it.appliedTransactionsFilters.copy(
+                            appliedDateFilter = FilterOption.TransactionFilter.Date.CustomRange(startDate, endDate)
+                        )
+                    )
+                }
+            }
+            is HistoryEvent.DateRangePickerDismissed -> {
+                _uiState.update {
+                    it.copy(
+                        showDatePickerDialog = false
+                    )
+                }
+            }
+        }
+    }
+
+    private fun handleDateOptionSelected(filterOption: FilterOption) {
+        when(filterOption) {
+            is FilterOption.SessionFilter.Date.ThisWeek, is FilterOption.SessionFilter.Date.ThisMonth  -> {
+                _uiState.update {
+                    it.copy(
+                        draftSessionsFilters = it.draftSessionsFilters?.copy(
+                            appliedDateFilter = filterOption
+                        )
+                    )
+                }
+            }
+
+            is FilterOption.TransactionFilter.Date.ThisWeek, is FilterOption.TransactionFilter.Date.ThisMonth -> {
+                _uiState.update {
+                    it.copy(
+                        draftTransactionsFilters = it.draftTransactionsFilters?.copy(
+                            appliedDateFilter = filterOption
+                        )
+                    )
+                }
+            }
+            else -> {}
         }
     }
 
@@ -154,6 +266,7 @@ class HistoryViewModel @Inject constructor(
                 state.copy(
                     filteredTransactions = state.allTransactions.filter {
                         draftTransactionFilters.appliedTypeFilters.isEmptyOrContains(it.toTransactionTypeFilterLabel())
+                                && meetsTransactionsDateFilterConstraint(draftTransactionFilters.appliedDateFilter, it.timestamp)
                     },
                     appliedTransactionsFilters = draftTransactionFilters,
                     draftTransactionsFilters = null
@@ -167,12 +280,9 @@ class HistoryViewModel @Inject constructor(
             _uiState.update { state ->
                 state.copy(
                     filteredSessions = state.allSessions.filter {
-                        draftSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
-                            it.toCompletionStatusFilterLabel()
-                        )
-                                && draftSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
-                            it.toDurationFilterLabel()
-                        )
+                        draftSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(it.toCompletionStatusFilterLabel())
+                                && draftSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(it.toDurationFilterLabel())
+                                && meetsSessionDateFilterConstraint(draftSessionsFilters.appliedDateFilter, it.startTime)
                     },
                     appliedSessionsFilters = draftSessionsFilters,
                     draftSessionsFilters = null,
@@ -218,18 +328,6 @@ class HistoryViewModel @Inject constructor(
                 }
             }
 
-            is FilterOption.SessionFilter.Date.Custom -> {
-
-            }
-
-            is FilterOption.SessionFilter.Date.ThisMonth -> {
-
-            }
-
-            is FilterOption.SessionFilter.Date.ThisWeek -> {
-
-            }
-
             is FilterOption.SessionFilter.DurationType.LongType, is FilterOption.SessionFilter.DurationType.ShortType -> {
                 _uiState.update {
                     it.copy(
@@ -243,16 +341,12 @@ class HistoryViewModel @Inject constructor(
                 }
             }
 
-            is FilterOption.TransactionFilter.Date.Custom -> {
-
-            }
-
-            is FilterOption.TransactionFilter.Date.ThisMonth -> {
-
-            }
-
-            is FilterOption.TransactionFilter.Date.ThisWeek -> {
-
+            is FilterOption.SessionFilter.Date.CustomRange, is FilterOption.TransactionFilter.Date.CustomRange -> {
+                _uiState.update {
+                    it.copy(
+                        showDatePickerDialog = true
+                    )
+                }
             }
 
             is FilterOption.TransactionFilter.Type.TaskCredit, is FilterOption.TransactionFilter.Type.Redemption, is FilterOption.TransactionFilter.Type.Bonus -> {
@@ -267,8 +361,7 @@ class HistoryViewModel @Inject constructor(
                     )
                 }
             }
+            else -> {}
         }
     }
-
-
 }

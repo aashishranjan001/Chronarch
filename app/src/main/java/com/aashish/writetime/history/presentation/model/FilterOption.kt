@@ -1,5 +1,7 @@
 package com.aashish.writetime.history.presentation.model
 
+import java.time.LocalDate
+
 sealed class FilterOption {
     sealed class SessionFilter: FilterOption() {
         sealed class DurationType: SessionFilter() {
@@ -27,13 +29,7 @@ sealed class FilterOption {
         sealed class Date: SessionFilter() {
             data object ThisWeek: Date()
             data object ThisMonth: Date()
-            data object Custom: Date()
-
-            companion object {
-                val entries by lazy {
-                    listOf(ThisWeek, ThisMonth, Custom)
-                }
-            }
+            data class CustomRange(val startDate: LocalDate, val endDate: LocalDate): Date()
         }
     }
 
@@ -53,13 +49,7 @@ sealed class FilterOption {
         sealed class Date: TransactionFilter() {
             data object ThisWeek: Date()
             data object ThisMonth: Date()
-            data object Custom: Date()
-
-            companion object {
-                val entries by lazy {
-                    listOf(ThisWeek, ThisMonth, Custom)
-                }
-            }
+            data class CustomRange(val startDate: LocalDate, val endDate: LocalDate):Date()
         }
     }
 }

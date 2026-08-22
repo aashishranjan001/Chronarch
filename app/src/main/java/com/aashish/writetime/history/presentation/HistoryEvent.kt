@@ -8,6 +8,7 @@ sealed class HistoryEvent {
 
     data class FilterCategorySelected(val category: FilterCategory): HistoryEvent()
     data class FilterOptionSelected(val option: FilterOption, val isSelected: Boolean): HistoryEvent()
+    data class DateFilterOptionSelected(val option: FilterOption): HistoryEvent()
     data object ClearTransactionsFilter: HistoryEvent()
     data object ClearSessionsFilter: HistoryEvent()
     data object ApplySessionsFilter: HistoryEvent()
@@ -17,6 +18,10 @@ sealed class HistoryEvent {
 
     data object SessionsTabFilterMenuClick: HistoryEvent()
     data object TransactionsTabFilterMenuClick: HistoryEvent()
+
+    data class SessionsDaterFilterApplied(val from: Long, val to: Long): HistoryEvent()
+    data class TransactionsDaterFilterApplied(val from: Long, val to: Long): HistoryEvent()
+    data object DateRangePickerDismissed: HistoryEvent()
 
 }
 

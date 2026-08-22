@@ -39,13 +39,14 @@ import kotlin.to
 @Composable
 fun FilterBottomSheet(
     categories: Map<FilterCategory, Boolean>,
-    options: List<FilterOptionState.SelectionFilterOptionState>,
+    options: List<FilterOptionState>,
     selectedCategory: FilterCategory?,
     onDismiss: () -> Unit,
     onClearFilter: () -> Unit,
     onApplyFilter: () -> Unit,
     onFilterCategoryClick: (FilterCategory) -> Unit,
     onFilterOptionClick: (FilterOption, Boolean) -> Unit,
+    onDateFilterOptionSelected: (FilterOption) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -103,7 +104,8 @@ fun FilterBottomSheet(
                     VerticalDivider(modifier = Modifier.width(2.dp))
                     FilterSheetOptionsSection(
                         options = options,
-                        onOptionClick = onFilterOptionClick,
+                        onFilterOptionClicked = onFilterOptionClick,
+                        onDateFilterOptionSelected = onDateFilterOptionSelected,
                         modifier = Modifier.weight(6f).fillMaxHeight()
 
                     )
@@ -169,7 +171,8 @@ private fun FilterBottomSheetPreview() {
             onClearFilter = {},
             onApplyFilter = {},
             onFilterOptionClick = { _, _ ->},
-            onFilterCategoryClick = {}
+            onFilterCategoryClick = {},
+            onDateFilterOptionSelected = {}
         )
     }
 }

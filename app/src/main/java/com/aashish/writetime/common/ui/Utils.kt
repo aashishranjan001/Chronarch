@@ -1,19 +1,28 @@
 package com.aashish.writetime.common.ui
 
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+fun Instant.toLocalDate(): LocalDate {
+    return this.atZone(ZoneId.systemDefault()).toLocalDate()
+}
+
+fun toLocalDate(epochMillis: Long): LocalDate {
+    return Instant.ofEpochMilli(epochMillis).toLocalDate()
+}
+
 fun formatDurationHhMmSs(seconds: Long): String {
-    val hh = "%02d".format(seconds/3600)
-    val mm = "%02d".format((seconds % 3600)/60)
+    val hh = "%02d".format(seconds / 3600)
+    val mm = "%02d".format((seconds % 3600) / 60)
     val ss = "%02d".format(seconds % 60)
     return "$hh : $mm : $ss"
 }
 
 fun toHumanReadableDurationFormat(seconds: Long): String {
-    val hh = seconds/3600
-    val mm = (seconds % 3600)/60
+    val hh = seconds / 3600
+    val mm = (seconds % 3600) / 60
     val ss = seconds % 60
 
     return buildString {
@@ -46,7 +55,7 @@ fun <Type> Set<Type>.isEmptyOrContains(element: Type): Boolean {
 }
 
 fun <Type> Set<Type>.updateSet(element: Type, shouldKeep: Boolean): Set<Type> {
-    return if(shouldKeep) {
+    return if (shouldKeep) {
         this + element
     } else {
         this - element

@@ -1,12 +1,15 @@
 package com.aashish.writetime.history.presentation.model
 
+import java.time.LocalDate
+
 sealed class FilterOptionState {
     data class SelectionFilterOptionState(
         val option: FilterOption,
         val isSelected: Boolean
     ) : FilterOptionState()
 
-    data class DateFilterOptionState(
-        val option: FilterOption,
-    ) : FilterOptionState()
+    sealed class DateFilterOptionState: FilterOptionState() {
+        data class FixedRange(val option: FilterOption, val isSelected: Boolean): DateFilterOptionState()
+        data class CustomRange(val start: LocalDate?, val end: LocalDate?): DateFilterOptionState()
+    }
 }
