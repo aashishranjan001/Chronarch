@@ -50,6 +50,12 @@ fun Instant.toReadableLocalTime(): String {
         )
 }
 
+fun LocalDate.toHumanReadableDate(): String {
+    return format(
+        DateTimeFormatter.ofPattern("dd MMM yyyy")
+    )
+}
+
 fun <Type> Set<Type>.isEmptyOrContains(element: Type): Boolean {
     return this.isEmpty() || this.contains(element)
 }

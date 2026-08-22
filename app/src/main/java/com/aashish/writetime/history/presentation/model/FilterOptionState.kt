@@ -10,6 +10,6 @@ sealed class FilterOptionState {
 
     sealed class DateFilterOptionState: FilterOptionState() {
         data class FixedRange(val option: FilterOption, val isSelected: Boolean): DateFilterOptionState()
-        data class CustomRange(val start: LocalDate?, val end: LocalDate?): DateFilterOptionState()
+        data class CustomRange(val startDate: LocalDate?, val endDate: LocalDate?): DateFilterOptionState()
     }
 }

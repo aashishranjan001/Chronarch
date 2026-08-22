@@ -5,13 +5,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.components.FilterBottomSheet
 import com.aashish.writetime.history.presentation.components.HistoryScreenTopBar
@@ -148,9 +155,9 @@ fun HistoryScreen(
                     )
                 )
             },
-            onDateFilterOptionSelected = { option ->
+            onCustomDateRangeClicked = {
                 onEvent(
-                    HistoryEvent.DateFilterOptionSelected(option)
+                    HistoryEvent.SessionsCustomDateRangeOptionClick
                 )
             }
         )
@@ -215,12 +222,42 @@ fun HistoryScreen(
                     )
                 )
             },
-            onDateFilterOptionSelected = { option ->
+            onCustomDateRangeClicked = {
                onEvent(
-                   HistoryEvent.DateFilterOptionSelected(option)
+                   HistoryEvent.TransactionsCustomDateRangeOptionClick
                )
             }
         )
+    }
+    val dateRangePickerState = rememberDateRangePickerState()
+    if (uiState.showDatePickerDialog) {
+        DatePickerDialog(
+            onDismissRequest = { onEvent(HistoryEvent.DateRangePickerDismissed) },
+            confirmButton = {
+                TextButton(onClick = {
+                    val startDate = dateRangePickerState.selectedStartDateMillis
+                    val endDate = dateRangePickerState.selectedEndDateMillis
+                    if (startDate != null && endDate != null) {
+                        when (uiState.tabs[pagerState.currentPage]) {
+                            HistoryTab.SESSIONS -> { onEvent(HistoryEvent.SessionsDaterFilterApplied(startDate, endDate))}
+                            HistoryTab.TRANSACTIONS -> { onEvent(HistoryEvent.TransactionsDaterFilterApplied(startDate, endDate))}
+                        }
+                    }
+                }) {
+                    Text(text = stringResource(R.string.confirm))
+                }
+
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { onEvent(HistoryEvent.DateRangePickerDismissed) }
+                ) {
+                    Text(text = stringResource(R.string.cancel))
+                }
+            }
+        ) {
+            DateRangePicker(dateRangePickerState)
+        }
     }
 }
 

@@ -46,7 +46,7 @@ fun FilterBottomSheet(
     onApplyFilter: () -> Unit,
     onFilterCategoryClick: (FilterCategory) -> Unit,
     onFilterOptionClick: (FilterOption, Boolean) -> Unit,
-    onDateFilterOptionSelected: (FilterOption) -> Unit,
+    onCustomDateRangeClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -105,7 +105,7 @@ fun FilterBottomSheet(
                     FilterSheetOptionsSection(
                         options = options,
                         onFilterOptionClicked = onFilterOptionClick,
-                        onDateFilterOptionSelected = onDateFilterOptionSelected,
+                        onCustomDateRangeClicked = onCustomDateRangeClicked,
                         modifier = Modifier.weight(6f).fillMaxHeight()
 
                     )
@@ -172,7 +172,7 @@ private fun FilterBottomSheetPreview() {
             onApplyFilter = {},
             onFilterOptionClick = { _, _ ->},
             onFilterCategoryClick = {},
-            onDateFilterOptionSelected = {}
+            onCustomDateRangeClicked = {}
         )
     }
 }
