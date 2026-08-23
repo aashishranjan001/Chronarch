@@ -130,15 +130,28 @@ fun HomeScreen(
             }
         }
     }
-    if (uiState.showConfirmationDialog) {
-        ConfirmationDialog(
-            title = stringResource(R.string.confirm_stop_timer_title),
-            message = stringResource(R.string.confirm_stop_timer_message),
-            onPositiveClick = { onEvent(HomeEvent.CancelTimerConfirmed) },
-            onNegativeClick = { onEvent(HomeEvent.CancelTimerDismissed) },
-            positiveCtaText = stringResource(R.string.action_yes),
-            negativeCtaText = stringResource(R.string.action_no)
-        )
+
+    when(uiState.dialog) {
+        HomeDialog.TimerCancelConfirmation -> {
+            ConfirmationDialog(
+                title = stringResource(R.string.confirm_stop_timer_title),
+                message = stringResource(R.string.confirm_stop_timer_message),
+                onConfirmClick = { onEvent(HomeEvent.CancelTimerConfirmed) },
+                onDismissRequest = { onEvent(HomeEvent.CancelTimerDismissed) },
+                confirmText = stringResource(R.string.confirm),
+                dismissText = stringResource(R.string.cancel)
+            )
+        }
+        is HomeDialog.TimerFinishedInformation -> {
+            ConfirmationDialog(
+                title = stringResource(R.string.timer_ended),
+                message = stringResource(R.string.session_completed_message, uiState.dialog.timerDurationMins),
+                onConfirmClick = { onEvent(HomeEvent.TimerCompletedDialogDismiss) },
+                onDismissRequest = { onEvent(HomeEvent.TimerCompletedDialogDismiss) },
+                confirmText = stringResource(R.string.awesome)
+            )
+        }
+        null -> {}
     }
 }
 

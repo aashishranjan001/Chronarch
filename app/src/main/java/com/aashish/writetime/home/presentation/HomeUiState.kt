@@ -14,8 +14,14 @@ data class HomeUiState(
     val activeTimer: ActiveTimer? = null,
     val selectedNewTimerDurationType: DurationType = DurationType.ShortDuration,
     val streakProgressFraction: Double = 0.0, // todo: revise logic for streak computation and remove this field
-    val showConfirmationDialog: Boolean = false
+    val dialog: HomeDialog? = null,
+    val showTimerCompletedDial: Boolean = false,
 )
+
+sealed class HomeDialog {
+    data object TimerCancelConfirmation: HomeDialog()
+    data class TimerFinishedInformation(val timerDurationMins: Long): HomeDialog()
+}
 
 data class ActiveTimer(
     val sessionId: Long,

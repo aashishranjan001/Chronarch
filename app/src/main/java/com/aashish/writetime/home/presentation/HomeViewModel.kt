@@ -78,20 +78,23 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-                sessionsOverview.activeSession?.idealCompletionTime?.let { endTime ->
-                    while (Instant.now() <= endTime) {
+                sessionsOverview.activeSession?.let { activeSession ->
+                    while (Instant.now() <= activeSession.idealCompletionTime) {
                         _uiState.update {
                             it.copy(
                                 activeTimer = it.activeTimer?.copy(
-                                    durationRemainingInSeconds = Duration.between(Instant.now(), endTime).seconds
+                                    durationRemainingInSeconds = Duration.between(Instant.now(), activeSession.idealCompletionTime).seconds
                                 )
                             )
                         }
                         delay(1.seconds)
                     }
+                    _uiState.update {
+                        it.copy(dialog = HomeDialog.TimerFinishedInformation(activeSession.durationType.duration.inWholeMinutes))
+                    }
                     endTimerSessionUseCase(
                         sessionId = sessionsOverview.activeSession.id,
-                        idealCompletionTime = Instant.now(), // todo: change to sessionsOverview.activeSession.idealCompletionTime
+                        idealCompletionTime = Instant.now(), // todo: change to activeSession.idealCompletionTime
                         durationType = sessionsOverview.activeSession.durationType,
                         streakProgressFraction = _uiState.value.streakProgressFraction
                     )
@@ -104,7 +107,7 @@ class HomeViewModel @Inject constructor(
         when(event) {
             HomeEvent.CancelTimerClick -> {
                 _uiState.update {
-                    it.copy(showConfirmationDialog = true)
+                    it.copy(dialog = HomeDialog.TimerCancelConfirmation)
                 }
             }
             HomeEvent.StartTimer -> {
@@ -126,7 +129,7 @@ class HomeViewModel @Inject constructor(
 
             HomeEvent.CancelTimerConfirmed -> {
                 _uiState.update {
-                    it.copy(showConfirmationDialog = false)
+                    it.copy(dialog = null)
                 }
                 viewModelScope.launch {
                     _uiState.value.activeTimer?.let {
@@ -141,9 +144,9 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
-            HomeEvent.CancelTimerDismissed -> {
+            HomeEvent.TimerCompletedDialogDismiss, HomeEvent.CancelTimerDismissed -> {
                 _uiState.update {
-                    it.copy(showConfirmationDialog = false)
+                    it.copy(dialog = null)
                 }
             }
         }

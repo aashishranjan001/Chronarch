@@ -9,6 +9,8 @@ sealed class HomeEvent {
     data class SelectNewTimerDurationType(val durationType: DurationType): HomeEvent()
     data object CancelTimerConfirmed: HomeEvent()
     data object CancelTimerDismissed: HomeEvent()
+
+    data object TimerCompletedDialogDismiss: HomeEvent()
 }
 
 sealed class HomeUiEffect {

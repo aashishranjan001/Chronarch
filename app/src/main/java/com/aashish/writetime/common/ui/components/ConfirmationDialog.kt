@@ -13,11 +13,11 @@ fun ConfirmationDialog(
     title: String,
     message: String? = null,
     icon: ImageVector? = null,
-    positiveCtaText: String,
-    negativeCtaText: String,
-    onDismissRequest: (() -> Unit)? = null,
-    onPositiveClick: () -> Unit,
-    onNegativeClick: () -> Unit
+    confirmText: String,
+    dismissText: String? = null,
+    onDismissRequest: () -> Unit,
+    onConfirmClick: () -> Unit,
+    onDismissClick: (() -> Unit)? = null
 ) {
     AlertDialog(
         title = {
@@ -35,19 +35,21 @@ fun ConfirmationDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = onPositiveClick
+                onClick = onConfirmClick
             ) {
-                Text(text = positiveCtaText)
+                Text(text = confirmText)
             }
         },
         dismissButton = {
-            TextButton(
-                onClick = onNegativeClick
-            ) {
-                Text(text = negativeCtaText)
+            dismissText?.let {
+                TextButton(
+                    onClick = onDismissClick ?: onDismissRequest
+                ) {
+                    Text(text = it)
+                }
             }
         },
-        onDismissRequest = onDismissRequest ?: onNegativeClick
+        onDismissRequest = onDismissRequest
     )
 }
 
@@ -57,10 +59,10 @@ private fun ConfirmationDialogPreview() {
     ConfirmationDialog(
         title = "Are you sure you want to live?",
         message = "I don't think there is any need for that",
-        positiveCtaText = "Yes",
-        negativeCtaText = "No",
-        onPositiveClick = {},
-        onNegativeClick = {},
+        confirmText = "Yes",
+        dismissText = "No",
+        onConfirmClick = {},
+        onDismissClick = {},
         onDismissRequest = {}
     )
 }
