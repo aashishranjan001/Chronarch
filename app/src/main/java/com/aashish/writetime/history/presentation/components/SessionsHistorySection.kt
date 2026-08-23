@@ -14,7 +14,7 @@ import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.calculatePercent
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toHumanReadableDurationFormat
-import com.aashish.writetime.common.ui.toReadableLocalTime
+import com.aashish.writetime.common.ui.toReadableLocalDateTime
 import com.aashish.writetime.history.presentation.model.SessionHistoryItem
 
 @Composable
@@ -45,7 +45,7 @@ fun SessionsHistorySection(
                 SessionHistoryItemContent(
                     targetDuration = toHumanReadableDurationFormat(session.durationType.duration.inWholeSeconds),
                     runDuration = toHumanReadableDurationFormat(session.runDuration.inWholeSeconds),
-                    startTime = session.startTime.toReadableLocalTime(),
+                    startTime = session.startTime.toReadableLocalDateTime(),
                     percentageCompleted = calculatePercent(
                         session.runDuration.inWholeSeconds.toDouble(),
                         session.durationType.duration.inWholeSeconds.toDouble()

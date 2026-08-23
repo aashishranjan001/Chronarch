@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
-import com.aashish.writetime.common.ui.toReadableLocalTime
+import com.aashish.writetime.common.ui.toReadableLocalDateTime
 import com.aashish.writetime.history.presentation.model.TransactionHistoryItem
 
 @Composable
@@ -43,7 +43,7 @@ fun TransactionsHistorySection(
             items(items = transactionList, key = { it.id }) { transaction ->
                 TransactionHistoryItemContent(
                     message = transaction.message,
-                    startTime = transaction.timestamp.toReadableLocalTime(),
+                    startTime = transaction.timestamp.toReadableLocalDateTime(),
                     amount = transaction.value,
                     transactionType = transaction.transactionType
                 )

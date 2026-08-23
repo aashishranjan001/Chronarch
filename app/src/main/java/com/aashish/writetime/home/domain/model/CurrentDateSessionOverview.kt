@@ -1,6 +1,7 @@
 package com.aashish.writetime.home.domain.model
 
 import com.aashish.writetime.common.domain.model.DurationType
+import java.time.Instant
 
 data class SessionsOverview(
     val successfulCompletionCount: Int,
@@ -16,5 +17,5 @@ data class SessionsOverview(
 data class ActiveSessionInfo(
     val id: Long,
     val durationType: DurationType,
-    val durationRemainingSeconds: Long
+    val idealCompletionTime: Instant,
 )

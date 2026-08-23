@@ -28,9 +28,7 @@ class GetCurrentDaySessionsOverview @Inject constructor(
                     ActiveSessionInfo(
                         id = session.id,
                         durationType = session.durationType,
-                        durationRemainingSeconds = Duration.between(
-                            Instant.now(), session.idealCompletionTime
-                        ).seconds,
+                        idealCompletionTime = session.idealCompletionTime
                     )
                 },
                 currentStreakProgressionFraction = sessions.maxByOrNull { it.startTime }?.streakProgressFraction ?: 0.0

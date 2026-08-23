@@ -29,6 +29,7 @@ import com.aashish.writetime.home.presentation.components.SessionsCard
 import com.aashish.writetime.home.presentation.components.SingleValueTile
 import com.aashish.writetime.home.presentation.components.ActiveTimerSection
 import com.aashish.writetime.home.presentation.components.NewTimerSection
+import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -108,7 +109,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier.animateContentSize()
             ) {
-                if (uiState.activeTimer != null && uiState.activeTimer.durationRemainingInSeconds > 0) {
+                if (uiState.activeTimer != null && uiState.activeTimer.durationRemainingInSeconds >= 0) {
                     ActiveTimerSection(
                         onCancelTimerClick = { onEvent(HomeEvent.CancelTimerClick) },
                         uiState.activeTimer
@@ -145,6 +146,6 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     WriteTimeTheme {
-        HomeScreen(HomeUiState(activeTimer = ActiveTimer(0, 25, 200.seconds)), {})
+        HomeScreen(HomeUiState(activeTimer = ActiveTimer(0, 25, 200.seconds, Instant.now())), {})
     }
 }

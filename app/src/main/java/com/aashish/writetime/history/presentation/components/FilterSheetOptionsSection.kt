@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
-import com.aashish.writetime.common.ui.toHumanReadableDate
+import com.aashish.writetime.common.ui.toReadableLocalDate
 import com.aashish.writetime.history.presentation.model.FilterOption
 import com.aashish.writetime.history.presentation.model.FilterOptionItem
 
@@ -73,8 +73,8 @@ fun FilterSheetOptionsSection(
                                         Text(
                                             stringResource(
                                                 R.string.date_x_from_y,
-                                                option.startDate.toHumanReadableDate(),
-                                                option.endDate.toHumanReadableDate()
+                                                option.startDate.toReadableLocalDate(),
+                                                option.endDate.toReadableLocalDate()
                                             )
                                         )
                                     } else {

@@ -1,6 +1,7 @@
 package com.aashish.writetime.home.presentation
 
 import com.aashish.writetime.common.domain.model.DurationType
+import java.time.Instant
 import kotlin.time.Duration
 
 data class HomeUiState(
@@ -19,5 +20,6 @@ data class HomeUiState(
 data class ActiveTimer(
     val sessionId: Long,
     val durationRemainingInSeconds: Long,
-    val duration: Duration
+    val duration: Duration,
+    val idealEndTime: Instant
 )

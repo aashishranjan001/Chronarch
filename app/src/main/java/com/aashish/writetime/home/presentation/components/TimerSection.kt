@@ -21,6 +21,7 @@ import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.home.presentation.ActiveTimer
+import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -42,7 +43,8 @@ fun ActiveTimerSection(
     ) {
         Timer(
             secondsRemaining = activeTimer.durationRemainingInSeconds,
-            totalSeconds = activeTimer.duration.inWholeSeconds
+            totalSeconds = activeTimer.duration.inWholeSeconds,
+            endTime = activeTimer.idealEndTime
         )
         Spacer(modifier = Modifier.height(spacing.medium))
         OutlinedButton (
@@ -64,6 +66,6 @@ fun ActiveTimerSection(
 @Composable
 private fun ActiveTimerSectionPreview() {
     WriteTimeTheme {
-        ActiveTimerSection({}, ActiveTimer(2, 25, 200.seconds))
+        ActiveTimerSection({}, ActiveTimer(2, 25, 200.seconds, Instant.now()))
     }
 }

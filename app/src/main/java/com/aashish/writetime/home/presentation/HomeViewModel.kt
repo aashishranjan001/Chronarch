@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import javax.inject.Inject
@@ -36,7 +37,6 @@ class HomeViewModel @Inject constructor(
     val uiEffect = _uiEffect.receiveAsFlow()
 
     init {
-
         observeEarningsOverview()
         observerSessionsOverview()
     }
@@ -66,7 +66,11 @@ class HomeViewModel @Inject constructor(
                         activeTimer = sessionsOverview.activeSession?.let { activeSessionInfo ->
                             ActiveTimer(
                                 sessionId = activeSessionInfo.id,
-                                durationRemainingInSeconds = activeSessionInfo.durationRemainingSeconds,
+                                durationRemainingInSeconds = Duration.between(
+                                    Instant.now(),
+                                    activeSessionInfo.idealCompletionTime
+                                ).seconds,
+                                idealEndTime = activeSessionInfo.idealCompletionTime,
                                 duration = activeSessionInfo.durationType.duration
                             )
                         },
@@ -74,18 +78,20 @@ class HomeViewModel @Inject constructor(
                     )
                 }
 
-                sessionsOverview.activeSession?.durationRemainingSeconds?.let { remainingDuration ->
-                    for (i in remainingDuration downTo  0) {
+                sessionsOverview.activeSession?.idealCompletionTime?.let { endTime ->
+                    while (Instant.now() <= endTime) {
                         _uiState.update {
                             it.copy(
-                                activeTimer = it.activeTimer?.copy(durationRemainingInSeconds = i)
+                                activeTimer = it.activeTimer?.copy(
+                                    durationRemainingInSeconds = Duration.between(Instant.now(), endTime).seconds
+                                )
                             )
                         }
                         delay(1.seconds)
                     }
                     endTimerSessionUseCase(
                         sessionId = sessionsOverview.activeSession.id,
-                        idealCompletionTime = Instant.now(),
+                        idealCompletionTime = Instant.now(), // todo: change to sessionsOverview.activeSession.idealCompletionTime
                         durationType = sessionsOverview.activeSession.durationType,
                         streakProgressFraction = _uiState.value.streakProgressFraction
                     )
@@ -126,7 +132,7 @@ class HomeViewModel @Inject constructor(
                     _uiState.value.activeTimer?.let {
                         endTimerSessionUseCase(
                             sessionId = it.sessionId,
-                            idealCompletionTime = Instant.now().plusSeconds(it.durationRemainingInSeconds),
+                            idealCompletionTime = it.idealEndTime,
                             durationType = DurationType.fromDuration(it.duration.inWholeMilliseconds),
                             streakProgressFraction = _uiState.value.streakProgressFraction
 

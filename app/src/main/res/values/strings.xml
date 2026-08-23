@@ -115,4 +115,5 @@
     <string name="choose_date">Choose date</string>
     <string name="option_date_custom_range">Custom range</string>
     <string name="date_x_from_y">%1$s - %2$s</string>
+    <string name="end_time">End time</string>
 </resources>

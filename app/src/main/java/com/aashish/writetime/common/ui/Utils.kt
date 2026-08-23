@@ -43,14 +43,21 @@ fun Double.toMax1DecimalPlace(): String {
     }
 }
 
-fun Instant.toReadableLocalTime(): String {
+fun Instant.toReadableLocalDateTime(): String {
     return atZone(ZoneId.systemDefault())
         .format(
             DateTimeFormatter.ofPattern("dd MMM, h:mm a")
         )
 }
 
-fun LocalDate.toHumanReadableDate(): String {
+fun Instant.toReadableLocalTime(): String {
+    return atZone(ZoneId.systemDefault())
+        .format(
+            DateTimeFormatter.ofPattern("h:mm a")
+        )
+}
+
+fun LocalDate.toReadableLocalDate(): String {
     return format(
         DateTimeFormatter.ofPattern("dd MMM yyyy")
     )
