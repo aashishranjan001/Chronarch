@@ -28,12 +28,13 @@ import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toHumanReadableDate
 import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionType
+import com.aashish.writetime.history.presentation.model.FilterOptionItem
 
 @Composable
 fun FilterSheetOptionsSection(
-    options: List<FilterOptionType>,
-    onFilterOptionClicked: (FilterOption, Boolean) -> Unit,
+    options: List<FilterOptionItem>,
+    onFilterCheckboxOptionClicked: (FilterOptionItem.Checkbox, Boolean) -> Unit,
+    onFilterRadioOptionClicked: (FilterOptionItem.Radio) -> Unit,
     onCustomDateRangeClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -52,7 +53,7 @@ fun FilterSheetOptionsSection(
                 ) {
 
                     when(option) {
-                        is FilterOptionType.DateRange -> {
+                        is FilterOptionItem.DateRange -> {
                             Row(modifier = Modifier.clickable {
                                 onCustomDateRangeClicked()
                             }, verticalAlignment = Alignment.CenterVertically) {
@@ -83,7 +84,7 @@ fun FilterSheetOptionsSection(
                             }
 
                         }
-                        is FilterOptionType.Radio -> {
+                        is FilterOptionItem.Radio -> {
                             val labelRes = when (option.option) {
                                 FilterOption.Date.ThisMonth -> R.string.option_date_this_month
                                 FilterOption.Date.ThisWeek -> R.string.option_date_this_week
@@ -93,11 +94,11 @@ fun FilterSheetOptionsSection(
                                 RadioFilterOption(
                                     labelRes = it,
                                     selected = option.isSelected,
-                                    onClick = { onFilterOptionClicked(option.option, !option.isSelected) }
+                                    onClick = { onFilterRadioOptionClicked(option) }
                                 )
                             }
                         }
-                        is FilterOptionType.Checkbox -> {
+                        is FilterOptionItem.Checkbox -> {
                             val labelRes = when(option.option) {
                                 FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
                                 FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
@@ -113,7 +114,7 @@ fun FilterSheetOptionsSection(
                                 CheckboxFilterOption(
                                     labelRes = it,
                                     option.isSelected,
-                                    onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                                    onCheckedChange = { onFilterCheckboxOptionClicked(option, it) })
                             }
 
                         }
@@ -169,11 +170,12 @@ private fun FilterSheetOptionsSectionPreview() {
     WriteTimeTheme {
         FilterSheetOptionsSection(
             options = listOf(
-                FilterOptionType.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
-                FilterOptionType.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false),
-                FilterOptionType.DateRange(null, null)
+                FilterOptionItem.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionItem.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false),
+                FilterOptionItem.DateRange(null, null)
             ),
-            onFilterOptionClicked = {_, _ -> },
+            onFilterCheckboxOptionClicked = { _, _ -> },
+            onFilterRadioOptionClicked = {},
             onCustomDateRangeClicked = {}
         )
     }

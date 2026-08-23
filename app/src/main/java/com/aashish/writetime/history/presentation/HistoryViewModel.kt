@@ -10,10 +10,12 @@ import com.aashish.writetime.history.presentation.HistoryUiEffect.*
 import com.aashish.writetime.history.presentation.model.FilterCategory
 import com.aashish.writetime.history.presentation.model.FilterCategoryItemUiState
 import com.aashish.writetime.history.presentation.model.FilterOption
+import com.aashish.writetime.history.presentation.model.FilterOption.Date.*
+import com.aashish.writetime.history.presentation.model.FilterOptionItem
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
-import com.aashish.writetime.history.presentation.model.SessionsFilterUiState
-import com.aashish.writetime.history.presentation.model.TransactionsFilterUiState
+import com.aashish.writetime.history.presentation.model.SessionsFilters
+import com.aashish.writetime.history.presentation.model.TransactionsFilters
 import com.aashish.writetime.history.presentation.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -52,24 +54,24 @@ class HistoryViewModel @Inject constructor(
                 val allTransactions =
                     history.transactions.map { transaction -> transaction.toUiModel() }
                 val allSessions = history.sessions.map { session -> session.toUiModel() }
-                _uiState.update { uiState ->
-                    uiState.copy(
+                _uiState.update { state ->
+                    state.copy(
                         allTransactions = allTransactions,
                         allSessions = allSessions,
                         filteredSessions = allSessions.filter {
                             _uiState.value.appliedSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
                                 it.toCompletionStatusFilterLabel()
                             )
-                                    && _uiState.value.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
+                                    && state.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
                                 it.toDurationFilterLabel()
                             )
-                                    && meetsDateFilterConstraint(_uiState.value.appliedSessionsFilters.appliedDateFilter, it.startTime)
+                                    && meetsDateFilterConstraint(state.appliedSessionsFilters.appliedDateFilter, it.startTime)
                         },
                         filteredTransactions = allTransactions.filter {
-                            _uiState.value.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
+                            state.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
                                 it.toTransactionTypeFilterLabel()
                             )
-                                    && meetsDateFilterConstraint(_uiState.value.appliedTransactionsFilters.appliedDateFilter, it.timestamp)
+                                    && meetsDateFilterConstraint(state.appliedTransactionsFilters.appliedDateFilter, it.timestamp)
                         }
                     )
                 }
@@ -85,13 +87,13 @@ class HistoryViewModel @Inject constructor(
         val today = LocalDate.now()
 
         val (startDate, endDate) = when(dateFilter) {
-            is FilterOption.Date.CustomRange -> {
+            is CustomRange -> {
                 dateFilter.startDate to dateFilter.endDate
             }
-            FilterOption.Date.ThisMonth -> {
+            ThisMonth -> {
                 today.withDayOfMonth(1) to today
             }
-            FilterOption.Date.ThisWeek -> {
+            ThisWeek -> {
                 today.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY)) to today
             }
         }
@@ -123,11 +125,15 @@ class HistoryViewModel @Inject constructor(
                 _uiState.update { state ->
                     when (state.selectedTab) {
                         HistoryTab.SESSIONS -> state.copy(
-                            draftSessionsFilters = SessionsFilterUiState()
+                            draftSessionsFilters = SessionsFilters(),
+                            filterCategories = getInitialSessionFilterCategoriesList(SessionsFilters()),
+                            filterOptions = emptyList(),
                         )
 
                         HistoryTab.TRANSACTIONS -> state.copy(
-                            draftTransactionsFilters = TransactionsFilterUiState()
+                            draftTransactionsFilters = TransactionsFilters(),
+                            filterCategories = getInitialTransactionFilterCategoriesList(TransactionsFilters()),
+                            filterOptions = emptyList()
                         )
                     }
                 }
@@ -137,8 +143,11 @@ class HistoryViewModel @Inject constructor(
                 populateBottomSheetInitialData()
             }
 
-            is HistoryEvent.FilterOptionSelected -> {
-                handleFilterOptionSelection(event.option, event.isSelected)
+            is HistoryEvent.FilterCheckboxOptionSelected -> {
+                handleCheckboxFilterOptionSelection(event.optionItem, event.isSelected)
+            }
+            is HistoryEvent.FilterRadioOptionSelected -> {
+                handleRadioFilterOptionClick(event.optionItem)
             }
 
             is HistoryEvent.FilterCategorySelected -> {
@@ -148,8 +157,8 @@ class HistoryViewModel @Inject constructor(
             HistoryEvent.DismissFilterMenu -> {
                 _uiState.update {
                     when(it.selectedTab) {
-                        HistoryTab.SESSIONS -> it.copy(draftSessionsFilters = null)
-                        HistoryTab.TRANSACTIONS -> it.copy(draftTransactionsFilters = null)
+                        HistoryTab.SESSIONS -> it.copy(draftSessionsFilters = null, filterCategories = emptyList(), filterOptions = emptyList())
+                        HistoryTab.TRANSACTIONS -> it.copy(draftTransactionsFilters = null, filterCategories = emptyList(), filterOptions = emptyList())
                     }
                 }
             }
@@ -159,17 +168,35 @@ class HistoryViewModel @Inject constructor(
 
                 val startDate = toLocalDate(event.from)
                 val endDate = toLocalDate(event.to)
-                val newDateFilter = FilterOption.Date.CustomRange(startDate, endDate)
+                val newDateFilter = CustomRange(startDate, endDate)
+
+                val updatedFilterOptions = _uiState.value.filterOptions.map { optionType ->
+                    when (optionType) {
+                        is FilterOptionItem.DateRange -> { // in case of multiple filterOptions of type DateRange, compare the picker launching option id with optionType's id
+                            optionType.copy(startDate = startDate, endDate = endDate)
+                        }
+
+                        is FilterOptionItem.Radio -> {
+                            optionType.copy(isSelected = false)
+                        }
+
+                        else -> {
+                            optionType
+                        }
+                    }
+                }
 
                 _uiState.update {
                     when(it.selectedTab) {
                         HistoryTab.SESSIONS -> it.copy(
                             showDatePickerDialog = false,
-                            draftSessionsFilters = it.draftSessionsFilters?.copy(appliedDateFilter = newDateFilter)
+                            draftSessionsFilters = it.draftSessionsFilters?.copy(appliedDateFilter = newDateFilter),
+                            filterOptions = updatedFilterOptions
                         )
                         HistoryTab.TRANSACTIONS -> it.copy(
                             showDatePickerDialog = false,
-                            draftTransactionsFilters = it.draftTransactionsFilters?.copy(appliedDateFilter = newDateFilter)
+                            draftTransactionsFilters = it.draftTransactionsFilters?.copy(appliedDateFilter = newDateFilter),
+                            filterOptions = updatedFilterOptions
                         )
                     }
                 }
@@ -189,36 +216,44 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
+    private fun getInitialSessionFilterCategoriesList(sessionFilter: SessionsFilters): List<FilterCategoryItemUiState> {
+        return listOf(
+            FilterCategoryItemUiState(
+                category = FilterCategory.SessionFilter.CompletionStatus,
+                hasAnyFilterOptionSelected = sessionFilter.appliedCompletionStatusFilters.isNotEmpty(),
+            ),
+            FilterCategoryItemUiState(
+                category = FilterCategory.SessionFilter.DurationType,
+                hasAnyFilterOptionSelected = sessionFilter.appliedDurationTypeFilters.isNotEmpty(),
+            ),
+            FilterCategoryItemUiState(
+                category = FilterCategory.Date,
+                hasAnyFilterOptionSelected = (sessionFilter.appliedDateFilter != null)
+            )
+        )
+    }
+
+    private fun getInitialTransactionFilterCategoriesList(transactionFilters: TransactionsFilters): List<FilterCategoryItemUiState> {
+        return listOf(
+            FilterCategoryItemUiState(
+                category = FilterCategory.TransactionFilter.Type,
+                hasAnyFilterOptionSelected = transactionFilters.appliedTypeFilters.isNotEmpty(),
+            ),
+            FilterCategoryItemUiState(
+                category = FilterCategory.Date,
+                hasAnyFilterOptionSelected = (transactionFilters.appliedDateFilter != null)
+            )
+        )
+    }
+
     private fun populateBottomSheetInitialData() {
             val state = _uiState.value
             val filterCategories = when(state.selectedTab) {
                 HistoryTab.SESSIONS -> {
-                    listOf(
-                        FilterCategoryItemUiState(
-                            category = FilterCategory.SessionFilter.CompletionStatus,
-                            hasAnyFilterOptionSelected = state.appliedSessionsFilters.appliedCompletionStatusFilters.isNotEmpty(),
-                        ),
-                        FilterCategoryItemUiState(
-                            category = FilterCategory.SessionFilter.DurationType,
-                            hasAnyFilterOptionSelected = state.appliedSessionsFilters.appliedDurationTypeFilters.isNotEmpty(),
-                        ),
-                        FilterCategoryItemUiState(
-                            category = FilterCategory.Date,
-                            hasAnyFilterOptionSelected = (state.appliedSessionsFilters.appliedDateFilter != null)
-                        )
-                    )
+                    getInitialSessionFilterCategoriesList(state.appliedSessionsFilters)
                 }
                 HistoryTab.TRANSACTIONS -> {
-                    listOf(
-                        FilterCategoryItemUiState(
-                            category = FilterCategory.TransactionFilter.Type,
-                            hasAnyFilterOptionSelected = state.appliedTransactionsFilters.appliedTypeFilters.isNotEmpty(),
-                        ),
-                        FilterCategoryItemUiState(
-                            category = FilterCategory.Date,
-                            hasAnyFilterOptionSelected = (state.appliedTransactionsFilters.appliedDateFilter != null)
-                        )
-                    )
+                    getInitialTransactionFilterCategoriesList(state.appliedTransactionsFilters)
                 }
             }
 
@@ -226,17 +261,13 @@ class HistoryViewModel @Inject constructor(
                 when(it.selectedTab) {
                     HistoryTab.SESSIONS -> {
                         it.copy(
-                            draftSessionsFilters = it.appliedSessionsFilters.copy(
-                                selectedFilterCategory = null
-                            ),
-                            filterCategories = filterCategories
+                            draftSessionsFilters = it.appliedSessionsFilters,
+                            filterCategories = filterCategories,
                         )
                     }
                     HistoryTab.TRANSACTIONS -> {
                         it.copy(
-                            draftTransactionsFilters = it.appliedTransactionsFilters.copy(
-                                selectedFilterCategory = null
-                            ),
+                            draftTransactionsFilters = it.appliedTransactionsFilters,
                             filterCategories = filterCategories
                         )
                     }
@@ -254,7 +285,8 @@ class HistoryViewModel @Inject constructor(
                                 && meetsDateFilterConstraint(draftTransactionFilters.appliedDateFilter, it.timestamp)
                     },
                     appliedTransactionsFilters = draftTransactionFilters,
-                    draftTransactionsFilters = null
+                    draftTransactionsFilters = null,
+                    filterOptions = emptyList(),
                 )
             }
         }
@@ -271,6 +303,7 @@ class HistoryViewModel @Inject constructor(
                     },
                     appliedSessionsFilters = draftSessionsFilters,
                     draftSessionsFilters = null,
+                    filterOptions = emptyList(),
                 )
             }
         }
@@ -279,44 +312,132 @@ class HistoryViewModel @Inject constructor(
     private fun handleFilterMenuCategoryClick(filterCategory: FilterCategory) {
 
         val updatedFilterCategories = _uiState.value.filterCategories.map { categoryState ->
-            if (categoryState.category == filterCategory) categoryState.copy(showSelected = false)
-            else categoryState
-
+            categoryState.copy(showSelected = categoryState.category == filterCategory)
         }
-        _uiState.update {
-            when (it.selectedTab) {
-                HistoryTab.SESSIONS -> {
-                    it.copy(
-                        draftSessionsFilters = it.draftSessionsFilters?.copy(
-                            selectedFilterCategory = filterCategory
-                        ),
-                        filterCategories = updatedFilterCategories
-                    )
-                }
 
-                HistoryTab.TRANSACTIONS -> {
-                    it.copy(
-                        draftTransactionsFilters = it.draftTransactionsFilters?.copy(
-                            selectedFilterCategory = filterCategory
-                        ),
-                        filterCategories = updatedFilterCategories
-                    )
+        val updatedOptionsList = buildList {
+            _uiState.value.draftSessionsFilters?.let { sessionFilters ->
+                when (filterCategory) {
+                    FilterCategory.Date -> {
+                        add(
+                            FilterOptionItem.Radio(ThisWeek, sessionFilters.appliedDateFilter is ThisWeek)
+                        )
+                        add(
+                            FilterOptionItem.Radio(ThisMonth, sessionFilters.appliedDateFilter is ThisMonth)
+                        )
+                        (sessionFilters.appliedDateFilter as? CustomRange).let { dateRange ->
+                            add(
+                                FilterOptionItem.DateRange(dateRange?.startDate, dateRange?.endDate)
+                            )
+                        }
+                    }
+                    FilterCategory.SessionFilter.CompletionStatus -> {
+                        FilterOption.SessionFilter.CompletionStatus.entries.forEach { completionStatusFilterOption ->
+                            add(
+                                FilterOptionItem.Checkbox(completionStatusFilterOption, sessionFilters.appliedCompletionStatusFilters.contains(completionStatusFilterOption))
+                            )
+                        }
+                    }
+                    FilterCategory.SessionFilter.DurationType -> {
+                        FilterOption.SessionFilter.DurationType.entries.forEach { durationTypeFilterOption ->
+                            add(
+                                FilterOptionItem.Checkbox(durationTypeFilterOption, sessionFilters.appliedDurationTypeFilters.contains(durationTypeFilterOption))
+                            )
+                        }
+                    }
+                    else -> {}
+                }
+            }
+            uiState.value.draftTransactionsFilters?.let { transactionsFilter ->
+                when(filterCategory) {
+                    FilterCategory.TransactionFilter.Type -> {
+                        FilterOption.TransactionFilter.Type.entries.forEach { transactionTypeFilterOption ->
+                            add(
+                                FilterOptionItem.Checkbox(transactionTypeFilterOption, transactionsFilter.appliedTypeFilters.contains(transactionTypeFilterOption))
+                            )
+                        }
+                    }
+                    FilterCategory.Date -> {
+                        add(
+                            FilterOptionItem.Radio(ThisWeek, transactionsFilter.appliedDateFilter is ThisWeek)
+                        )
+                        add(
+                            FilterOptionItem.Radio(ThisMonth, transactionsFilter.appliedDateFilter is ThisMonth)
+                        )
+                        (transactionsFilter.appliedDateFilter as? CustomRange).let { dateRange ->
+                            add(
+                                FilterOptionItem.DateRange(dateRange?.startDate, dateRange?.endDate)
+                            )
+                        }
+                    }
+                    else -> {}
                 }
             }
         }
+
+        _uiState.update {
+            it.copy(
+                filterCategories = updatedFilterCategories,
+                filterOptions = updatedOptionsList
+            )
+        }
     }
 
-    private fun handleFilterOptionSelection(filterOption: FilterOption, isSelected: Boolean) {
-        when (filterOption) {
+    private fun handleRadioFilterOptionClick(optionItem: FilterOptionItem.Radio) {
+        val updatedFilterOptions = _uiState.value.filterOptions.map { item ->
+            when(item) {
+                is FilterOptionItem.Radio -> item.copy(isSelected = optionItem.option == item.option)
+                is FilterOptionItem.DateRange -> item.copy(startDate = null, endDate = null)
+                else -> item
+            }
+        }
+        when(optionItem.option) {
+            is ThisWeek, is ThisMonth  -> {
+                when(_uiState.value.selectedTab) {
+                    HistoryTab.SESSIONS -> {
+                        _uiState.update {
+                            it.copy(
+                                draftSessionsFilters = it.draftSessionsFilters?.copy(
+                                    appliedDateFilter = optionItem.option
+                                ),
+                                filterOptions = updatedFilterOptions
+                            )
+                        }
+                    }
+                    HistoryTab.TRANSACTIONS -> {
+                        _uiState.update {
+                            it.copy(
+                                draftTransactionsFilters = it.draftTransactionsFilters?.copy(
+                                    appliedDateFilter = optionItem.option
+                                ),
+                                filterOptions = updatedFilterOptions
+                            )
+                        }
+                    }
+                }
+            }
+            else -> {}
+        }
+    }
+
+    private fun handleCheckboxFilterOptionSelection(optionItem: FilterOptionItem.Checkbox, isSelected: Boolean) {
+        val updatedFilterOptions = _uiState.value.filterOptions.map { item ->
+            when(item) {
+                is FilterOptionItem.Checkbox -> if (item.option == optionItem.option) item.copy(isSelected = isSelected) else item
+                else -> item
+            }
+        }
+        when (optionItem.option) {
             is FilterOption.SessionFilter.CompletionStatus.Cancelled, is FilterOption.SessionFilter.CompletionStatus.Finished -> {
                 _uiState.update {
                     it.copy(
                         draftSessionsFilters = it.draftSessionsFilters?.copy(
                             appliedCompletionStatusFilters = it.draftSessionsFilters.appliedCompletionStatusFilters.updateSet(
-                                filterOption,
+                                optionItem.option,
                                 isSelected
                             )
-                        )
+                        ),
+                        filterOptions = updatedFilterOptions
                     )
                 }
             }
@@ -326,10 +447,11 @@ class HistoryViewModel @Inject constructor(
                     it.copy(
                         draftSessionsFilters = it.draftSessionsFilters?.copy(
                             appliedDurationTypeFilters = it.draftSessionsFilters.appliedDurationTypeFilters.updateSet(
-                                filterOption,
+                                optionItem.option,
                                 isSelected
                             )
-                        )
+                        ),
+                        filterOptions = updatedFilterOptions
                     )
                 }
             }
@@ -339,33 +461,12 @@ class HistoryViewModel @Inject constructor(
                     it.copy(
                         draftTransactionsFilters = it.draftTransactionsFilters?.copy(
                             appliedTypeFilters = it.draftTransactionsFilters.appliedTypeFilters.updateSet(
-                                filterOption,
+                                optionItem.option,
                                 isSelected
                             )
-                        )
+                        ),
+                        filterOptions = updatedFilterOptions
                     )
-                }
-            }
-            is FilterOption.Date.ThisWeek, is FilterOption.Date.ThisMonth  -> {
-                when(_uiState.value.selectedTab) {
-                    HistoryTab.SESSIONS -> {
-                        _uiState.update {
-                            it.copy(
-                                draftSessionsFilters = it.draftSessionsFilters?.copy(
-                                    appliedDateFilter = filterOption
-                                )
-                            )
-                        }
-                    }
-                    HistoryTab.TRANSACTIONS -> {
-                        _uiState.update {
-                            it.copy(
-                                draftTransactionsFilters = it.draftTransactionsFilters?.copy(
-                                    appliedDateFilter = filterOption
-                                )
-                            )
-                        }
-                    }
                 }
             }
             else -> {}

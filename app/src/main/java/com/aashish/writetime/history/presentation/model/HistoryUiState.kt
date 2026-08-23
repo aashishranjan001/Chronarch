@@ -7,13 +7,13 @@ data class HistoryUiState(
     val allTransactions: List<TransactionHistoryItem> = emptyList(),
     val filteredSessions: List<SessionHistoryItem> = emptyList(),
     val filteredTransactions: List<TransactionHistoryItem> = emptyList(),
-    val appliedSessionsFilters: SessionsFilterUiState = SessionsFilterUiState(),
-    val appliedTransactionsFilters: TransactionsFilterUiState = TransactionsFilterUiState(),
-    val draftSessionsFilters: SessionsFilterUiState? = null,
-    val draftTransactionsFilters: TransactionsFilterUiState? = null,
+    val appliedSessionsFilters: SessionsFilters = SessionsFilters(),
+    val appliedTransactionsFilters: TransactionsFilters = TransactionsFilters(),
+    val draftSessionsFilters: SessionsFilters? = null,
+    val draftTransactionsFilters: TransactionsFilters? = null,
     val showDatePickerDialog: Boolean = false,
     val filterCategories: List<FilterCategoryItemUiState> = emptyList(),
-    val filterOptions: List<FilterOptionType> = emptyList()
+    val filterOptions: List<FilterOptionItem> = emptyList()
 ) {
     val areSessionFilteredApplied
         get() = appliedSessionsFilters.appliedDateFilter != null

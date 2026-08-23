@@ -1,14 +1,15 @@
 package com.aashish.writetime.history.presentation
 
 import com.aashish.writetime.history.presentation.model.FilterCategory
-import com.aashish.writetime.history.presentation.model.FilterOption
+import com.aashish.writetime.history.presentation.model.FilterOptionItem
 
 sealed class HistoryEvent {
     data class TabSelect(val tabIndex: Int): HistoryEvent()
     data class SaveSelectedTab(val tabIndex: Int): HistoryEvent()
 
     data class FilterCategorySelected(val category: FilterCategory): HistoryEvent()
-    data class FilterOptionSelected(val option: FilterOption, val isSelected: Boolean): HistoryEvent()
+    data class FilterCheckboxOptionSelected(val optionItem: FilterOptionItem.Checkbox, val isSelected: Boolean): HistoryEvent()
+    data class FilterRadioOptionSelected(val optionItem: FilterOptionItem.Radio): HistoryEvent()
     data object DateRangeFilterOptionClick: HistoryEvent()
     data object ClearFilter: HistoryEvent()
     data object ApplyFilter: HistoryEvent()

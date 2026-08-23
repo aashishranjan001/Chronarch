@@ -25,9 +25,6 @@ import com.aashish.writetime.history.presentation.components.FilterBottomSheet
 import com.aashish.writetime.history.presentation.components.HistoryScreenTopBar
 import com.aashish.writetime.history.presentation.components.SessionsHistorySection
 import com.aashish.writetime.history.presentation.components.TransactionsHistorySection
-import com.aashish.writetime.history.presentation.model.FilterCategory
-import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionType
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
 import kotlinx.coroutines.flow.collectLatest
@@ -98,67 +95,7 @@ fun HistoryScreen(
     if (uiState.showFilterBottomSheet) {
         FilterBottomSheet(
             categories = uiState.filterCategories,
-            options = buildList {
-                uiState.draftSessionsFilters?.selectedFilterCategory?.let {
-                    when (it) {
-                        FilterCategory.Date -> {
-                            val appliedDateFilter = uiState.draftSessionsFilters.appliedDateFilter
-                            add(
-                                FilterOptionType.Radio(FilterOption.Date.ThisWeek, appliedDateFilter is FilterOption.Date.ThisWeek)
-                            )
-                            add(
-                                FilterOptionType.Radio(FilterOption.Date.ThisMonth, appliedDateFilter is FilterOption.Date.ThisMonth)
-                            )
-                            (appliedDateFilter as? FilterOption.Date.CustomRange).let { dateRange ->
-                                add(
-                                    FilterOptionType.DateRange(dateRange?.startDate, dateRange?.endDate)
-                                )
-                            }
-                        }
-                        FilterCategory.SessionFilter.CompletionStatus -> {
-                            FilterOption.SessionFilter.CompletionStatus.entries.forEach { completionStatusFilterOption ->
-                                add(
-                                    FilterOptionType.Checkbox(completionStatusFilterOption, uiState.draftSessionsFilters.appliedCompletionStatusFilters.contains(completionStatusFilterOption))
-                                )
-                            }
-                        }
-                        FilterCategory.SessionFilter.DurationType -> {
-                            FilterOption.SessionFilter.DurationType.entries.forEach { durationTypeFilterOption ->
-                                add(
-                                    FilterOptionType.Checkbox(durationTypeFilterOption, uiState.draftSessionsFilters.appliedDurationTypeFilters.contains(durationTypeFilterOption))
-                                )
-                            }
-                        }
-                        else -> {}
-                    }
-                }
-                uiState.draftTransactionsFilters?.selectedFilterCategory?.let {
-                    when(it) {
-                        FilterCategory.TransactionFilter.Type -> {
-                            FilterOption.TransactionFilter.Type.entries.forEach { transactionTypeFilterOption ->
-                                add(
-                                    FilterOptionType.Checkbox(transactionTypeFilterOption, uiState.draftTransactionsFilters.appliedTypeFilters.contains(transactionTypeFilterOption))
-                                )
-                            }
-                        }
-                        FilterCategory.Date -> {
-                            val appliedDateFilter = uiState.draftTransactionsFilters.appliedDateFilter
-                            add(
-                                FilterOptionType.Radio(FilterOption.Date.ThisWeek, appliedDateFilter is FilterOption.Date.ThisWeek)
-                            )
-                            add(
-                                FilterOptionType.Radio(FilterOption.Date.ThisMonth, appliedDateFilter is FilterOption.Date.ThisMonth)
-                            )
-                            (appliedDateFilter as? FilterOption.Date.CustomRange).let { dateRange ->
-                                add(
-                                    FilterOptionType.DateRange(dateRange?.startDate, dateRange?.endDate)
-                                )
-                            }
-                        }
-                        else -> {}
-                    }
-                }
-            },
+            options = uiState.filterOptions,
             onDismiss = { onEvent(HistoryEvent.DismissFilterMenu) },
             onClearFilter = { onEvent(HistoryEvent.ClearFilter) },
             onApplyFilter = { onEvent(HistoryEvent.ApplyFilter) },
@@ -167,9 +104,14 @@ fun HistoryScreen(
                     HistoryEvent.FilterCategorySelected(category)
                 )
             },
-            onFilterOptionClick = { option, isSelected ->
+            onFilterCheckboxOptionClick = { option, isSelected ->
                 onEvent(
-                    HistoryEvent.FilterOptionSelected(option, isSelected)
+                    HistoryEvent.FilterCheckboxOptionSelected(option, isSelected)
+                )
+            },
+            onFilterRadioOptionClick = { option ->
+                onEvent(
+                    HistoryEvent.FilterRadioOptionSelected(option)
                 )
             },
             onCustomDateRangeClicked = {

@@ -33,18 +33,19 @@ import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.model.FilterCategory
 import com.aashish.writetime.history.presentation.model.FilterCategoryItemUiState
 import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionType
+import com.aashish.writetime.history.presentation.model.FilterOptionItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
     categories: List<FilterCategoryItemUiState>,
-    options: List<FilterOptionType>,
+    options: List<FilterOptionItem>,
     onDismiss: () -> Unit,
     onClearFilter: () -> Unit,
     onApplyFilter: () -> Unit,
     onFilterCategoryClick: (FilterCategory) -> Unit,
-    onFilterOptionClick: (FilterOption, Boolean) -> Unit,
+    onFilterCheckboxOptionClick: (FilterOptionItem.Checkbox, Boolean) -> Unit,
+    onFilterRadioOptionClick: (FilterOptionItem.Radio) -> Unit,
     onCustomDateRangeClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -102,7 +103,8 @@ fun FilterBottomSheet(
                     VerticalDivider(modifier = Modifier.width(2.dp))
                     FilterSheetOptionsSection(
                         options = options,
-                        onFilterOptionClicked = onFilterOptionClick,
+                        onFilterCheckboxOptionClicked = onFilterCheckboxOptionClick,
+                        onFilterRadioOptionClicked = onFilterRadioOptionClick,
                         onCustomDateRangeClicked = onCustomDateRangeClicked,
                         modifier = Modifier.weight(6f).fillMaxHeight()
 
@@ -162,15 +164,16 @@ private fun FilterBottomSheetPreview() {
                 FilterCategoryItemUiState(FilterCategory.Date, false, false),
             ),
             options = listOf(
-                FilterOptionType.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
-                FilterOptionType.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false)
+                FilterOptionItem.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionItem.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false)
             ),
             onDismiss = {},
             onClearFilter = {},
             onApplyFilter = {},
-            onFilterOptionClick = { _, _ ->},
+            onFilterCheckboxOptionClick = { _, _ ->},
+            onFilterRadioOptionClick = {},
             onFilterCategoryClick = {},
-            onCustomDateRangeClicked = {}
+            onCustomDateRangeClicked = {},
         )
     }
 }
