@@ -66,9 +66,8 @@ fun FilterSheetCategoriesSection(
                     }
                     val labelRes = when (category) {
                         FilterCategory.SessionFilter.CompletionStatus -> R.string.category_completion_status
-                        FilterCategory.SessionFilter.Date -> R.string.category_date
+                        FilterCategory.Date -> R.string.category_date
                         FilterCategory.SessionFilter.DurationType -> R.string.category_duration_length
-                        FilterCategory.TransactionFilter.Date -> R.string.category_date
                         FilterCategory.TransactionFilter.Type -> R.string.category_transaction_type
                     }
                     Text(

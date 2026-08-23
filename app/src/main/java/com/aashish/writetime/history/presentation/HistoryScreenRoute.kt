@@ -13,6 +13,7 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,9 +27,11 @@ import com.aashish.writetime.history.presentation.components.SessionsHistorySect
 import com.aashish.writetime.history.presentation.components.TransactionsHistorySection
 import com.aashish.writetime.history.presentation.model.FilterCategory
 import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionState
+import com.aashish.writetime.history.presentation.model.FilterOptionType
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun HistoryScreenRoute(
@@ -53,6 +56,15 @@ fun HistoryScreenRoute(
         }
     }
 
+    LaunchedEffect(pagerState) {
+        snapshotFlow {
+            pagerState.currentPage
+        }.distinctUntilChanged()
+            .collectLatest { page ->
+                viewModel.onEvent(HistoryEvent.SaveSelectedTab(tabIndex = page))
+            }
+    }
+
     HistoryScreen(pagerState, uiState, viewModel::onEvent, modifier)
 }
 
@@ -70,12 +82,7 @@ fun HistoryScreen(
             onTabClick = {
                 onEvent(HistoryEvent.TabSelect(it))
             },
-            onFilterMenuClick = {
-                when (uiState.tabs[pagerState.currentPage]) {
-                    HistoryTab.SESSIONS -> onEvent(HistoryEvent.SessionsTabFilterMenuClick)
-                    HistoryTab.TRANSACTIONS -> onEvent(HistoryEvent.TransactionsTabFilterMenuClick)
-                }
-            }
+            onFilterMenuClick = { onEvent(HistoryEvent.FilterMenuIconClick) }
         )
 
         HorizontalPager(
@@ -88,161 +95,113 @@ fun HistoryScreen(
         }
     }
 
-    uiState.draftSessionsFilters?.let { draftSessionFilters ->
+    if (uiState.showFilterBottomSheet) {
         FilterBottomSheet(
-            categories = FilterCategory.SessionFilter.entries.associate { sessionCategory ->
-                when (sessionCategory) {
-                    FilterCategory.SessionFilter.CompletionStatus -> sessionCategory to draftSessionFilters.appliedCompletionStatusFilters.isNotEmpty()
-                    FilterCategory.SessionFilter.Date -> sessionCategory to (draftSessionFilters.appliedDateFilter != null)
-                    FilterCategory.SessionFilter.DurationType -> sessionCategory to draftSessionFilters.appliedDurationTypeFilters.isNotEmpty()
+            categories = buildMap {
+                uiState.draftSessionsFilters?.let {
+                    put(FilterCategory.SessionFilter.CompletionStatus, it.appliedCompletionStatusFilters.isNotEmpty())
+                    put(FilterCategory.SessionFilter.DurationType, it.appliedDurationTypeFilters.isNotEmpty())
+                    put(FilterCategory.Date, (it.appliedDateFilter != null))
+                }
+
+                uiState.draftTransactionsFilters?.let {
+                    put(FilterCategory.TransactionFilter.Type, it.appliedTypeFilters.isNotEmpty())
+                    put(FilterCategory.Date, (it.appliedDateFilter != null))
                 }
             },
-            options = when (draftSessionFilters.selectedFilterCategory) {
-                FilterCategory.SessionFilter.CompletionStatus -> {
-                    FilterOption.SessionFilter.CompletionStatus.entries.map {
-                        FilterOptionState.SelectionFilterOptionState(
-                            option = it,
-                            isSelected = draftSessionFilters.appliedCompletionStatusFilters.contains(
-                                it
+            options = buildList {
+                uiState.draftSessionsFilters?.selectedFilterCategory?.let {
+                    when (it) {
+                        FilterCategory.Date -> {
+                            val appliedDateFilter = uiState.draftSessionsFilters.appliedDateFilter
+                            add(
+                                FilterOptionType.Radio(FilterOption.Date.ThisWeek, appliedDateFilter is FilterOption.Date.ThisWeek)
                             )
-                        )
+                            add(
+                                FilterOptionType.Radio(FilterOption.Date.ThisMonth, appliedDateFilter is FilterOption.Date.ThisMonth)
+                            )
+                            (appliedDateFilter as? FilterOption.Date.CustomRange).let { dateRange ->
+                                add(
+                                    FilterOptionType.DateRange(dateRange?.startDate, dateRange?.endDate)
+                                )
+                            }
+                        }
+                        FilterCategory.SessionFilter.CompletionStatus -> {
+                            FilterOption.SessionFilter.CompletionStatus.entries.forEach { completionStatusFilterOption ->
+                                add(
+                                    FilterOptionType.Checkbox(completionStatusFilterOption, uiState.draftSessionsFilters.appliedCompletionStatusFilters.contains(completionStatusFilterOption))
+                                )
+                            }
+                        }
+                        FilterCategory.SessionFilter.DurationType -> {
+                            FilterOption.SessionFilter.DurationType.entries.forEach { durationTypeFilterOption ->
+                                add(
+                                    FilterOptionType.Checkbox(durationTypeFilterOption, uiState.draftSessionsFilters.appliedDurationTypeFilters.contains(durationTypeFilterOption))
+                                )
+                            }
+                        }
+                        else -> {}
                     }
                 }
-
-                FilterCategory.SessionFilter.Date -> {
-                    val appliedDateFilter = draftSessionFilters.appliedDateFilter
-                    listOf(
-                        FilterOptionState.DateFilterOptionState.FixedRange(
-                            FilterOption.SessionFilter.Date.ThisWeek, appliedDateFilter is FilterOption.SessionFilter.Date.ThisWeek
-                        ),
-                        FilterOptionState.DateFilterOptionState.FixedRange(
-                            FilterOption.SessionFilter.Date.ThisMonth, appliedDateFilter is FilterOption.SessionFilter.Date.ThisMonth
-                        ),
-                        FilterOptionState.DateFilterOptionState.CustomRange(
-                            (appliedDateFilter as? FilterOption.SessionFilter.Date.CustomRange)?.startDate,
-                            (appliedDateFilter as? FilterOption.SessionFilter.Date.CustomRange)?.endDate
-                        )
-                    )
-                }
-
-                FilterCategory.SessionFilter.DurationType -> {
-                    FilterOption.SessionFilter.DurationType.entries.map {
-                        FilterOptionState.SelectionFilterOptionState(
-                            option = it,
-                            isSelected = draftSessionFilters.appliedDurationTypeFilters.contains(it)
-                        )
+                uiState.draftTransactionsFilters?.selectedFilterCategory?.let {
+                    when(it) {
+                        FilterCategory.TransactionFilter.Type -> {
+                            FilterOption.TransactionFilter.Type.entries.forEach { transactionTypeFilterOption ->
+                                add(
+                                    FilterOptionType.Checkbox(transactionTypeFilterOption, uiState.draftTransactionsFilters.appliedTypeFilters.contains(transactionTypeFilterOption))
+                                )
+                            }
+                        }
+                        FilterCategory.Date -> {
+                            val appliedDateFilter = uiState.draftTransactionsFilters.appliedDateFilter
+                            add(
+                                FilterOptionType.Radio(FilterOption.Date.ThisWeek, appliedDateFilter is FilterOption.Date.ThisWeek)
+                            )
+                            add(
+                                FilterOptionType.Radio(FilterOption.Date.ThisMonth, appliedDateFilter is FilterOption.Date.ThisMonth)
+                            )
+                            (appliedDateFilter as? FilterOption.Date.CustomRange).let { dateRange ->
+                                add(
+                                    FilterOptionType.DateRange(dateRange?.startDate, dateRange?.endDate)
+                                )
+                            }
+                        }
+                        else -> {}
                     }
                 }
-
-                null -> emptyList()
             },
-            selectedCategory = draftSessionFilters.selectedFilterCategory,
-            onDismiss = { onEvent(HistoryEvent.DismissSessionsFilterMenu) },
-            onClearFilter = { onEvent(HistoryEvent.ClearSessionsFilter) },
-            onApplyFilter = { onEvent(HistoryEvent.ApplySessionsFilter) },
+            selectedCategory = uiState.draftSessionsFilters?.selectedFilterCategory ?: uiState.draftTransactionsFilters?.selectedFilterCategory,
+            onDismiss = { onEvent(HistoryEvent.DismissFilterMenu) },
+            onClearFilter = { onEvent(HistoryEvent.ClearFilter) },
+            onApplyFilter = { onEvent(HistoryEvent.ApplyFilter) },
             onFilterCategoryClick = { category ->
                 onEvent(
-                    HistoryEvent.FilterCategorySelected(
-                        category
-                    )
+                    HistoryEvent.FilterCategorySelected(category)
                 )
             },
             onFilterOptionClick = { option, isSelected ->
                 onEvent(
-                    HistoryEvent.FilterOptionSelected(
-                        option,
-                        isSelected
-                    )
+                    HistoryEvent.FilterOptionSelected(option, isSelected)
                 )
             },
             onCustomDateRangeClicked = {
                 onEvent(
-                    HistoryEvent.SessionsCustomDateRangeOptionClick
+                    HistoryEvent.DateRangeFilterOptionClick
                 )
             }
         )
     }
 
-    uiState.draftTransactionsFilters?.let { draftTransactionsFilters ->
-        FilterBottomSheet(
-            categories = FilterCategory.TransactionFilter.entries.associate { transactionsCategory ->
-                when (transactionsCategory) {
-                    FilterCategory.TransactionFilter.Type -> {
-                        transactionsCategory to draftTransactionsFilters.appliedTypeFilters.isNotEmpty()
-                    }
-
-                    FilterCategory.TransactionFilter.Date -> {
-                        transactionsCategory to (draftTransactionsFilters.appliedDateFilter != null)
-                    }
-                }
-            },
-            options = when (draftTransactionsFilters.selectedFilterCategory) {
-                FilterCategory.TransactionFilter.Date -> {
-                    val appliedDateFilter = draftTransactionsFilters.appliedDateFilter
-                    listOf(
-                        FilterOptionState.DateFilterOptionState.FixedRange(
-                            FilterOption.TransactionFilter.Date.ThisWeek, appliedDateFilter is FilterOption.TransactionFilter.Date.ThisWeek
-                        ),
-                        FilterOptionState.DateFilterOptionState.FixedRange(
-                            FilterOption.TransactionFilter.Date.ThisMonth, appliedDateFilter is FilterOption.TransactionFilter.Date.ThisMonth
-                        ),
-                        FilterOptionState.DateFilterOptionState.CustomRange(
-                            (appliedDateFilter as? FilterOption.TransactionFilter.Date.CustomRange)?.startDate,
-                            (appliedDateFilter as? FilterOption.TransactionFilter.Date.CustomRange)?.endDate
-                        )
-                    )
-                }
-                FilterCategory.TransactionFilter.Type -> {
-                    FilterOption.TransactionFilter.Type.entries.map {
-                        FilterOptionState.SelectionFilterOptionState(
-                            option = it,
-                            isSelected = draftTransactionsFilters.appliedTypeFilters.contains(it)
-                        )
-                    }
-                }
-
-                null -> emptyList()
-            },
-            selectedCategory = draftTransactionsFilters.selectedFilterCategory,
-            onDismiss = { onEvent(HistoryEvent.DismissTransactionsFilterMenu) },
-            onClearFilter = { onEvent(HistoryEvent.ClearTransactionsFilter) },
-            onApplyFilter = { onEvent(HistoryEvent.ApplyTransactionsFilter) },
-            onFilterCategoryClick = { category ->
-                onEvent(
-                    HistoryEvent.FilterCategorySelected(
-                        category
-                    )
-                )
-            },
-            onFilterOptionClick = { option, isSelected ->
-                onEvent(
-                    HistoryEvent.FilterOptionSelected(
-                        option,
-                        isSelected
-                    )
-                )
-            },
-            onCustomDateRangeClicked = {
-               onEvent(
-                   HistoryEvent.TransactionsCustomDateRangeOptionClick
-               )
-            }
-        )
-    }
     val dateRangePickerState = rememberDateRangePickerState()
     if (uiState.showDatePickerDialog) {
         DatePickerDialog(
             onDismissRequest = { onEvent(HistoryEvent.DateRangePickerDismissed) },
             confirmButton = {
                 TextButton(onClick = {
-                    val startDate = dateRangePickerState.selectedStartDateMillis
-                    val endDate = dateRangePickerState.selectedEndDateMillis
-                    if (startDate != null && endDate != null) {
-                        when (uiState.tabs[pagerState.currentPage]) {
-                            HistoryTab.SESSIONS -> { onEvent(HistoryEvent.SessionsDaterFilterApplied(startDate, endDate))}
-                            HistoryTab.TRANSACTIONS -> { onEvent(HistoryEvent.TransactionsDaterFilterApplied(startDate, endDate))}
-                        }
-                    }
+                    onEvent(HistoryEvent.DaterFilterApplied(
+                        dateRangePickerState.selectedStartDateMillis,
+                        dateRangePickerState.selectedEndDateMillis
+                    ))
                 }) {
                     Text(text = stringResource(R.string.confirm))
                 }
@@ -269,6 +228,6 @@ private fun HistoryScreenPreview() {
         pageCount = { HistoryTab.entries.size }
     )
     WriteTimeTheme {
-        HistoryScreen(pagerState, HistoryUiState(HistoryTab.entries), {})
+        HistoryScreen(pagerState, HistoryUiState(HistoryTab.entries, HistoryTab.SESSIONS), {})
     }
 }

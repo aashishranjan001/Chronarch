@@ -25,12 +25,6 @@ sealed class FilterOption {
                 }
             }
         }
-
-        sealed class Date: SessionFilter() {
-            data object ThisWeek: Date()
-            data object ThisMonth: Date()
-            data class CustomRange(val startDate: LocalDate, val endDate: LocalDate): Date()
-        }
     }
 
     sealed class TransactionFilter: FilterOption() {
@@ -45,11 +39,11 @@ sealed class FilterOption {
                 }
             }
         }
+    }
 
-        sealed class Date: TransactionFilter() {
-            data object ThisWeek: Date()
-            data object ThisMonth: Date()
-            data class CustomRange(val startDate: LocalDate, val endDate: LocalDate):Date()
-        }
+    sealed class Date: FilterOption() {
+        data object ThisWeek: Date()
+        data object ThisMonth: Date()
+        data class CustomRange(val startDate: LocalDate, val endDate: LocalDate):Date()
     }
 }

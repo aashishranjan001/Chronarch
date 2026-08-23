@@ -32,14 +32,14 @@ import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.model.FilterCategory
 import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionState
+import com.aashish.writetime.history.presentation.model.FilterOptionType
 import kotlin.to
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
     categories: Map<FilterCategory, Boolean>,
-    options: List<FilterOptionState>,
+    options: List<FilterOptionType>,
     selectedCategory: FilterCategory?,
     onDismiss: () -> Unit,
     onClearFilter: () -> Unit,
@@ -163,8 +163,8 @@ private fun FilterBottomSheetPreview() {
                 FilterCategory.SessionFilter.DurationType to false
             ),
             options = listOf(
-                FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.CompletionStatus.Finished, true),
-                FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.DurationType.LongType, false)
+                FilterOptionType.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionType.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false)
             ),
             selectedCategory = FilterCategory.SessionFilter.CompletionStatus,
             onDismiss = {},

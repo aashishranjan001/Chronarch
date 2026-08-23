@@ -1,7 +1,6 @@
 package com.aashish.writetime.history.presentation.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -22,7 +21,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
@@ -30,11 +28,11 @@ import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toHumanReadableDate
 import com.aashish.writetime.history.presentation.model.FilterOption
-import com.aashish.writetime.history.presentation.model.FilterOptionState
+import com.aashish.writetime.history.presentation.model.FilterOptionType
 
 @Composable
 fun FilterSheetOptionsSection(
-    options: List<FilterOptionState>,
+    options: List<FilterOptionType>,
     onFilterOptionClicked: (FilterOption, Boolean) -> Unit,
     onCustomDateRangeClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -42,7 +40,9 @@ fun FilterSheetOptionsSection(
 
     val spacing = LocalSpacing.current
 
-    LazyColumn(modifier = modifier.fillMaxWidth().padding(spacing.medium), verticalArrangement = Arrangement.spacedBy(spacing.medium)) {
+    LazyColumn(modifier = modifier
+        .fillMaxWidth()
+        .padding(spacing.medium), verticalArrangement = Arrangement.spacedBy(spacing.medium)) {
         options.forEach { option ->
             item {
                 Row(
@@ -52,91 +52,70 @@ fun FilterSheetOptionsSection(
                 ) {
 
                     when(option) {
-                        is FilterOptionState.DateFilterOptionState.CustomRange -> {
-                            Row(modifier = Modifier.clickable{
+                        is FilterOptionType.DateRange -> {
+                            Row(modifier = Modifier.clickable {
                                 onCustomDateRangeClicked()
                             }, verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(
                                     onClick = onCustomDateRangeClicked
                                 ) {
-                                    Icon(imageVector = Icons.Default.CalendarMonth, contentDescription = stringResource(R.string.choose_date))
+                                    Icon(
+                                        imageVector = Icons.Default.CalendarMonth,
+                                        contentDescription = stringResource(R.string.choose_date)
+                                    )
                                 }
 
-                                    TextButton (
-                                        onClick = onCustomDateRangeClicked
-                                    ) {
-                                        if (option.startDate != null && option.endDate != null) {
-                                            Text(stringResource(R.string.date_x_from_y, option.startDate.toHumanReadableDate(), option.endDate.toHumanReadableDate()))
-                                        } else {
-                                            Text(stringResource(R.string.option_date_custom_range))
-                                        }
+                                TextButton(
+                                    onClick = onCustomDateRangeClicked
+                                ) {
+                                    if (option.startDate != null && option.endDate != null) {
+                                        Text(
+                                            stringResource(
+                                                R.string.date_x_from_y,
+                                                option.startDate.toHumanReadableDate(),
+                                                option.endDate.toHumanReadableDate()
+                                            )
+                                        )
+                                    } else {
+                                        Text(stringResource(R.string.option_date_custom_range))
                                     }
+                                }
                             }
 
                         }
-                        is FilterOptionState.DateFilterOptionState.FixedRange -> {
-                            when(option.option) {
-                                FilterOption.SessionFilter.Date.ThisMonth, FilterOption.TransactionFilter.Date.ThisMonth -> {
-                                    RadioFilterOption(R.string.option_date_this_month,
-                                        selected = option.isSelected,
-                                        onClick = { onFilterOptionClicked(option.option, !option.isSelected) }
-                                    )
-                                }
-                                FilterOption.SessionFilter.Date.ThisWeek, FilterOption.TransactionFilter.Date.ThisWeek -> {
-                                    RadioFilterOption(R.string.option_date_this_week,
-                                        selected = option.isSelected,
-                                        onClick = { onFilterOptionClicked(option.option, !option.isSelected) }
-                                    )
-                                }
-                                else -> {}
+                        is FilterOptionType.Radio -> {
+                            val labelRes = when (option.option) {
+                                FilterOption.Date.ThisMonth -> R.string.option_date_this_month
+                                FilterOption.Date.ThisWeek -> R.string.option_date_this_week
+                                else -> null
+                            }
+                            labelRes?.let {
+                                RadioFilterOption(
+                                    labelRes = it,
+                                    selected = option.isSelected,
+                                    onClick = { onFilterOptionClicked(option.option, !option.isSelected) }
+                                )
                             }
                         }
-                        is FilterOptionState.SelectionFilterOptionState -> {
-                            when(option.option) {
-                                FilterOption.SessionFilter.CompletionStatus.Cancelled -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_failed_completion_status,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.SessionFilter.CompletionStatus.Finished -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_successful_completion_status,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.SessionFilter.DurationType.LongType -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_long_duration,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.SessionFilter.DurationType.ShortType -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_short_duration,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.TransactionFilter.Type.TaskCredit -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_task_credit_earning,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.TransactionFilter.Type.Redemption -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_redemption_debit,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                FilterOption.TransactionFilter.Type.Bonus -> {
-                                    CheckboxFilterOption(
-                                        R.string.option_bonus_earning,
-                                        option.isSelected,
-                                        onCheckedChange = { onFilterOptionClicked(option.option, it) })
-                                }
-                                else -> {}
+                        is FilterOptionType.Checkbox -> {
+                            val labelRes = when(option.option) {
+                                FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
+                                FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
+                                FilterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
+                                FilterOption.SessionFilter.DurationType.ShortType -> R.string.option_short_duration
+                                FilterOption.TransactionFilter.Type.TaskCredit -> R.string.option_task_credit_earning
+                                FilterOption.TransactionFilter.Type.Redemption -> R.string.option_redemption_debit
+                                FilterOption.TransactionFilter.Type.Bonus -> R.string.option_bonus_earning
+                                else -> null
                             }
+
+                            labelRes?.let {
+                                CheckboxFilterOption(
+                                    labelRes = it,
+                                    option.isSelected,
+                                    onCheckedChange = { onFilterOptionClicked(option.option, it) })
+                            }
+
                         }
                     }
                 }
@@ -190,9 +169,9 @@ private fun FilterSheetOptionsSectionPreview() {
     WriteTimeTheme {
         FilterSheetOptionsSection(
             options = listOf(
-                FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.CompletionStatus.Finished, true),
-                FilterOptionState.SelectionFilterOptionState(FilterOption.SessionFilter.DurationType.LongType, false),
-                FilterOptionState.DateFilterOptionState.CustomRange(null, null)
+                FilterOptionType.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionType.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false),
+                FilterOptionType.DateRange(null, null)
             ),
             onFilterOptionClicked = {_, _ -> },
             onCustomDateRangeClicked = {}

@@ -5,23 +5,18 @@ import com.aashish.writetime.history.presentation.model.FilterOption
 
 sealed class HistoryEvent {
     data class TabSelect(val tabIndex: Int): HistoryEvent()
+    data class SaveSelectedTab(val tabIndex: Int): HistoryEvent()
 
     data class FilterCategorySelected(val category: FilterCategory): HistoryEvent()
     data class FilterOptionSelected(val option: FilterOption, val isSelected: Boolean): HistoryEvent()
-    data object SessionsCustomDateRangeOptionClick: HistoryEvent()
-    data object TransactionsCustomDateRangeOptionClick: HistoryEvent()
-    data object ClearTransactionsFilter: HistoryEvent()
-    data object ClearSessionsFilter: HistoryEvent()
-    data object ApplySessionsFilter: HistoryEvent()
-    data object ApplyTransactionsFilter: HistoryEvent()
-    data object DismissSessionsFilterMenu: HistoryEvent()
-    data object DismissTransactionsFilterMenu: HistoryEvent()
+    data object DateRangeFilterOptionClick: HistoryEvent()
+    data object ClearFilter: HistoryEvent()
+    data object ApplyFilter: HistoryEvent()
+    data object DismissFilterMenu: HistoryEvent()
 
-    data object SessionsTabFilterMenuClick: HistoryEvent()
-    data object TransactionsTabFilterMenuClick: HistoryEvent()
+    data object FilterMenuIconClick: HistoryEvent()
 
-    data class SessionsDaterFilterApplied(val from: Long, val to: Long): HistoryEvent()
-    data class TransactionsDaterFilterApplied(val from: Long, val to: Long): HistoryEvent()
+    data class DaterFilterApplied(val from: Long?, val to: Long?): HistoryEvent()
     data object DateRangePickerDismissed: HistoryEvent()
 
 }
