@@ -11,7 +11,9 @@ data class HistoryUiState(
     val appliedTransactionsFilters: TransactionsFilterUiState = TransactionsFilterUiState(),
     val draftSessionsFilters: SessionsFilterUiState? = null,
     val draftTransactionsFilters: TransactionsFilterUiState? = null,
-    val showDatePickerDialog: Boolean = false
+    val showDatePickerDialog: Boolean = false,
+    val filterCategories: List<FilterCategoryItemUiState> = emptyList(),
+    val filterOptions: List<FilterOptionType> = emptyList()
 ) {
     val areSessionFilteredApplied
         get() = appliedSessionsFilters.appliedDateFilter != null

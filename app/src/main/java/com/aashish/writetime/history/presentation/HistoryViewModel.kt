@@ -8,6 +8,7 @@ import com.aashish.writetime.common.ui.updateSet
 import com.aashish.writetime.history.domain.usecase.GetHistoryUseCase
 import com.aashish.writetime.history.presentation.HistoryUiEffect.*
 import com.aashish.writetime.history.presentation.model.FilterCategory
+import com.aashish.writetime.history.presentation.model.FilterCategoryItemUiState
 import com.aashish.writetime.history.presentation.model.FilterOption
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
@@ -133,20 +134,7 @@ class HistoryViewModel @Inject constructor(
             }
 
             HistoryEvent.FilterMenuIconClick -> {
-                _uiState.update {
-                    when(it.selectedTab) {
-                        HistoryTab.SESSIONS -> it.copy(
-                            draftSessionsFilters = it.appliedSessionsFilters.copy(
-                                selectedFilterCategory = null
-                            )
-                        )
-                        HistoryTab.TRANSACTIONS -> it.copy(
-                            draftTransactionsFilters = it.appliedTransactionsFilters.copy(
-                                selectedFilterCategory = null
-                            )
-                        )
-                    }
-                }
+                populateBottomSheetInitialData()
             }
 
             is HistoryEvent.FilterOptionSelected -> {
@@ -201,6 +189,62 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
+    private fun populateBottomSheetInitialData() {
+            val state = _uiState.value
+            val filterCategories = when(state.selectedTab) {
+                HistoryTab.SESSIONS -> {
+                    listOf(
+                        FilterCategoryItemUiState(
+                            category = FilterCategory.SessionFilter.CompletionStatus,
+                            hasAnyFilterOptionSelected = state.appliedSessionsFilters.appliedCompletionStatusFilters.isNotEmpty(),
+                        ),
+                        FilterCategoryItemUiState(
+                            category = FilterCategory.SessionFilter.DurationType,
+                            hasAnyFilterOptionSelected = state.appliedSessionsFilters.appliedDurationTypeFilters.isNotEmpty(),
+                        ),
+                        FilterCategoryItemUiState(
+                            category = FilterCategory.Date,
+                            hasAnyFilterOptionSelected = (state.appliedSessionsFilters.appliedDateFilter != null)
+                        )
+                    )
+                }
+                HistoryTab.TRANSACTIONS -> {
+                    listOf(
+                        FilterCategoryItemUiState(
+                            category = FilterCategory.TransactionFilter.Type,
+                            hasAnyFilterOptionSelected = state.appliedTransactionsFilters.appliedTypeFilters.isNotEmpty(),
+                        ),
+                        FilterCategoryItemUiState(
+                            category = FilterCategory.Date,
+                            hasAnyFilterOptionSelected = (state.appliedTransactionsFilters.appliedDateFilter != null)
+                        )
+                    )
+                }
+            }
+
+            _uiState.update {
+                when(it.selectedTab) {
+                    HistoryTab.SESSIONS -> {
+                        it.copy(
+                            draftSessionsFilters = it.appliedSessionsFilters.copy(
+                                selectedFilterCategory = null
+                            ),
+                            filterCategories = filterCategories
+                        )
+                    }
+                    HistoryTab.TRANSACTIONS -> {
+                        it.copy(
+                            draftTransactionsFilters = it.appliedTransactionsFilters.copy(
+                                selectedFilterCategory = null
+                            ),
+                            filterCategories = filterCategories
+                        )
+                    }
+                }
+            }
+
+    }
+
     private fun applyTransactionsFilter() {
         _uiState.value.draftTransactionsFilters?.let { draftTransactionFilters ->
             _uiState.update { state ->
@@ -233,13 +277,20 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun handleFilterMenuCategoryClick(filterCategory: FilterCategory) {
+
+        val updatedFilterCategories = _uiState.value.filterCategories.map { categoryState ->
+            if (categoryState.category == filterCategory) categoryState.copy(showSelected = false)
+            else categoryState
+
+        }
         _uiState.update {
             when (it.selectedTab) {
                 HistoryTab.SESSIONS -> {
                     it.copy(
                         draftSessionsFilters = it.draftSessionsFilters?.copy(
                             selectedFilterCategory = filterCategory
-                        )
+                        ),
+                        filterCategories = updatedFilterCategories
                     )
                 }
 
@@ -247,7 +298,8 @@ class HistoryViewModel @Inject constructor(
                     it.copy(
                         draftTransactionsFilters = it.draftTransactionsFilters?.copy(
                             selectedFilterCategory = filterCategory
-                        )
+                        ),
+                        filterCategories = updatedFilterCategories
                     )
                 }
             }

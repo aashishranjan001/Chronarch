@@ -31,16 +31,15 @@ import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.model.FilterCategory
+import com.aashish.writetime.history.presentation.model.FilterCategoryItemUiState
 import com.aashish.writetime.history.presentation.model.FilterOption
 import com.aashish.writetime.history.presentation.model.FilterOptionType
-import kotlin.to
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
-    categories: Map<FilterCategory, Boolean>,
+    categories: List<FilterCategoryItemUiState>,
     options: List<FilterOptionType>,
-    selectedCategory: FilterCategory?,
     onDismiss: () -> Unit,
     onClearFilter: () -> Unit,
     onApplyFilter: () -> Unit,
@@ -97,7 +96,6 @@ fun FilterBottomSheet(
                 ) {
                     FilterSheetCategoriesSection(
                         categories = categories,
-                        selectedCategory = selectedCategory,
                         onCategoryClick = onFilterCategoryClick,
                         modifier = Modifier.weight(4f).fillMaxHeight()
                     )
@@ -129,7 +127,7 @@ fun FilterBottomSheet(
                     OutlinedButton(
                         modifier = Modifier.weight(1f),
                         onClick = onClearFilter,
-                        enabled = categories.values.any { it }
+                        enabled = categories.any { it.hasAnyFilterOptionSelected }
                     ) {
                         Text(
                             text = stringResource(R.string.clear_filter),
@@ -158,15 +156,15 @@ fun FilterBottomSheet(
 private fun FilterBottomSheetPreview() {
     WriteTimeTheme {
         FilterBottomSheet(
-            categories = mapOf(
-                FilterCategory.SessionFilter.CompletionStatus to true,
-                FilterCategory.SessionFilter.DurationType to false
+            categories = listOf(
+                FilterCategoryItemUiState(FilterCategory.SessionFilter.DurationType, false, true),
+                FilterCategoryItemUiState(FilterCategory.SessionFilter.CompletionStatus, true, false),
+                FilterCategoryItemUiState(FilterCategory.Date, false, false),
             ),
             options = listOf(
                 FilterOptionType.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
                 FilterOptionType.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false)
             ),
-            selectedCategory = FilterCategory.SessionFilter.CompletionStatus,
             onDismiss = {},
             onClearFilter = {},
             onApplyFilter = {},

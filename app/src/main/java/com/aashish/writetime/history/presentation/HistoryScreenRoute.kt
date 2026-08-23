@@ -97,18 +97,7 @@ fun HistoryScreen(
 
     if (uiState.showFilterBottomSheet) {
         FilterBottomSheet(
-            categories = buildMap {
-                uiState.draftSessionsFilters?.let {
-                    put(FilterCategory.SessionFilter.CompletionStatus, it.appliedCompletionStatusFilters.isNotEmpty())
-                    put(FilterCategory.SessionFilter.DurationType, it.appliedDurationTypeFilters.isNotEmpty())
-                    put(FilterCategory.Date, (it.appliedDateFilter != null))
-                }
-
-                uiState.draftTransactionsFilters?.let {
-                    put(FilterCategory.TransactionFilter.Type, it.appliedTypeFilters.isNotEmpty())
-                    put(FilterCategory.Date, (it.appliedDateFilter != null))
-                }
-            },
+            categories = uiState.filterCategories,
             options = buildList {
                 uiState.draftSessionsFilters?.selectedFilterCategory?.let {
                     when (it) {
@@ -170,7 +159,6 @@ fun HistoryScreen(
                     }
                 }
             },
-            selectedCategory = uiState.draftSessionsFilters?.selectedFilterCategory ?: uiState.draftTransactionsFilters?.selectedFilterCategory,
             onDismiss = { onEvent(HistoryEvent.DismissFilterMenu) },
             onClearFilter = { onEvent(HistoryEvent.ClearFilter) },
             onApplyFilter = { onEvent(HistoryEvent.ApplyFilter) },

@@ -27,11 +27,11 @@ import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.model.FilterCategory
+import com.aashish.writetime.history.presentation.model.FilterCategoryItemUiState
 
 @Composable
 fun FilterSheetCategoriesSection(
-    categories: Map<FilterCategory, Boolean>,
-    selectedCategory: FilterCategory?,
+    categories: List<FilterCategoryItemUiState>,
     onCategoryClick: (FilterCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -39,21 +39,21 @@ fun FilterSheetCategoriesSection(
     val spacing = LocalSpacing.current
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
-        categories.forEach { (category, hasFilterApplied) ->
+        categories.forEach { categoryState ->
             item {
                 Row(
                     modifier = Modifier
                         .height(60.dp)
                         .clickable {
-                            onCategoryClick(category)
+                            onCategoryClick(categoryState.category)
                         }
-                        .background(if (category == selectedCategory) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
+                        .background(if (categoryState.showSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
                         .padding(spacing.medium)
                     ,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    if (hasFilterApplied) {
+                    if (categoryState.hasAnyFilterOptionSelected) {
                         Box(
                             modifier = Modifier
                                 .size(4.dp)
@@ -64,7 +64,7 @@ fun FilterSheetCategoriesSection(
                         )
                         Spacer(modifier = Modifier.width(spacing.small))
                     }
-                    val labelRes = when (category) {
+                    val labelRes = when (categoryState.category) {
                         FilterCategory.SessionFilter.CompletionStatus -> R.string.category_completion_status
                         FilterCategory.Date -> R.string.category_date
                         FilterCategory.SessionFilter.DurationType -> R.string.category_duration_length
@@ -86,11 +86,11 @@ fun FilterSheetCategoriesSection(
 private fun FilterSheetCategoriesSectionPreview() {
     WriteTimeTheme {
         FilterSheetCategoriesSection(
-            categories = mapOf(
-                FilterCategory.SessionFilter.CompletionStatus to true,
-                FilterCategory.SessionFilter.DurationType to false
+            categories = listOf(
+                FilterCategoryItemUiState(FilterCategory.SessionFilter.DurationType, false, true),
+                FilterCategoryItemUiState(FilterCategory.SessionFilter.CompletionStatus, true, false),
+                FilterCategoryItemUiState(FilterCategory.Date, false, false),
             ),
-            selectedCategory = FilterCategory.SessionFilter.CompletionStatus,
             {}
         )
     }
