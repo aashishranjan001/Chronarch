@@ -2,20 +2,24 @@ package com.aashish.writetime.redemption.presentation.redemption_corner
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aashish.writetime.redemption.domain.model.RedeemableReward
 import com.aashish.writetime.redemption.domain.usecase.GetRedemptionCornerOverviewUseCase
 import com.aashish.writetime.redemption.domain.usecase.RedeemRewardUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class RedemptionCornerViewModel @Inject constructor(
     private val getRedemptionCornerOverviewUseCase: GetRedemptionCornerOverviewUseCase,
@@ -28,16 +32,32 @@ class RedemptionCornerViewModel @Inject constructor(
     private val _uiEffect = Channel<RedemptionCornerUiEffect>()
     val uiEffect = _uiEffect.receiveAsFlow()
 
+    private val dataFetchTrigger = MutableSharedFlow<Unit>()
+
     init {
         viewModelScope.launch {
-            getRedemptionCornerOverviewUseCase().collectLatest { overviewData ->
-                _uiState.update {
-                    it.copy(
-                        rewardsList = overviewData.rewards,
-                        availableFocusPointsBalance = overviewData.availableBalance
-                    )
+            dataFetchTrigger.onStart {
+                emit(Unit)
+            }.flatMapLatest {
+                    getRedemptionCornerOverviewUseCase()
+                }.onStart {
+                    _uiState.update {
+                        it.copy(isLoading = true, isError = false)
+                    }
+                }.catch {
+                    _uiState.update {
+                        it.copy(isLoading = false, isError = true)
+                    }
+                }.collectLatest { overviewData ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = false,
+                            rewardsList = overviewData.rewards,
+                            availableFocusPointsBalance = overviewData.availableBalance
+                        )
+                    }
                 }
-            }
         }
     }
 
@@ -76,6 +96,10 @@ class RedemptionCornerViewModel @Inject constructor(
                         RedemptionCornerUiEffect.LaunchRewardsSetup
                     )
                 }
+            }
+
+            RedemptionCornerEvent.RetryClick -> {
+                dataFetchTrigger.tryEmit(Unit)
             }
         }
     }

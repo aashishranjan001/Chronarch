@@ -1,6 +1,8 @@
 package com.aashish.writetime.history.presentation.model
 
 data class HistoryUiState(
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val tabs: List<HistoryTab>,
     val selectedTab: HistoryTab,
     val allSessions: List<SessionHistoryItem> = emptyList(),

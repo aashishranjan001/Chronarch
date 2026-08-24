@@ -1,10 +1,12 @@
 package com.aashish.writetime.history.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.Text
@@ -14,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aashish.writetime.R
+import com.aashish.writetime.common.ui.components.NoDataScreen
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.history.presentation.components.FilterBottomSheet
 import com.aashish.writetime.history.presentation.components.HistoryScreenTopBar
@@ -27,6 +31,7 @@ import com.aashish.writetime.history.presentation.components.SessionsHistorySect
 import com.aashish.writetime.history.presentation.components.TransactionsHistorySection
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
+import com.aashish.writetime.redemption.presentation.redemption_corner.RedemptionCornerEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -72,22 +77,39 @@ fun HistoryScreen(
     onEvent: (HistoryEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        HistoryScreenTopBar(
-            tabList = uiState.tabs,
-            currentPage = pagerState.currentPage,
-            onTabClick = {
-                onEvent(HistoryEvent.TabSelect(it))
-            },
-            onFilterMenuClick = { onEvent(HistoryEvent.FilterMenuIconClick) }
-        )
 
-        HorizontalPager(
-            state = pagerState
-        ) { page ->
-            when (uiState.tabs[page]) {
-                HistoryTab.SESSIONS -> SessionsHistorySection(uiState.filteredSessions, uiState.areSessionFilteredApplied)
-                HistoryTab.TRANSACTIONS -> TransactionsHistorySection(uiState.filteredTransactions, uiState.areTransactionFiltersApplied)
+    if (uiState.isLoading) {
+        Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else if (uiState.isError) {
+        NoDataScreen(
+            thumbnailResId = R.drawable.app_error,
+            contentDescription = stringResource(R.string.internal_error),
+            title = stringResource(R.string.internal_error),
+            message = stringResource(R.string.history_fetch_error_message),
+            actionText = stringResource(R.string.retry),
+            actionClick = {
+                onEvent(HistoryEvent.RetryClick)
+            })
+    } else {
+        Column(modifier = modifier.fillMaxSize()) {
+            HistoryScreenTopBar(
+                tabList = uiState.tabs,
+                currentPage = pagerState.currentPage,
+                onTabClick = {
+                    onEvent(HistoryEvent.TabSelect(it))
+                },
+                onFilterMenuClick = { onEvent(HistoryEvent.FilterMenuIconClick) }
+            )
+
+            HorizontalPager(
+                state = pagerState
+            ) { page ->
+                when (uiState.tabs[page]) {
+                    HistoryTab.SESSIONS -> SessionsHistorySection(uiState.filteredSessions, uiState.areSessionFilteredApplied)
+                    HistoryTab.TRANSACTIONS -> TransactionsHistorySection(uiState.filteredTransactions, uiState.areTransactionFiltersApplied)
+                }
             }
         }
     }
@@ -158,6 +180,11 @@ private fun HistoryScreenPreview() {
         pageCount = { HistoryTab.entries.size }
     )
     WriteTimeTheme {
-        HistoryScreen(pagerState, HistoryUiState(HistoryTab.entries, HistoryTab.SESSIONS), {})
+        HistoryScreen(pagerState, HistoryUiState(
+            isLoading = false,
+            isError = false,
+            tabs = HistoryTab.entries,
+            selectedTab = HistoryTab.SESSIONS
+        ), {})
     }
 }

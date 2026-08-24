@@ -1,9 +1,10 @@
 package com.aashish.writetime.redemption.presentation.redemption_corner
 
 import com.aashish.writetime.redemption.domain.model.RedeemableReward
-import com.aashish.writetime.redemption.domain.model.Reward
 
 data class RedemptionCornerUiState(
+    val isLoading: Boolean = false,
+    val isError: Boolean = false,
     val rewardsList: List<RedeemableReward> = emptyList(),
     val availableFocusPointsBalance: Int = 0,
     val selectedRedeemableReward: RedeemableReward? = null

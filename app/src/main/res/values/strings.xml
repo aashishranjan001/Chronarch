@@ -117,4 +117,10 @@
     <string name="option_date_custom_range">Custom range</string>
     <string name="date_x_from_y">%1$s - %2$s</string>
     <string name="end_time">End time</string>
+
+    <string name="internal_error">Internal error</string>
+    <string name="internal_error_message">Something went wrong while fetching the data. Please try again</string>
+    <string name="rewards_fetch_error_message">Something went wrong while loading the rewards. Please try again</string>
+    <string name="history_fetch_error_message">Something went wrong while fetching the history. Please try again</string>
+    <string name="retry">Retry</string>
 </resources>

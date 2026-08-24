@@ -18,10 +18,15 @@ import com.aashish.writetime.history.presentation.model.SessionsFilters
 import com.aashish.writetime.history.presentation.model.TransactionsFilters
 import com.aashish.writetime.history.presentation.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -31,11 +36,13 @@ import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     private val historyUseCase: GetHistoryUseCase
 ) : ViewModel() {
 
+    private val dataFetchTrigger = MutableSharedFlow<Unit>()
     private val _uiState = MutableStateFlow(
         HistoryUiState(
             tabs = HistoryTab.entries,
@@ -50,32 +57,46 @@ class HistoryViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            historyUseCase().collectLatest { history ->
-                val allTransactions =
-                    history.transactions.map { transaction -> transaction.toUiModel() }
-                val allSessions = history.sessions.map { session -> session.toUiModel() }
-                _uiState.update { state ->
-                    state.copy(
-                        allTransactions = allTransactions,
-                        allSessions = allSessions,
-                        filteredSessions = allSessions.filter {
-                            _uiState.value.appliedSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
-                                it.toCompletionStatusFilterLabel()
-                            )
-                                    && state.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
-                                it.toDurationFilterLabel()
-                            )
-                                    && meetsDateFilterConstraint(state.appliedSessionsFilters.appliedDateFilter, it.startTime)
-                        },
-                        filteredTransactions = allTransactions.filter {
-                            state.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
-                                it.toTransactionTypeFilterLabel()
-                            )
-                                    && meetsDateFilterConstraint(state.appliedTransactionsFilters.appliedDateFilter, it.timestamp)
-                        }
-                    )
+            dataFetchTrigger.onStart {
+                    emit(Unit)
+                }.flatMapLatest {
+                    historyUseCase()
+                }.onStart {
+                    _uiState.update {
+                        it.copy(isLoading = true, isError = false)
+                    }
+                }.catch {
+                    _uiState.update {
+                        it.copy(isLoading = false, isError = true)
+                    }
+                }.collectLatest { history ->
+                    val allTransactions =
+                        history.transactions.map { transaction -> transaction.toUiModel() }
+                    val allSessions = history.sessions.map { session -> session.toUiModel() }
+                    _uiState.update { state ->
+                        state.copy(
+                            isLoading = false,
+                            isError = false,
+                            allTransactions = allTransactions,
+                            allSessions = allSessions,
+                            filteredSessions = allSessions.filter {
+                                _uiState.value.appliedSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(
+                                    it.toCompletionStatusFilterLabel()
+                                ) && state.appliedSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(
+                                    it.toDurationFilterLabel()
+                                ) && meetsDateFilterConstraint(
+                                    state.appliedSessionsFilters.appliedDateFilter, it.startTime
+                                )
+                            },
+                            filteredTransactions = allTransactions.filter {
+                                state.appliedTransactionsFilters.appliedTypeFilters.isEmptyOrContains(
+                                    it.toTransactionTypeFilterLabel()
+                                ) && meetsDateFilterConstraint(
+                                    state.appliedTransactionsFilters.appliedDateFilter, it.timestamp
+                                )
+                            })
+                    }
                 }
-            }
         }
     }
 
@@ -212,6 +233,10 @@ class HistoryViewModel @Inject constructor(
 
             HistoryEvent.DateRangeFilterOptionClick -> {
                 _uiState.update { it.copy(showDatePickerDialog = true) }
+            }
+
+            HistoryEvent.RetryClick -> {
+                dataFetchTrigger.tryEmit(Unit)
             }
         }
     }

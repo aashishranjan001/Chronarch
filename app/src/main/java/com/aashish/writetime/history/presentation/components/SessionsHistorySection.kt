@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.calculatePercent
+import com.aashish.writetime.common.ui.components.NoDataScreen
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toHumanReadableDurationFormat
 import com.aashish.writetime.common.ui.toReadableLocalDateTime
@@ -25,8 +26,9 @@ fun SessionsHistorySection(
 ) {
 
     if (sessionList.isEmpty()) {
-        NoDataFoundContent(
+        NoDataScreen(
             thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_session_history else R.drawable.no_sessions_found,
+            contentDescription = stringResource(R.string.no_session_history_found_title),
             title = stringResource(R.string.no_session_history_found_title),
             message = stringResource(
                 if (areFiltersApplied) R.string.no_filtered_session_history_found_description else

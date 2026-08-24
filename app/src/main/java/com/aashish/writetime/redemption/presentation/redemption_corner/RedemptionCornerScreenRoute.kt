@@ -2,14 +2,14 @@ package com.aashish.writetime.redemption.presentation.redemption_corner
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -26,9 +26,9 @@ import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.components.ConfirmationBottomSheet
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
+import com.aashish.writetime.common.ui.components.NoDataScreen
 import com.aashish.writetime.redemption.presentation.redemption_corner.components.RedemptionCornerTopAppBar
 import com.aashish.writetime.redemption.presentation.redemption_corner.components.RewardItem
-import com.aashish.writetime.redemption.presentation.redemption_corner.components.RewardsSetupPendingContent
 
 
 @SuppressLint("LocalContextGetResourceValueCall")
@@ -72,71 +72,90 @@ fun RedemptionCornerScreen(
 ) {
     val spacing = LocalSpacing.current
 
-    Scaffold(
-        topBar = {
-            RedemptionCornerTopAppBar(
-                title = stringResource(R.string.title_redemption_corner),
-                balance = uiState.availableFocusPointsBalance
-            )
-        },
-        contentWindowInsets = WindowInsets()
-    ) { innerPadding ->
-        Column(
-            modifier = modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            if (uiState.showRewardsSetup) {
-                RewardsSetupPendingContent(
-                    onProceedClick = { onEvent(RedemptionCornerEvent.SetupRewardActions) },
-                    modifier = Modifier
-                        .weight(1f)
-                        .verticalScroll(rememberScrollState())
+    if (uiState.isLoading) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else if (uiState.isError) (
+            NoDataScreen(
+                thumbnailResId = R.drawable.app_error,
+                contentDescription = stringResource(R.string.internal_error),
+                title = stringResource(R.string.internal_error),
+                message = stringResource(R.string.rewards_fetch_error_message),
+                actionText = stringResource(R.string.retry),
+                actionClick = {
+                    onEvent(RedemptionCornerEvent.RetryClick)
+                })
+    ) else {
+        Scaffold(
+            topBar = {
+                RedemptionCornerTopAppBar(
+                    title = stringResource(R.string.title_redemption_corner),
+                    balance = uiState.availableFocusPointsBalance
                 )
-            } else {
-                LazyColumn(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .padding(spacing.medium)
-                        .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
-                ) {
-                    items(items = uiState.rewardsList, key = { it.id }) { reward ->
-                        RewardItem(
-                            name = reward.name,
-                            value = reward.cost,
-                            isEnabled = reward.isRedeemable,
-                            onItemClick = {
-                                onEvent(
-                                    RedemptionCornerEvent.RewardActionClick(reward)
-                                )
-                            })
-                    }
-                }
-                uiState.selectedRedeemableReward?.let {
-                    ConfirmationBottomSheet(
-                        heading = stringResource(R.string.title_redeem_focus_points),
-                        message = stringResource(
-                            R.string.message_redeem_x_points_for_y_action,
-                            it.cost,
-                            it.name
-                        ),
-                        confirmText = stringResource(R.string.confirm),
-                        dismissText = stringResource(R.string.cancel),
-                        onDismissRequest = {
-                            onEvent(RedemptionCornerEvent.DismissRewardsRedeemDialog)
-                        },
-                        onConfirmClick = {
-                            onEvent(
-                                RedemptionCornerEvent.RewardsRedeemDialogOptionClick(true)
-                            )
-                        },
-                        onDismissClick = {
-                            onEvent(
-                                RedemptionCornerEvent.RewardsRedeemDialogOptionClick(false)
-                            )
-                        }
+            },
+            contentWindowInsets = WindowInsets()
+        ) { innerPadding ->
+            Column(
+                modifier = modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            ) {
+                if (uiState.showRewardsSetup) {
+                    NoDataScreen(
+                        thumbnailResId = R.drawable.pending_setup,
+                        contentDescription = stringResource(R.string.setup_actions_message) ,
+                        title = stringResource(R.string.setup_actions_message),
+                        message = stringResource(R.string.setup_actions_message),
+                        actionText = stringResource(R.string.proceed),
+                        actionClick = { onEvent(RedemptionCornerEvent.SetupRewardActions) },
+                        modifier = Modifier.weight(1f)
                     )
+                } else {
+                    LazyColumn(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .padding(spacing.medium)
+                            .weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
+                    ) {
+                        items(items = uiState.rewardsList, key = { it.id }) { reward ->
+                            RewardItem(
+                                name = reward.name,
+                                value = reward.cost,
+                                isEnabled = reward.isRedeemable,
+                                onItemClick = {
+                                    onEvent(
+                                        RedemptionCornerEvent.RewardActionClick(reward)
+                                    )
+                                })
+                        }
+                    }
+                    uiState.selectedRedeemableReward?.let {
+                        ConfirmationBottomSheet(
+                            heading = stringResource(R.string.title_redeem_focus_points),
+                            message = stringResource(
+                                R.string.message_redeem_x_points_for_y_action,
+                                it.cost,
+                                it.name
+                            ),
+                            confirmText = stringResource(R.string.confirm),
+                            dismissText = stringResource(R.string.cancel),
+                            onDismissRequest = {
+                                onEvent(RedemptionCornerEvent.DismissRewardsRedeemDialog)
+                            },
+                            onConfirmClick = {
+                                onEvent(
+                                    RedemptionCornerEvent.RewardsRedeemDialogOptionClick(true)
+                                )
+                            },
+                            onDismissClick = {
+                                onEvent(
+                                    RedemptionCornerEvent.RewardsRedeemDialogOptionClick(false)
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

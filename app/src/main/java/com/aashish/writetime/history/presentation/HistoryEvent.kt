@@ -20,6 +20,8 @@ sealed class HistoryEvent {
     data class DaterFilterApplied(val from: Long?, val to: Long?): HistoryEvent()
     data object DateRangePickerDismissed: HistoryEvent()
 
+    data object RetryClick: HistoryEvent()
+
 }
 
 sealed class HistoryUiEffect {

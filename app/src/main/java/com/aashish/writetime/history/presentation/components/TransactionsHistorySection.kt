@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
+import com.aashish.writetime.common.ui.components.NoDataScreen
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.toReadableLocalDateTime
 import com.aashish.writetime.history.presentation.model.TransactionHistoryItem
@@ -22,8 +23,9 @@ fun TransactionsHistorySection(
     modifier: Modifier = Modifier
 ) {
     if (transactionList.isEmpty()) {
-        NoDataFoundContent(
+        NoDataScreen(
             thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_transactions_found else R.drawable.no_transactions_found,
+            contentDescription = stringResource(R.string.no_transaction_history_found_title),
             title = stringResource(R.string.no_transaction_history_found_title),
             message = stringResource(
                 if (areFiltersApplied)
