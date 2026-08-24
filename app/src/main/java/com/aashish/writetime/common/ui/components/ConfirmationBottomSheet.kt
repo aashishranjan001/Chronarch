@@ -1,6 +1,5 @@
 package com.aashish.writetime.common.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,18 +24,19 @@ import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 fun ConfirmationBottomSheet(
     heading: String,
     message: String,
-    positiveCtaText: String,
-    negativeCtaText: String,
+    confirmText: String,
+    dismissText: String? = null,
     onDismissRequest: () -> Unit,
-    onPositiveClick: () -> Unit,
-    onNegativeClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+    onDismissClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
 
     val spacing = LocalSpacing.current
+
     ModalBottomSheet(
         modifier = modifier,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismissRequest
     ) {
         Column(
             modifier = Modifier
@@ -53,27 +53,29 @@ fun ConfirmationBottomSheet(
             )
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             HorizontalDivider(modifier = Modifier.fillMaxWidth())
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(space = spacing.medium, alignment = Alignment.CenterHorizontally)) {
-                OutlinedButton (
-                    modifier = Modifier.weight(1f),
-                    onClick = onNegativeClick
-                ) {
-                    Text(
-                        text = negativeCtaText,
-                        modifier = Modifier.padding(spacing.small),
-                        style = MaterialTheme.typography.titleMedium
-                    )
+                dismissText?.let {
+                    OutlinedButton (
+                        modifier = Modifier.weight(1f),
+                        onClick = onDismissClick ?: onDismissRequest
+                    ) {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(spacing.small),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                 }
                 Button(
                     modifier = Modifier.weight(1f),
-                    onClick = onPositiveClick
+                    onClick = onConfirmClick
                 ) {
                     Text(
-                        text = positiveCtaText,
+                        text = confirmText,
                         modifier = Modifier.padding(spacing.small),
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -91,10 +93,10 @@ private fun ConfirmationBottomSheetPreview() {
         ConfirmationBottomSheet(
             heading = "Redeem Reward?",
             message = "Redeem for 4 points",
-            positiveCtaText = "Yes",
-            negativeCtaText = "No",
-            onPositiveClick = {},
-            onNegativeClick = {},
+            confirmText = "Yes",
+            dismissText = "No",
+            onConfirmClick = {},
+            onDismissClick = {},
             onDismissRequest = {}
         )
     }

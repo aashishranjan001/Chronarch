@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -140,14 +139,14 @@ fun SetupRewardsScreen(
                             R.string.leave_setup_title
                         ),
                         message = stringResource(R.string.leave_setup_message),
-                        positiveCtaText = stringResource(R.string.leave_setup),
-                        negativeCtaText = stringResource(R.string.continue_setup),
-                        onPositiveClick = {
+                        confirmText = stringResource(R.string.leave_setup),
+                        dismissText = stringResource(R.string.continue_setup),
+                        onConfirmClick = {
                             onEvent(
                                 SetupRewardsEvent.OverlayConfirmClicked(dialog)
                             )
                         },
-                        onNegativeClick = {
+                        onDismissRequest = {
                             onEvent(
                                 SetupRewardsEvent.OverlayDismissed(dialog)
                             )
@@ -178,17 +177,16 @@ fun SetupRewardsScreen(
                     is RewardsSetupOverlayType.DeleteRewardDialog -> {
                         ConfirmationDialog(
                             title = stringResource(R.string.delete_reward_title),
-                            icon = Icons.Default.Delete,
-                            positiveCtaText = stringResource(R.string.action_yes),
-                            negativeCtaText = stringResource(R.string.action_no),
-                            onPositiveClick = {
+                            confirmText = stringResource(R.string.confirm),
+                            dismissText = stringResource(R.string.cancel),
+                            onConfirmClick = {
                                 onEvent(
                                     SetupRewardsEvent.OverlayConfirmClicked(
                                         overlayType = dialog
                                     )
                                 )
                             },
-                            onNegativeClick = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
+                            onDismissRequest = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
                         )
                     }
 
@@ -197,16 +195,16 @@ fun SetupRewardsScreen(
                             title = stringResource(R.string.save_changes_title),
                             message = stringResource(R.string.save_changes_message),
                             icon = Icons.Default.Lock,
-                            positiveCtaText = stringResource(R.string.save),
-                            negativeCtaText = stringResource(R.string.cancel),
-                            onPositiveClick = {
+                            confirmText = stringResource(R.string.save),
+                            dismissText = stringResource(R.string.cancel),
+                            onConfirmClick = {
                                 onEvent(
                                     SetupRewardsEvent.OverlayConfirmClicked(
                                         dialog
                                     )
                                 )
                             },
-                            onNegativeClick = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
+                            onDismissRequest = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
                         )
                     }
 

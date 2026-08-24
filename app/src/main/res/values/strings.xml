@@ -59,10 +59,10 @@
     <string name="rewards_icon">Rewards icon</string>
     <string name="title_redemption_corner">Redemption Corner</string>
     <string name="title_redeem_focus_points">Redeem focus points?</string>
-    <string name="message_redeem_x_points_for_y_action">Redeem %1$d focus points for %2$s</string>
+    <string name="message_redeem_x_points_for_y_action">Redeem %1$d focus points for reward: %2$s</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
-    <string name="reward_redeemed_congratulations_message">Congrats! You’ve well-earned the time to %s. Enjoy it!</string>
+    <string name="reward_redeemed_congratulations_message">Congrats! Enjoy your well-earned time to %s</string>
     <string name="save_rewards">Save rewards</string>
     <string name="reward_name_text_label">Reward Name</string>
     <string name="reward_name_text_input_placeholder">Enter reward name here</string>
@@ -81,7 +81,7 @@
     <string name="deletion_failed">Failed to delete the item. Retry!</string>
     <string name="saving_failed">Failed to save information. Retry!</string>
     <string name="leave_setup_title">Leave Setup?</string>
-    <string name="leave_setup_message">You haven’t completed the setup yet. If you leave now, your progress will be lost and you’ll need to start the setup again.?</string>
+    <string name="leave_setup_message">You haven’t completed the setup yet. If you leave now, your progress will be lost, and you’ll need to start the setup again</string>
     <string name="continue_setup">Continue Setup</string>
     <string name="leave_setup">Leave</string>
     <string name="delete_reward_title">Delete Reward?</string>

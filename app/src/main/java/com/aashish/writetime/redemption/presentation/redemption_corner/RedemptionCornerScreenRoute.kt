@@ -121,17 +121,17 @@ fun RedemptionCornerScreen(
                             it.cost,
                             it.name
                         ),
-                        positiveCtaText = stringResource(R.string.confirm),
-                        negativeCtaText = stringResource(R.string.cancel),
+                        confirmText = stringResource(R.string.confirm),
+                        dismissText = stringResource(R.string.cancel),
                         onDismissRequest = {
                             onEvent(RedemptionCornerEvent.DismissRewardsRedeemDialog)
                         },
-                        onPositiveClick = {
+                        onConfirmClick = {
                             onEvent(
                                 RedemptionCornerEvent.RewardsRedeemDialogOptionClick(true)
                             )
                         },
-                        onNegativeClick = {
+                        onDismissClick = {
                             onEvent(
                                 RedemptionCornerEvent.RewardsRedeemDialogOptionClick(false)
                             )
