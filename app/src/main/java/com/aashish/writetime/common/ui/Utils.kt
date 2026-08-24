@@ -1,5 +1,6 @@
 package com.aashish.writetime.common.ui
 
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -66,6 +67,8 @@ fun LocalDate.toReadableLocalDate(): String {
 fun <Type> Set<Type>.isEmptyOrContains(element: Type): Boolean {
     return this.isEmpty() || this.contains(element)
 }
+
+fun Duration.toCeilSeconds() = (this.toMillis() + 999)/1000
 
 fun <Type> Set<Type>.updateSet(element: Type, shouldKeep: Boolean): Set<Type> {
     return if (shouldKeep) {

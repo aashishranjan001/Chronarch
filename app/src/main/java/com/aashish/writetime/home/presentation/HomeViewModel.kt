@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aashish.writetime.common.domain.model.DurationType
 import com.aashish.writetime.common.domain.usecase.CalculateDailyEarningUseCase
+import com.aashish.writetime.common.ui.toCeilSeconds
 import com.aashish.writetime.home.domain.usecase.AddNewTimerSessionUseCase
 import com.aashish.writetime.home.domain.usecase.GetCurrentDaySessionsOverview
 import com.aashish.writetime.home.domain.usecase.EndTimerSessionUseCase
@@ -69,7 +70,7 @@ class HomeViewModel @Inject constructor(
                                 durationRemainingInSeconds = Duration.between(
                                     Instant.now(),
                                     activeSessionInfo.idealCompletionTime
-                                ).seconds,
+                                ).toCeilSeconds(),
                                 idealEndTime = activeSessionInfo.idealCompletionTime,
                                 duration = activeSessionInfo.durationType.duration
                             )
@@ -81,13 +82,13 @@ class HomeViewModel @Inject constructor(
                 sessionsOverview.activeSession?.let { activeSession ->
                     while (Instant.now() <= activeSession.idealCompletionTime) {
                         _uiState.update {
+                            delay(1.seconds)
                             it.copy(
                                 activeTimer = it.activeTimer?.copy(
-                                    durationRemainingInSeconds = Duration.between(Instant.now(), activeSession.idealCompletionTime).seconds
+                                    durationRemainingInSeconds = Duration.between(Instant.now(), activeSession.idealCompletionTime).toCeilSeconds()
                                 )
                             )
                         }
-                        delay(1.seconds)
                     }
                     _uiState.update {
                         it.copy(dialog = HomeDialog.TimerFinishedInformation(activeSession.durationType.duration.inWholeMinutes))
