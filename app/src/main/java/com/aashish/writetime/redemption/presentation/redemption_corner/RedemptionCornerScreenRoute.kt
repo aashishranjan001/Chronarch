@@ -1,16 +1,9 @@
 package com.aashish.writetime.redemption.presentation.redemption_corner
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,12 +16,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aashish.writetime.R
-import com.aashish.writetime.common.ui.LocalSpacing
-import com.aashish.writetime.common.ui.components.ConfirmationBottomSheet
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.common.ui.components.NoDataScreen
-import com.aashish.writetime.redemption.presentation.redemption_corner.components.RedemptionCornerTopAppBar
-import com.aashish.writetime.redemption.presentation.redemption_corner.components.RewardItem
+import com.aashish.writetime.redemption.presentation.redemption_corner.components.RedemptionCornerContent
 
 
 @SuppressLint("LocalContextGetResourceValueCall")
@@ -70,8 +60,6 @@ fun RedemptionCornerScreen(
     onEvent: (RedemptionCornerEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val spacing = LocalSpacing.current
-
     if (uiState.isLoading) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -85,78 +73,15 @@ fun RedemptionCornerScreen(
                 actionText = stringResource(R.string.retry),
                 actionClick = {
                     onEvent(RedemptionCornerEvent.RetryClick)
-                })
+                },
+                modifier = modifier.fillMaxSize()
+            )
     ) else {
-        Scaffold(
-            topBar = {
-                RedemptionCornerTopAppBar(
-                    title = stringResource(R.string.title_redemption_corner),
-                    balance = uiState.availableFocusPointsBalance
-                )
-            },
-            contentWindowInsets = WindowInsets()
-        ) { innerPadding ->
-            Column(
-                modifier = modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                if (uiState.showRewardsSetup) {
-                    NoDataScreen(
-                        thumbnailResId = R.drawable.pending_setup,
-                        contentDescription = stringResource(R.string.setup_actions_message) ,
-                        title = stringResource(R.string.setup_actions_message),
-                        message = stringResource(R.string.note_one_time_action),
-                        actionText = stringResource(R.string.proceed),
-                        actionClick = { onEvent(RedemptionCornerEvent.SetupRewardActions) },
-                    )
-                } else {
-                    LazyColumn(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .padding(spacing.medium),
-                        verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
-                    ) {
-                        items(items = uiState.rewardsList, key = { it.id }) { reward ->
-                            RewardItem(
-                                name = reward.name,
-                                value = reward.cost,
-                                isEnabled = reward.isRedeemable,
-                                onItemClick = {
-                                    onEvent(
-                                        RedemptionCornerEvent.RewardActionClick(reward)
-                                    )
-                                })
-                        }
-                    }
-                    uiState.selectedRedeemableReward?.let {
-                        ConfirmationBottomSheet(
-                            heading = stringResource(R.string.title_redeem_focus_points),
-                            message = stringResource(
-                                R.string.message_redeem_x_points_for_y_action,
-                                it.cost,
-                                it.name
-                            ),
-                            confirmText = stringResource(R.string.confirm),
-                            dismissText = stringResource(R.string.cancel),
-                            onDismissRequest = {
-                                onEvent(RedemptionCornerEvent.DismissRewardsRedeemDialog)
-                            },
-                            onConfirmClick = {
-                                onEvent(
-                                    RedemptionCornerEvent.RewardsRedeemDialogOptionClick(true)
-                                )
-                            },
-                            onDismissClick = {
-                                onEvent(
-                                    RedemptionCornerEvent.RewardsRedeemDialogOptionClick(false)
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-        }
+        RedemptionCornerContent(
+            uiState = uiState,
+            onEvent = onEvent,
+            modifier = modifier.fillMaxSize()
+        )
     }
 }
 
@@ -165,8 +90,8 @@ fun RedemptionCornerScreen(
 private fun RedemptionCornerScreenPreview() {
     WriteTimeTheme {
         RedemptionCornerScreen(
-            RedemptionCornerUiState(),
-            {}
+            uiState = RedemptionCornerUiState(),
+            onEvent = {}
         )
     }
 }
