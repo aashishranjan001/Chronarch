@@ -2,12 +2,11 @@ package com.aashish.writetime.history.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -43,14 +42,14 @@ fun FilterSheetCategoriesSection(
             item {
                 Row(
                     modifier = Modifier
-                        .height(60.dp)
+                        .heightIn(max = 80.dp)
                         .clickable {
                             onCategoryClick(categoryState.category)
                         }
+                        .fillMaxWidth()
                         .background(if (categoryState.showSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
                         .padding(spacing.medium)
                     ,
-                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (categoryState.hasAnyFilterOptionSelected) {
@@ -72,8 +71,7 @@ fun FilterSheetCategoriesSection(
                     }
                     Text(
                         text = stringResource(labelRes),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.weight(1f)
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }

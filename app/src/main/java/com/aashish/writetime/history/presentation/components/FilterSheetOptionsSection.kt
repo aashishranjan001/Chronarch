@@ -1,13 +1,10 @@
 package com.aashish.writetime.history.presentation.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -46,80 +43,78 @@ fun FilterSheetOptionsSection(
         .padding(spacing.medium), verticalArrangement = Arrangement.spacedBy(spacing.medium)) {
         options.forEach { option ->
             item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    when(option) {
-                        is FilterOptionItem.DateRange -> {
-                            Row(modifier = Modifier.clickable {
-                                onCustomDateRangeClicked()
-                            }, verticalAlignment = Alignment.CenterVertically) {
-                                IconButton(
-                                    onClick = onCustomDateRangeClicked
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.CalendarMonth,
-                                        contentDescription = stringResource(R.string.choose_date)
-                                    )
-                                }
-
-                                TextButton(
-                                    onClick = onCustomDateRangeClicked
-                                ) {
-                                    if (option.startDate != null && option.endDate != null) {
-                                        Text(
-                                            stringResource(
-                                                R.string.date_x_from_y,
-                                                option.startDate.toReadableLocalDate(),
-                                                option.endDate.toReadableLocalDate()
-                                            )
-                                        )
-                                    } else {
-                                        Text(stringResource(R.string.option_date_custom_range))
-                                    }
-                                }
-                            }
-
+                when(option) {
+                    is FilterOptionItem.DateRange -> {
+                        DateRangeFilterOption(
+                            option = option,
+                            onClick = onCustomDateRangeClicked,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    is FilterOptionItem.Radio -> {
+                        val labelRes = when (option.option) {
+                            FilterOption.Date.ThisMonth -> R.string.option_date_this_month
+                            FilterOption.Date.ThisWeek -> R.string.option_date_this_week
+                            else -> null
                         }
-                        is FilterOptionItem.Radio -> {
-                            val labelRes = when (option.option) {
-                                FilterOption.Date.ThisMonth -> R.string.option_date_this_month
-                                FilterOption.Date.ThisWeek -> R.string.option_date_this_week
-                                else -> null
-                            }
-                            labelRes?.let {
-                                RadioFilterOption(
-                                    labelRes = it,
-                                    selected = option.isSelected,
-                                    onClick = { onFilterRadioOptionClicked(option) }
-                                )
-                            }
-                        }
-                        is FilterOptionItem.Checkbox -> {
-                            val labelRes = when(option.option) {
-                                FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
-                                FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
-                                FilterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
-                                FilterOption.SessionFilter.DurationType.ShortType -> R.string.option_short_duration
-                                FilterOption.TransactionFilter.Type.TaskCredit -> R.string.option_task_credit_earning
-                                FilterOption.TransactionFilter.Type.Redemption -> R.string.option_redemption_debit
-                                FilterOption.TransactionFilter.Type.Bonus -> R.string.option_bonus_earning
-                                else -> null
-                            }
-
-                            labelRes?.let {
-                                CheckboxFilterOption(
-                                    labelRes = it,
-                                    option.isSelected,
-                                    onCheckedChange = { onFilterCheckboxOptionClicked(option, it) })
-                            }
-
+                        labelRes?.let {
+                            RadioFilterOption(
+                                labelRes = it,
+                                selected = option.isSelected,
+                                onClick = { onFilterRadioOptionClicked(option) },
+                                modifier = Modifier.fillMaxWidth()
+                            )
                         }
                     }
+                    is FilterOptionItem.Checkbox -> {
+                        val labelRes = when(option.option) {
+                            FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
+                            FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
+                            FilterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
+                            FilterOption.SessionFilter.DurationType.ShortType -> R.string.option_short_duration
+                            FilterOption.TransactionFilter.Type.TaskCredit -> R.string.option_task_credit_earning
+                            FilterOption.TransactionFilter.Type.Redemption -> R.string.option_redemption_debit
+                            FilterOption.TransactionFilter.Type.Bonus -> R.string.option_bonus_earning
+                            else -> null
+                        }
+
+                        labelRes?.let {
+                            CheckboxFilterOption(
+                                labelRes = it,
+                                option.isSelected,
+                                onCheckedChange = { onFilterCheckboxOptionClicked(option, it) },
+                                modifier = Modifier.fillMaxWidth())
+                        }
+
+                    }
                 }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun DateRangeFilterOption(option: FilterOptionItem.DateRange, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically
+        ) {
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = Icons.Default.CalendarMonth,
+                contentDescription = stringResource(R.string.choose_date)
+            )
+        }
+        TextButton(onClick = onClick) {
+            if (option.startDate != null && option.endDate != null) {
+                Text(
+                    stringResource(
+                        R.string.date_from_x_to_y,
+                        option.startDate.toReadableLocalDate(),
+                        option.endDate.toReadableLocalDate()
+                    )
+                )
+            } else {
+                Text(stringResource(R.string.option_date_custom_range))
             }
         }
     }
@@ -132,16 +127,24 @@ fun RadioFilterOption(
     onClick: () -> Unit,
     modifier: Modifier = Modifier) {
 
-    RadioButton(
+    Row(
         modifier = modifier,
-        selected = selected,
-        onClick = onClick
-    )
-    Spacer(modifier = Modifier.width(LocalSpacing.current.small))
-    Text(
-        text = stringResource(labelRes),
-        style = MaterialTheme.typography.bodyMedium
-    )
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RadioButton(
+            modifier = Modifier,
+            selected = selected,
+            onClick = onClick
+        )
+        TextButton(
+            onClick = onClick
+        ) {
+            Text(
+                text = stringResource(labelRes),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }
 
 
@@ -152,16 +155,24 @@ fun CheckboxFilterOption(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier) {
 
-    Checkbox(
+    Row(
         modifier = modifier,
-        checked = isChecked,
-        onCheckedChange = { onCheckedChange(it) }
-    )
-    Spacer(modifier = Modifier.width(LocalSpacing.current.small))
-    Text(
-        text = stringResource(labelRes),
-        style = MaterialTheme.typography.bodyMedium
-    )
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Checkbox(
+            modifier = Modifier,
+            checked = isChecked,
+            onCheckedChange = { onCheckedChange(it) }
+        )
+        TextButton(
+            onClick = { onCheckedChange(!isChecked) }
+        ) {
+            Text(
+                text = stringResource(labelRes),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }
 
 @Preview

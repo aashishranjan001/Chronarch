@@ -106,17 +106,15 @@ fun RedemptionCornerScreen(
                         thumbnailResId = R.drawable.pending_setup,
                         contentDescription = stringResource(R.string.setup_actions_message) ,
                         title = stringResource(R.string.setup_actions_message),
-                        message = stringResource(R.string.setup_actions_message),
+                        message = stringResource(R.string.note_one_time_action),
                         actionText = stringResource(R.string.proceed),
                         actionClick = { onEvent(RedemptionCornerEvent.SetupRewardActions) },
-                        modifier = Modifier.weight(1f)
                     )
                 } else {
                     LazyColumn(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(spacing.medium)
-                            .weight(1f),
+                            .padding(spacing.medium),
                         verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
                     ) {
                         items(items = uiState.rewardsList, key = { it.id }) { reward ->

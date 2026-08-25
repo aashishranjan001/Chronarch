@@ -45,7 +45,7 @@ fun HistoryScreenTopBar(
             divider = {},
             selectedTabIndex = currentPage,
             modifier = modifier
-                .fillMaxWidth(0.6f)
+                .fillMaxWidth(0.65f)
                 .clip(CircleShape)
                 .align(
                     Alignment.Center
@@ -82,32 +82,31 @@ fun HistoryScreenTopBar(
             }
         }
 
-        Box(modifier = Modifier
-            .align(Alignment.CenterEnd)
-            .padding(horizontal = spacing.medium)) {
-
-            Box {
-                IconButton(
-                    modifier = Modifier.align(Alignment.Center),
-                    onClick = onFilterMenuClick
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Tune,
-                        contentDescription = stringResource(R.string.filter)
-                    )
-                }
-                if (showFilterAppliedBadge) {
-                    Box(
-                        modifier = Modifier
-                            .padding(spacing.small)
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(
-                                MaterialTheme.colorScheme.secondary
-                            )
-                            .align(Alignment.TopEnd)
-                    )
-                }
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(horizontal = spacing.medium)
+        ) {
+            IconButton(
+                modifier = Modifier.align(Alignment.Center),
+                onClick = onFilterMenuClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Tune,
+                    contentDescription = stringResource(R.string.filter)
+                )
+            }
+            if (showFilterAppliedBadge) {
+                Box(
+                    modifier = Modifier
+                        .padding(spacing.small)
+                        .size(6.dp)
+                        .clip(CircleShape)
+                        .background(
+                            MaterialTheme.colorScheme.secondary
+                        )
+                        .align(Alignment.TopEnd)
+                )
             }
         }
     }
