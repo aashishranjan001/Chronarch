@@ -31,7 +31,6 @@ import com.aashish.writetime.history.presentation.components.SessionsHistorySect
 import com.aashish.writetime.history.presentation.components.TransactionsHistorySection
 import com.aashish.writetime.history.presentation.model.HistoryTab
 import com.aashish.writetime.history.presentation.model.HistoryUiState
-import com.aashish.writetime.redemption.presentation.redemption_corner.RedemptionCornerEvent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -97,18 +96,26 @@ fun HistoryScreen(
             HistoryScreenTopBar(
                 tabList = uiState.tabs,
                 currentPage = pagerState.currentPage,
+                showFilterAppliedBadge = uiState.showFilterAppliedBadge,
                 onTabClick = {
                     onEvent(HistoryEvent.TabSelect(it))
                 },
-                onFilterMenuClick = { onEvent(HistoryEvent.FilterMenuIconClick) }
+                onFilterMenuClick = { onEvent(HistoryEvent.FilterMenuIconClick) },
             )
 
             HorizontalPager(
                 state = pagerState
             ) { page ->
                 when (uiState.tabs[page]) {
-                    HistoryTab.SESSIONS -> SessionsHistorySection(uiState.filteredSessions, uiState.areSessionFilteredApplied)
-                    HistoryTab.TRANSACTIONS -> TransactionsHistorySection(uiState.filteredTransactions, uiState.areTransactionFiltersApplied)
+                    HistoryTab.SESSIONS -> SessionsHistorySection(
+                        sessionList = uiState.filteredSessions,
+                        areFiltersApplied = uiState.areSessionFilteredApplied,
+                        onResetFilters = { onEvent(HistoryEvent.ResetAppliedFilters) })
+
+                    HistoryTab.TRANSACTIONS -> TransactionsHistorySection(
+                        transactionList = uiState.filteredTransactions,
+                        areFiltersApplied = uiState.areTransactionFiltersApplied,
+                        onResetFilters = { onEvent(HistoryEvent.ResetAppliedFilters) })
                 }
             }
         }
@@ -119,8 +126,8 @@ fun HistoryScreen(
             categories = uiState.filterCategories,
             options = uiState.filterOptions,
             onDismiss = { onEvent(HistoryEvent.DismissFilterMenu) },
-            onClearFilter = { onEvent(HistoryEvent.ClearFilter) },
-            onApplyFilter = { onEvent(HistoryEvent.ApplyFilter) },
+            onClearFilter = { onEvent(HistoryEvent.ClearDraftFilters) },
+            onApplyFilter = { onEvent(HistoryEvent.ApplyDraftFilters) },
             onFilterCategoryClick = { category ->
                 onEvent(
                     HistoryEvent.FilterCategorySelected(category)

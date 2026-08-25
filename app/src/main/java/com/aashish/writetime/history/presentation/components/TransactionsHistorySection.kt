@@ -20,6 +20,7 @@ import com.aashish.writetime.history.presentation.model.TransactionHistoryItem
 fun TransactionsHistorySection(
     transactionList: List<TransactionHistoryItem>,
     areFiltersApplied: Boolean,
+    onResetFilters: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (transactionList.isEmpty()) {
@@ -32,7 +33,9 @@ fun TransactionsHistorySection(
                     R.string.no_filtered_transaction_history_found_description
                 else
                     R.string.no_transaction_history_found_description
-            )
+            ),
+            actionText = stringResource(R.string.reset_filter).takeIf { areFiltersApplied },
+            actionClick = onResetFilters
         )
     } else {
         val spacing = LocalSpacing.current
@@ -58,6 +61,9 @@ fun TransactionsHistorySection(
 @Composable
 private fun TransactionsHistorySectionPreview() {
     WriteTimeTheme {
-        TransactionsHistorySection(emptyList(), false)
+        TransactionsHistorySection(
+            transactionList = emptyList(),
+            areFiltersApplied = false,
+            onResetFilters = {})
     }
 }

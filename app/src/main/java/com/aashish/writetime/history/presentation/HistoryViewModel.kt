@@ -135,14 +135,21 @@ class HistoryViewModel @Inject constructor(
                 _uiState.update { it.copy(selectedTab = it.tabs[event.tabIndex]) }
             }
 
-            HistoryEvent.ApplyFilter -> {
+            HistoryEvent.ApplyDraftFilters -> {
                 when(_uiState.value.selectedTab) {
-                    HistoryTab.SESSIONS -> applySessionsFilter()
-                    HistoryTab.TRANSACTIONS -> applyTransactionsFilter()
+                    HistoryTab.SESSIONS -> applySessionsFilter(_uiState.value.draftSessionsFilters)
+                    HistoryTab.TRANSACTIONS -> applyTransactionsFilter(_uiState.value.draftTransactionsFilters)
                 }
             }
 
-            HistoryEvent.ClearFilter -> {
+            HistoryEvent.ResetAppliedFilters -> {
+                when (_uiState.value.selectedTab) {
+                    HistoryTab.SESSIONS -> applySessionsFilter(SessionsFilters())
+                    HistoryTab.TRANSACTIONS -> applyTransactionsFilter(TransactionsFilters())
+                }
+            }
+
+            HistoryEvent.ClearDraftFilters -> {
                 _uiState.update { state ->
                     when (state.selectedTab) {
                         HistoryTab.SESSIONS -> state.copy(
@@ -301,33 +308,35 @@ class HistoryViewModel @Inject constructor(
 
     }
 
-    private fun applyTransactionsFilter() {
-        _uiState.value.draftTransactionsFilters?.let { draftTransactionFilters ->
+    private fun applyTransactionsFilter(filters: TransactionsFilters?) {
+        filters?.let { transactionFilters ->
             _uiState.update { state ->
                 state.copy(
                     filteredTransactions = state.allTransactions.filter {
-                        draftTransactionFilters.appliedTypeFilters.isEmptyOrContains(it.toTransactionTypeFilterLabel())
-                                && meetsDateFilterConstraint(draftTransactionFilters.appliedDateFilter, it.timestamp)
+                        transactionFilters.appliedTypeFilters.isEmptyOrContains(it.toTransactionTypeFilterLabel())
+                                && meetsDateFilterConstraint(transactionFilters.appliedDateFilter, it.timestamp)
                     },
-                    appliedTransactionsFilters = draftTransactionFilters,
+                    appliedTransactionsFilters = transactionFilters,
                     draftTransactionsFilters = null,
+                    filterCategories = emptyList(),
                     filterOptions = emptyList(),
                 )
             }
         }
     }
 
-    private fun applySessionsFilter() {
-        _uiState.value.draftSessionsFilters?.let { draftSessionsFilters ->
+    private fun applySessionsFilter(filters: SessionsFilters?) {
+        filters?.let { sessionFilters ->
             _uiState.update { state ->
                 state.copy(
                     filteredSessions = state.allSessions.filter {
-                        draftSessionsFilters.appliedCompletionStatusFilters.isEmptyOrContains(it.toCompletionStatusFilterLabel())
-                                && draftSessionsFilters.appliedDurationTypeFilters.isEmptyOrContains(it.toDurationFilterLabel())
-                                && meetsDateFilterConstraint(draftSessionsFilters.appliedDateFilter, it.startTime)
+                        sessionFilters.appliedCompletionStatusFilters.isEmptyOrContains(it.toCompletionStatusFilterLabel())
+                                && sessionFilters.appliedDurationTypeFilters.isEmptyOrContains(it.toDurationFilterLabel())
+                                && meetsDateFilterConstraint(sessionFilters.appliedDateFilter, it.startTime)
                     },
-                    appliedSessionsFilters = draftSessionsFilters,
+                    appliedSessionsFilters = sessionFilters,
                     draftSessionsFilters = null,
+                    filterCategories = emptyList(),
                     filterOptions = emptyList(),
                 )
             }

@@ -27,4 +27,7 @@ data class HistoryUiState(
 
     val showFilterBottomSheet
         get() = draftSessionsFilters!= null || draftTransactionsFilters != null
+
+    val showFilterAppliedBadge
+        get() = (selectedTab == HistoryTab.SESSIONS && areSessionFilteredApplied) || (selectedTab == HistoryTab.TRANSACTIONS && areTransactionFiltersApplied)
 }

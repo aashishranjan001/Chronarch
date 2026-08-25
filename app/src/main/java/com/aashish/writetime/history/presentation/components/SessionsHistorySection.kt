@@ -22,6 +22,7 @@ import com.aashish.writetime.history.presentation.model.SessionHistoryItem
 fun SessionsHistorySection(
     sessionList: List<SessionHistoryItem>,
     areFiltersApplied: Boolean,
+    onResetFilters: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -33,7 +34,9 @@ fun SessionsHistorySection(
             message = stringResource(
                 if (areFiltersApplied) R.string.no_filtered_session_history_found_description else
                     R.string.no_session_history_found_description
-            )
+            ),
+            actionText = stringResource(R.string.reset_filter).takeIf { areFiltersApplied },
+            actionClick = onResetFilters
         )
     } else {
         val spacing = LocalSpacing.current
@@ -62,6 +65,6 @@ fun SessionsHistorySection(
 @Composable
 private fun SessionsHistorySectionPreview() {
     WriteTimeTheme {
-        SessionsHistorySection(emptyList(), false)
+        SessionsHistorySection(sessionList = emptyList(), areFiltersApplied = false, onResetFilters = {})
     }
 }

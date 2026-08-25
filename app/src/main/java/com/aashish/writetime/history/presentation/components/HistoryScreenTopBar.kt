@@ -1,9 +1,11 @@
 package com.aashish.writetime.history.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
@@ -30,6 +32,7 @@ import com.aashish.writetime.history.presentation.model.HistoryTab
 fun HistoryScreenTopBar(
     tabList: List<HistoryTab>,
     currentPage: Int,
+    showFilterAppliedBadge: Boolean,
     onTabClick: (Int) -> Unit,
     onFilterMenuClick: () -> Unit,
     modifier: Modifier = Modifier) {
@@ -79,15 +82,32 @@ fun HistoryScreenTopBar(
             }
         }
 
-        // Filter icon and popup
-        Box(modifier = Modifier.align(Alignment.CenterEnd).padding(horizontal = spacing.medium)) {
-            IconButton(
-                onClick = onFilterMenuClick
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Tune,
-                    contentDescription = stringResource(R.string.filter)
-                )
+        Box(modifier = Modifier
+            .align(Alignment.CenterEnd)
+            .padding(horizontal = spacing.medium)) {
+
+            Box {
+                IconButton(
+                    modifier = Modifier.align(Alignment.Center),
+                    onClick = onFilterMenuClick
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Tune,
+                        contentDescription = stringResource(R.string.filter)
+                    )
+                }
+                if (showFilterAppliedBadge) {
+                    Box(
+                        modifier = Modifier
+                            .padding(spacing.small)
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(
+                                MaterialTheme.colorScheme.secondary
+                            )
+                            .align(Alignment.TopEnd)
+                    )
+                }
             }
         }
     }
@@ -99,7 +119,11 @@ fun HistoryScreenTopBar(
 private fun HistoryScreenTopBarPreview() {
     WriteTimeTheme {
         HistoryScreenTopBar(
-            HistoryTab.entries, 1, {}, {}
+            tabList = HistoryTab.entries,
+            currentPage = 1,
+            showFilterAppliedBadge = true,
+            onTabClick = {},
+            onFilterMenuClick = {}
         )
     }
 }

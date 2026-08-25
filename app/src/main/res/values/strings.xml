@@ -44,6 +44,7 @@
     <string name="points_redemption_activity">Points redemption activity</string>
     <string name="filter">Filter</string>
     <string name="clear_filter">Clear Filters</string>
+    <string name="reset_filter">Reset Filters</string>
     <string name="apply_filters">Apply</string>
     <string name="transaction_filter_menu_item_all">All</string>
     <string name="transaction_filter_menu_item_task_credit">Task Credit</string>
