@@ -94,7 +94,7 @@ class SetupRewardsViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         overlay = null,
-                        currentEditingReward = it.currentEditingReward.takeIf { event.overlayType != AddRewardBottomSheet && event.overlayType != UpdateRewardBottomSheet },
+                        currentEditingReward = null
                     )
                 }
             }
