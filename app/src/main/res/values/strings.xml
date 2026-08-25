@@ -74,11 +74,11 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="add_reward">Add Reward</string>
-    <string name="added_successfully">Added Successfully</string>
-    <string name="updated_successfully">Updated Successfully</string>
     <string name="deleted_successfully">Deleted Successfully</string>
     <string name="addition_failed">Failed to add the item. Retry!</string>
     <string name="updated_failed">Failed to update the item. Retry!</string>
+    <string name="reward_cost_value_error">Failed! Reward cost should be greater than 0</string>
+    <string name="invalid_reward_input">Failed! Please provide valid inputs</string>
     <string name="deletion_failed">Failed to delete the item. Retry!</string>
     <string name="saving_failed">Failed to save information. Retry!</string>
     <string name="leave_setup_title">Leave Setup?</string>

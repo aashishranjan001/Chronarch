@@ -108,9 +108,7 @@ class SetupRewardsViewModel @Inject constructor(
     private fun handleOverlayConfirmClicked(overlayType: RewardsSetupOverlayType) {
         when (overlayType) {
 
-            AddRewardBottomSheet -> addActionReward()
-
-            UpdateRewardBottomSheet -> updateActionReward()
+            AddRewardBottomSheet, UpdateRewardBottomSheet -> addOrUpdateReward(overlayType)
 
             AbortSetupDialog -> {
                 _uiState.update { it.copy(overlay = null) }
@@ -139,50 +137,31 @@ class SetupRewardsViewModel @Inject constructor(
         }
     }
 
-    private fun addActionReward() {
+    private fun addOrUpdateReward(overlayType: RewardsSetupOverlayType) {
         val transformedRewardItem = _uiState.value.currentEditingReward?.toRewardSetupItem()
-
         viewModelScope.launch {
-            if (transformedRewardItem != null) {
+            if (transformedRewardItem == null) {
+                _uiState.update {
+                    it.copy(overlay = null)
+                }
+                _uiEffect.send(SetupRewardsUiEffect.InvalidRewardInputError)
+            } else if (transformedRewardItem.cost <= 0) {
+                _uiState.update {
+                    it.copy(overlay = null)
+                }
+                _uiEffect.send(SetupRewardsUiEffect.RewardCostValueErrorSnackbar)
+            } else {
                 _uiState.update {
                     it.copy(
-                        addedRewardItems = it.addedRewardItems + transformedRewardItem,
+                        addedRewardItems = when (overlayType) {
+                            AddRewardBottomSheet -> it.addedRewardItems + transformedRewardItem
+                            UpdateRewardBottomSheet -> it.addedRewardItems.map { rewardItem -> if (rewardItem.id == transformedRewardItem.id) transformedRewardItem else rewardItem }
+                            else -> it.addedRewardItems
+                        },
                         currentEditingReward = null,
                         overlay = null
                     )
                 }
-                _uiEffect.send(SetupRewardsUiEffect.RewardAddedSnackbar(true))
-            } else {
-                _uiState.update {
-                    it.copy(
-                        overlay = null
-                    )
-                }
-                _uiEffect.send(SetupRewardsUiEffect.RewardAddedSnackbar(false))
-            }
-        }
-    }
-
-    private fun updateActionReward() {
-        val transformedRewardItem = _uiState.value.currentEditingReward?.toRewardSetupItem()
-
-        viewModelScope.launch {
-            if (transformedRewardItem != null) {
-                _uiState.update {
-                    it.copy(
-                        addedRewardItems = it.addedRewardItems.map { listItem -> if (listItem.id == transformedRewardItem.id) transformedRewardItem else listItem },
-                        currentEditingReward = null,
-                        overlay = null
-                    )
-                }
-                _uiEffect.send(SetupRewardsUiEffect.RewardUpdatedSnackbar(true))
-            } else {
-                _uiState.update {
-                    it.copy(
-                        overlay = null
-                    )
-                }
-                _uiEffect.send(SetupRewardsUiEffect.RewardUpdatedSnackbar(false))
             }
         }
     }

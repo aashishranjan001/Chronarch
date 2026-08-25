@@ -56,11 +56,6 @@ fun SetupRewardsScreenRoute(
                 SetupRewardsUiEffect.Finish -> {
                     onFinish()
                 }
-                is SetupRewardsUiEffect.RewardAddedSnackbar -> snackbarHostState.showSnackbar(
-                    context.getString(
-                        if (uiEffect.isSuccess) R.string.added_successfully else R.string.addition_failed
-                    )
-                )
 
                 SetupRewardsUiEffect.RewardDeletedSnackbar -> snackbarHostState.showSnackbar(
                     context.getString(
@@ -68,10 +63,12 @@ fun SetupRewardsScreenRoute(
                     )
                 )
 
-                is SetupRewardsUiEffect.RewardUpdatedSnackbar -> snackbarHostState.showSnackbar(
-                    context.getString(
-                        if (uiEffect.isSuccess) R.string.updated_successfully else R.string.updated_failed
-                    )
+                SetupRewardsUiEffect.RewardCostValueErrorSnackbar -> snackbarHostState.showSnackbar(
+                    context.getString(R.string.reward_cost_value_error)
+                )
+
+                SetupRewardsUiEffect.InvalidRewardInputError -> snackbarHostState.showSnackbar(
+                    context.getString(R.string.invalid_reward_input)
                 )
             }
         }
@@ -152,7 +149,7 @@ fun SetupRewardsScreen(
                             )
                         })
 
-                    RewardsSetupOverlayType.AddRewardBottomSheet -> {
+                    RewardsSetupOverlayType.AddRewardBottomSheet, RewardsSetupOverlayType.UpdateRewardBottomSheet -> {
                         uiState.currentEditingReward?.let { currentReward ->
                             RewardInputBottomSheet(
                                 rewardName = currentReward.name,
@@ -163,7 +160,12 @@ fun SetupRewardsScreen(
                                 onRewardCostTextChange = {
                                     onEvent(SetupRewardsEvent.CurrentRewardCostChanged(it))
                                 },
-                                buttonText = stringResource(R.string.add),
+                                buttonText = stringResource(
+                                    when(dialog) {
+                                        RewardsSetupOverlayType.AddRewardBottomSheet -> R.string.add
+                                        RewardsSetupOverlayType.UpdateRewardBottomSheet -> R.string.update
+                                    }
+                                ),
                                 onDone = {
                                     onEvent(SetupRewardsEvent.OverlayConfirmClicked(dialog))
                                 },
@@ -206,28 +208,6 @@ fun SetupRewardsScreen(
                             },
                             onDismissRequest = { onEvent(SetupRewardsEvent.OverlayDismissed(dialog)) }
                         )
-                    }
-
-                    RewardsSetupOverlayType.UpdateRewardBottomSheet -> {
-                        uiState.currentEditingReward?.let { currentReward ->
-                            RewardInputBottomSheet(
-                                rewardName = currentReward.name,
-                                rewardCost = currentReward.cost,
-                                onRewardNameTextChange = {
-                                    onEvent(SetupRewardsEvent.CurrentRewardNameChanged(it))
-                                },
-                                onRewardCostTextChange = {
-                                    onEvent(SetupRewardsEvent.CurrentRewardCostChanged(it))
-                                },
-                                buttonText = stringResource(R.string.update),
-                                onDone = {
-                                    onEvent(SetupRewardsEvent.OverlayConfirmClicked(dialog))
-                                },
-                                onCancel = {
-                                    onEvent(SetupRewardsEvent.OverlayDismissed(dialog))
-                                }
-                            )
-                        }
                     }
                 }
             }
