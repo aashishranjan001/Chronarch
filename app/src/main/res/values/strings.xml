@@ -22,6 +22,7 @@
     <string name="complete_sessions_earn_reward">Complete Timer sessions to earn focus points</string>
     <string name="confirm_stop_timer_title">Stop Timer?</string>
     <string name="timer_ended">Timer ended!</string>
+    <string name="timer_runtime">Timer runtime</string>
     <string name="session_completed_message">Great job completing %d min session</string>
     <string name="awesome">Awesome!</string>
     <string name="finished_and_cancelled_session_count">%1$d {finished_icon} · %2$d {cancelled_icon}</string>
@@ -90,7 +91,10 @@
     <string name="save_changes_message">Your rewards will be locked after saving and can’t be edited later.</string>
 
     <string name="started_at_time">Started at %s</string>
-    <string name="target_duration">Goal: %s </string>
+    <string name="ended_at_time">Ended at %s</string>
+    <string name="runtime_start_to_end">%1$s, %2$s - %3$s </string>
+    <string name="session_runtime">Timer session runtime</string>
+    <string name="goal_duration">Goal duration</string>
     <string name="x_minutes">%d min</string>
     <string name="x_focus_points">%d FP</string>
     <string name="no_session_history_found_title">No session history found!</string>

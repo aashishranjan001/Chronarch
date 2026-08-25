@@ -7,6 +7,7 @@ import kotlin.time.Duration
 data class EndedTimerSession(
     val id: Long,
     val startTime: Instant,
+    val endTime: Instant,
     val durationType: DurationType,
     val runDuration: Duration
 )

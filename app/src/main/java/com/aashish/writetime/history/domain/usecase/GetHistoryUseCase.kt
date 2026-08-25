@@ -26,6 +26,7 @@ class GetHistoryUseCase @Inject constructor(
                         EndedTimerSession(
                             id = session.id,
                             startTime = session.startTime,
+                            endTime = it,
                             durationType = session.durationType,
                             runDuration = Duration.between(session.startTime, it).seconds.seconds
                         )

@@ -11,17 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
+import com.aashish.writetime.common.ui.components.IconText
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 
 @Composable
@@ -29,6 +29,8 @@ fun SessionHistoryItemContent(
     targetDuration: String,
     runDuration: String,
     startTime: String,
+    endTime: String,
+    date: String,
     percentageCompleted: Double,
     modifier: Modifier = Modifier) {
 
@@ -47,17 +49,19 @@ fun SessionHistoryItemContent(
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.weight(1f).fillMaxHeight()
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
             ) {
-                Text(text = stringResource(R.string.started_at_time, startTime),
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                IconText(
+                    icon = ImageVector.vectorResource(R.drawable.datetime),
+                    contentDescription = stringResource(R.string.timer_runtime),
+                    text = stringResource(R.string.runtime_start_to_end, date, startTime, endTime)
                 )
-                Text(text = stringResource(R.string.target_duration, targetDuration),
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                IconText(
+                    icon = ImageVector.vectorResource(R.drawable.goal),
+                    contentDescription = stringResource(R.string.goal_duration),
+                    text = targetDuration
                 )
             }
             Spacer(modifier = Modifier.width(spacing.small))
@@ -71,10 +75,12 @@ fun SessionHistoryItemContent(
 private fun SessionHistoryItemContentPreview() {
     WriteTimeTheme {
         SessionHistoryItemContent(
-            "60 min",
-            "23 min",
-            "21 Aug, 1:40am",
-            67.0
+            targetDuration = "60 min",
+            runDuration = "8 min",
+            date = "21 Aug",
+            startTime = "1:40am",
+            endTime = "1:48am",
+            percentageCompleted = 67.0
         )
     }
 }
