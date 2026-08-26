@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -68,7 +69,6 @@ fun SessionsStatsSection(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SessionCompletionCountTile(
@@ -80,6 +80,7 @@ fun SessionsStatsSection(
                     foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
                     modifier = Modifier.weight(1f)
                 )
+                Spacer(modifier = Modifier.width(spacing.medium))
                 SessionCompletionCountTile(
                     painter = painterResource(R.drawable.long_duration_timer),
                     label = stringResource(R.string.long_duration_timer),
@@ -89,6 +90,7 @@ fun SessionsStatsSection(
                     foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
                     modifier = Modifier.weight(1f)
                 )
+                Spacer(modifier = Modifier.width(spacing.medium))
                 SessionCompletionCountTile(
                     painter = painterResource(R.drawable.all_duration_timer),
                     label = stringResource(R.string.all_duration_timer),
@@ -167,6 +169,7 @@ fun SessionCompletionCountTile(
         Column(
             modifier = Modifier
                 .height(180.dp)
+                .fillMaxWidth()
                 .padding(spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
