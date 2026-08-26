@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -69,7 +70,8 @@ fun RewardInputBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .focusRequester(nameFocusRequester)
                     .weight(1f),
                 maxLines = 1,
@@ -88,7 +90,9 @@ fun RewardInputBottomSheet(
                 )
             )
             Row(
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
                     space = spacing.medium,
@@ -118,11 +122,16 @@ fun RewardInputBottomSheet(
                     )
                 )
                 Button(
-                    modifier = Modifier.weight(2f).fillMaxHeight(),
+                    modifier = Modifier
+                        .weight(2f),
                     onClick = onDone,
                     enabled = rewardName.isNotBlank() && rewardCost.isNotBlank()
                 ) {
-                    Text(text = buttonText)
+                    Text(
+                        text = buttonText,
+                        modifier = Modifier.padding(spacing.small),
+                        style = MaterialTheme.typography.titleMedium
+                    )
                 }
             }
         }
