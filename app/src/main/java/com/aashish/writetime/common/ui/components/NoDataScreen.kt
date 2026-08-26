@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +39,8 @@ fun NoDataScreen(
     message: String? = null,
     actionText: String? = null,
     actionClick: (() -> Unit)? = null,
+    titleTextStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    messageTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -69,17 +72,17 @@ fun NoDataScreen(
             )
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
+                style = titleTextStyle,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             message?.let {
                 Spacer(modifier = Modifier.height(spacing.medium))
                 Text(
                     text = message,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = messageTextStyle,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
             Spacer(modifier = modifier.height(spacing.medium))
