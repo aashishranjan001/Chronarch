@@ -51,7 +51,6 @@ fun ActiveTimerSection(
                         )
                     )
                 )
-                .fillMaxWidth()
                 .padding(spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
