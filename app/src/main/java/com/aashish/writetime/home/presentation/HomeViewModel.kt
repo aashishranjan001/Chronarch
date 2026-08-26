@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
             getCurrentDateEarningUseCase(LocalDate.now()).collectLatest { earningOverview ->
                 _uiState.update {
                     it.copy(
-                        currentDateCreditFocusPoints = earningOverview.taskCreditFocusPoints + earningOverview.bonusFocusPoints,
+                        currentDateTotalCreditFocusPoints = earningOverview.taskCreditFocusPoints + earningOverview.bonusFocusPoints,
                         currentDateDebitFocusPoints = earningOverview.redeemedFocusPoints
                     )
                 }

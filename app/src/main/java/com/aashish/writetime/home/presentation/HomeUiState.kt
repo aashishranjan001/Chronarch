@@ -5,7 +5,7 @@ import java.time.Instant
 import kotlin.time.Duration
 
 data class HomeUiState(
-    val currentDateCreditFocusPoints: Int = 0,
+    val currentDateTotalCreditFocusPoints: Int = 0,
     val currentDateDebitFocusPoints: Int = 0,
     val totalSessionsStarted: Int = 0,
     val totalSessionsCompleted: Int = 0,

@@ -69,4 +69,7 @@ dependencies {
     implementation(libs.androidx.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    // Adaptive layout
+    implementation(libs.compose.adaptive)
 }
