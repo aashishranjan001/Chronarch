@@ -57,19 +57,19 @@ fun WeekOverviewScreen(
             )
         }
         item {
-            FocusPointsTransactionsBreakdown(
-                taskCredits = uiState.totalTaskCreditPoints,
-                bonusPoints = uiState.totalBonusEarningPoints,
-                redemptionPoints = uiState.totalRedemptionPoints,
-                totalFocusPoints = uiState.netFocusPointsEarnings
-            )
-        }
-        item {
             SessionsStatsSection(
                 shortSessionsSuccessCount = uiState.weekSessionOverview?.shortSessionsOverview?.successfulCompletionCount ?: 0,
                 totalShortSessionsCount = uiState.weekSessionOverview?.shortSessionsOverview?.totalAttemptedSessionsCount ?: 0,
                 longSessionsSuccessCount = uiState.weekSessionOverview?.longSessionsOverview?.successfulCompletionCount ?: 0,
                 totalLongSessionsCount = uiState.weekSessionOverview?.longSessionsOverview?.totalAttemptedSessionsCount ?: 0
+            )
+        }
+        item {
+            FocusPointsTransactionsBreakdown(
+                taskCredits = uiState.totalTaskCreditPoints,
+                bonusPoints = uiState.totalBonusEarningPoints,
+                redemptionPoints = uiState.totalRedemptionPoints,
+                totalFocusPoints = uiState.netFocusPointsEarnings
             )
         }
     }
