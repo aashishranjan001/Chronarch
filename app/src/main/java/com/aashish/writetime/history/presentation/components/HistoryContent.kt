@@ -108,7 +108,10 @@ fun HistoryContent(
                 }
             }
         ) {
-            DateRangePicker(dateRangePickerState)
+            DateRangePicker(
+                state = dateRangePickerState,
+                title = null
+            )
         }
     }
 }
