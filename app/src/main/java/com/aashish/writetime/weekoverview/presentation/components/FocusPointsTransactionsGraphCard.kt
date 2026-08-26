@@ -70,6 +70,7 @@ fun FocusPointsTransactionsGraphCard(
                             FocusPointsViewFilter.REDEEM -> R.string.points_redemption_activity
                         }
                     ),
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(spacing.medium))
