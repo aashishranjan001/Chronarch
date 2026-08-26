@@ -26,7 +26,7 @@ interface TransactionHistoryDao {
         endTimeEpoch: Long
     ): Flow<List<FocusPointsTransactionEntity>>
 
-    @Query("SELECT * FROM focus_points_transactions")
+    @Query("SELECT * FROM focus_points_transactions ORDER BY timestampMillis DESC")
     fun getAllTransactions(): Flow<List<FocusPointsTransactionEntity>>
 
     @Query(

@@ -11,5 +11,5 @@ interface TimerSessionRepository {
     suspend fun updateTimerSession(sessionId: Long, endTime: Instant, streakProgressFraction: Double)
 
     fun getTimerSessions(startTime: Instant, endTime: Instant): Flow<List<TimerSession>>
-    fun getAllTimerSessions(): Flow<List<TimerSession>>
+    fun getAllEndedTimerSessions(): Flow<List<TimerSession>>
 }

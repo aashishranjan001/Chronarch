@@ -13,7 +13,7 @@ interface RewardsDao {
     suspend fun insert(rewardList: List<RewardEntity>)
 
     @Query("""
-        SELECT * FROM rewards
+        SELECT * FROM rewards ORDER BY focusPointsCost
     """)
     fun getAllRewards(): Flow<List<RewardEntity>>
 }

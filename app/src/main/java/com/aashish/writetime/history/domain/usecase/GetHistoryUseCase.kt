@@ -17,7 +17,7 @@ class GetHistoryUseCase @Inject constructor(
     operator fun invoke(): Flow<History> {
         return combine(
             focusPointsTransactionsRepository.getAllTransactions(),
-            sessionRepository.getAllTimerSessions()
+            sessionRepository.getAllEndedTimerSessions()
         ) { transactionList, sessionList ->
             History(
                 transactions = transactionList,

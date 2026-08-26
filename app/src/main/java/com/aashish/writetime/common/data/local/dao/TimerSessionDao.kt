@@ -19,10 +19,10 @@ interface TimerSessionDao {
     """)
     suspend fun updateTimerCompletion(sessionId: Long, endTime: Long, streakProgressFraction: Double)
 
-    @Query("SELECT * FROM timer_session WHERE startedAt >= :startTimeEpoch AND startedAt < :endTimeEpoch")
+    @Query("SELECT * FROM timer_session WHERE startedAt >= :startTimeEpoch AND startedAt < :endTimeEpoch ORDER BY startedAt")
     fun getSessions(startTimeEpoch: Long, endTimeEpoch: Long): Flow<List<TimerSessionEntity>>
 
-    @Query("SELECT * FROM timer_session")
-    fun getAllSessions(): Flow<List<TimerSessionEntity>>
+    @Query("SELECT * FROM timer_session WHERE completedAt IS NOT NULL ORDER BY startedAt DESC")
+    fun getAllEndedSessions(): Flow<List<TimerSessionEntity>>
 
 }
