@@ -14,8 +14,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aashish.writetime.R
+import com.aashish.writetime.common.ui.LocalRewardColors
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 import com.aashish.writetime.weekoverview.presentation.FocusPointsViewFilter
@@ -39,7 +42,13 @@ fun FocusPointsTransactionsGraphCard(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    Card(modifier = modifier, shape = RoundedCornerShape(spacing.medium)) {
+    val rewardColors = LocalRewardColors.current
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = spacing.extraSmall
+        ),
+        modifier = modifier, shape = RoundedCornerShape(spacing.medium)
+    ) {
         Column(
             modifier = Modifier
                 .padding(spacing.medium)
@@ -54,7 +63,7 @@ fun FocusPointsTransactionsGraphCard(
             ) {
                 Text(
                     text = stringResource(
-                        when(selectedMenuOption) {
+                        when (selectedMenuOption) {
                             FocusPointsViewFilter.ALL -> R.string.focus_points_activity
                             FocusPointsViewFilter.TASK_CREDIT -> R.string.task_credits_activity
                             FocusPointsViewFilter.BONUS -> R.string.bonus_earning_activity
@@ -65,7 +74,7 @@ fun FocusPointsTransactionsGraphCard(
                 )
                 Spacer(modifier = Modifier.width(spacing.medium))
                 Box {
-                    IconButton (
+                    IconButton(
                         onClick = onFilterMenuIconClick
                     ) {
                         Icon(
@@ -84,8 +93,14 @@ fun FocusPointsTransactionsGraphCard(
             BarGraph(
                 valuesMap = dailyTransactionPointsMap,
                 modifier = Modifier.height(
-                    if (dailyTransactionPointsMap.values.all { it == 0 }) 150.dp else 300.dp
-                )
+                    if (dailyTransactionPointsMap.values.all { it == 0 }) 200.dp else 300.dp
+                ),
+                barColor = when (selectedMenuOption) {
+                    FocusPointsViewFilter.ALL -> MaterialTheme.colorScheme.primary
+                    FocusPointsViewFilter.TASK_CREDIT -> rewardColors.credit
+                    FocusPointsViewFilter.BONUS -> rewardColors.bonus
+                    FocusPointsViewFilter.REDEEM -> rewardColors.redemption
+                }
             )
         }
     }

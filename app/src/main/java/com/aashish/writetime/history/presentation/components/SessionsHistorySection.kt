@@ -1,8 +1,8 @@
 package com.aashish.writetime.history.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -42,9 +42,9 @@ fun SessionsHistorySection(
     } else {
         val spacing = LocalSpacing.current
         LazyColumn(
+            contentPadding = PaddingValues(spacing.medium),
             modifier = modifier
-                .fillMaxSize()
-                .padding(spacing.medium),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
             items(items = sessionList, key = { it.id }) { session ->

@@ -25,7 +25,6 @@ fun CircularProgressIndicator(
     value: String,
     progressPercent: Double,
     strokeColor: Color = MaterialTheme.colorScheme.outline,
-    errorStrokeColor: Color = MaterialTheme.colorScheme.error,
     outlineColor: Color = MaterialTheme.colorScheme.outlineVariant,
     valueStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     modifier: Modifier = Modifier
@@ -46,7 +45,7 @@ fun CircularProgressIndicator(
                     )
                 )
                 drawArc(
-                    color = if (progressPercent == 100.0) strokeColor else errorStrokeColor,
+                    color = strokeColor,
                     startAngle = -90f,
                     useCenter = false,
                     sweepAngle = 360f * 0.01f * progressPercent.toFloat(),

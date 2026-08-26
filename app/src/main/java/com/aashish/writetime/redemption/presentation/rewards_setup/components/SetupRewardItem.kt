@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +42,9 @@ fun SetupRewardItem(
     val spacing = LocalSpacing.current
 
     Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
         modifier = modifier,
         onClick = onItemClick,
         shape = RoundedCornerShape(spacing.medium)
@@ -48,7 +52,7 @@ fun SetupRewardItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(80.dp)
                 .padding(spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically

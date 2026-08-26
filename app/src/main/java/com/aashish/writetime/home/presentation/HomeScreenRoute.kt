@@ -1,9 +1,9 @@
 package com.aashish.writetime.home.presentation
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -70,10 +70,9 @@ fun HomeScreen(
 
     val spacing = LocalSpacing.current
     LazyColumn(
+        contentPadding = PaddingValues(spacing.medium),
         modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(spacing.medium),
+            .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
     ) {
         item {
@@ -107,12 +106,14 @@ fun HomeScreen(
         }
         item {
             Column(
-                modifier = Modifier.animateContentSize()
+                modifier = Modifier
+                    .animateContentSize()
+                    .padding(bottom = spacing.medium)
             ) {
                 if (uiState.activeTimer != null && uiState.activeTimer.durationRemainingInSeconds >= 0) {
                     ActiveTimerSection(
                         onCancelTimerClick = { onEvent(HomeEvent.CancelTimerClick) },
-                        uiState.activeTimer
+                        activeTimer = uiState.activeTimer
                     )
                 } else {
                     NewTimerSection(

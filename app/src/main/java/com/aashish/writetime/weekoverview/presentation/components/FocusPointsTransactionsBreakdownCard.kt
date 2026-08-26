@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -16,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import com.aashish.writetime.R
 import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
@@ -30,7 +30,12 @@ fun FocusPointsTransactionsBreakdown(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    Card(modifier = modifier, shape = RoundedCornerShape(spacing.medium)) {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = spacing.extraSmall
+        ),
+        modifier = modifier, shape = RoundedCornerShape(spacing.medium)
+    ) {
         Column(
             modifier = Modifier
                 .padding(spacing.medium),

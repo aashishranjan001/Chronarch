@@ -1,6 +1,5 @@
 package com.aashish.writetime.weekoverview.presentation.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,13 +17,14 @@ import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -50,97 +50,99 @@ fun SessionsStatsSection(
 ) {
 
     val spacing = LocalSpacing.current
-    Column(
-        modifier = modifier
-            .clip(
-                RoundedCornerShape(spacing.medium)
-            )
-            .background(MaterialTheme.colorScheme.surfaceContainer)
-            .padding(spacing.medium),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = spacing.medium,
-            alignment = Alignment.CenterVertically
-        )
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = spacing.extraSmall
+        ),
+        shape = RoundedCornerShape(spacing.medium),
+        modifier = modifier,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SessionCompletionCountTile(
-                painter = painterResource(R.drawable.short_duration_timer),
-                label = stringResource(R.string.short_duration_timer),
-                completedSessionCount = shortSessionsSuccessCount,
-                cancelledSessionCount = totalShortSessionsCount - shortSessionsSuccessCount,
-                backgroundColor = MaterialTheme.colorScheme.primaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
-                modifier = Modifier.weight(1f)
-            )
-            SessionCompletionCountTile(
-                painter = painterResource(R.drawable.long_duration_timer),
-                label = stringResource(R.string.long_duration_timer),
-                completedSessionCount = longSessionsSuccessCount,
-                cancelledSessionCount = totalLongSessionsCount - longSessionsSuccessCount,
-                backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
-                modifier = Modifier.weight(1f)
-            )
-            SessionCompletionCountTile(
-                painter = painterResource(R.drawable.all_duration_timer),
-                label = stringResource(R.string.all_duration_timer),
-                completedSessionCount = shortSessionsSuccessCount + longSessionsSuccessCount,
-                cancelledSessionCount = totalShortSessionsCount + totalLongSessionsCount - shortSessionsSuccessCount - longSessionsSuccessCount,
-                backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
-                foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 400.dp)
+                .padding(spacing.medium),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(
+                space = spacing.medium,
+                alignment = Alignment.CenterVertically
+            )
         ) {
-            if (totalShortSessionsCount != 0) { // to progress to be measured when denominator is 0
-                ProgressIndicatorBox(
-                    value = shortSessionsSuccessCount,
-                    total = totalShortSessionsCount,
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SessionCompletionCountTile(
+                    painter = painterResource(R.drawable.short_duration_timer),
+                    label = stringResource(R.string.short_duration_timer),
+                    completedSessionCount = shortSessionsSuccessCount,
+                    cancelledSessionCount = totalShortSessionsCount - shortSessionsSuccessCount,
                     backgroundColor = MaterialTheme.colorScheme.primaryFixed,
                     foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
-                    modifier = Modifier
-                        .fillMaxWidth(0.4f)
-                        .fillMaxHeight(totalShortSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
-                        .align(Alignment.BottomStart)
+                    modifier = Modifier.weight(1f)
                 )
-            }
-            if (totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
-                ProgressIndicatorBox(
-                    value = longSessionsSuccessCount,
-                    total = totalLongSessionsCount,
+                SessionCompletionCountTile(
+                    painter = painterResource(R.drawable.long_duration_timer),
+                    label = stringResource(R.string.long_duration_timer),
+                    completedSessionCount = longSessionsSuccessCount,
+                    cancelledSessionCount = totalLongSessionsCount - longSessionsSuccessCount,
                     backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
                     foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
-                    modifier = Modifier
-                        .fillMaxWidth(0.4f)
-                        .fillMaxHeight(totalLongSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
-                        .align(Alignment.BottomCenter)
+                    modifier = Modifier.weight(1f)
                 )
-            }
-            if (totalShortSessionsCount + totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
-                ProgressIndicatorBox(
-                    value = shortSessionsSuccessCount + longSessionsSuccessCount,
-                    total = totalShortSessionsCount + totalLongSessionsCount,
+                SessionCompletionCountTile(
+                    painter = painterResource(R.drawable.all_duration_timer),
+                    label = stringResource(R.string.all_duration_timer),
+                    completedSessionCount = shortSessionsSuccessCount + longSessionsSuccessCount,
+                    cancelledSessionCount = totalShortSessionsCount + totalLongSessionsCount - shortSessionsSuccessCount - longSessionsSuccessCount,
                     backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
                     foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
-                    modifier = Modifier
-                        .fillMaxWidth(0.4f)
-                        .fillMaxHeight()
-                        .align(Alignment.BottomEnd)
+                    modifier = Modifier.weight(1f)
                 )
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 400.dp)
+            ) {
+                if (totalShortSessionsCount != 0) { // to progress to be measured when denominator is 0
+                    ProgressIndicatorBox(
+                        value = shortSessionsSuccessCount,
+                        total = totalShortSessionsCount,
+                        backgroundColor = MaterialTheme.colorScheme.primaryFixed,
+                        foregroundColor = MaterialTheme.colorScheme.onPrimaryFixed,
+                        modifier = Modifier
+                            .fillMaxWidth(0.4f)
+                            .fillMaxHeight(totalShortSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
+                            .align(Alignment.BottomStart)
+                    )
+                }
+                if (totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
+                    ProgressIndicatorBox(
+                        value = longSessionsSuccessCount,
+                        total = totalLongSessionsCount,
+                        backgroundColor = MaterialTheme.colorScheme.secondaryFixed,
+                        foregroundColor = MaterialTheme.colorScheme.onSecondaryFixed,
+                        modifier = Modifier
+                            .fillMaxWidth(0.4f)
+                            .fillMaxHeight(totalLongSessionsCount.toFloat() / (totalShortSessionsCount + totalLongSessionsCount))
+                            .align(Alignment.BottomCenter)
+                    )
+                }
+                if (totalShortSessionsCount + totalLongSessionsCount != 0) { // to progress to be measured when denominator is 0
+                    ProgressIndicatorBox(
+                        value = shortSessionsSuccessCount + longSessionsSuccessCount,
+                        total = totalShortSessionsCount + totalLongSessionsCount,
+                        backgroundColor = MaterialTheme.colorScheme.tertiaryFixed,
+                        foregroundColor = MaterialTheme.colorScheme.onTertiaryFixed,
+                        modifier = Modifier
+                            .fillMaxWidth(0.4f)
+                            .fillMaxHeight()
+                            .align(Alignment.BottomEnd)
+                    )
+                }
             }
         }
     }
-
-
 }
 
 @Composable
@@ -154,73 +156,87 @@ fun SessionCompletionCountTile(
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
-    Column(
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = spacing.extraSmall
+        ),
+        shape = RoundedCornerShape(spacing.medium),
+        colors = CardDefaults.cardColors(containerColor = backgroundColor),
         modifier = modifier
-            .clip(RoundedCornerShape(spacing.medium))
-            .background(backgroundColor)
-            .height(180.dp)
-            .padding(spacing.medium),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            painter = painter,
-            contentDescription = label,
-            modifier = Modifier.size(48.dp),
-            tint = foregroundColor
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-            color = foregroundColor
-        )
-        Spacer(modifier = Modifier.height(LocalSpacing.current.small))
-        Text(
-            text = buildAnnotatedString {
-                append("$completedSessionCount ")
-                appendInlineContent(id = "completed_icon", alternateText = stringResource(R.string.finished_session))
-            },
-            inlineContent = mapOf(
-                "completed_icon" to InlineTextContent(
-                    placeholder = Placeholder(
-                        width = 1.2.em,
-                        height = 1.2.em,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+        Column(
+            modifier = Modifier
+                .height(180.dp)
+                .padding(spacing.medium),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painter,
+                contentDescription = label,
+                modifier = Modifier.size(48.dp),
+                tint = foregroundColor
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+                textAlign = TextAlign.Center,
+                color = foregroundColor
+            )
+            Spacer(modifier = Modifier.height(LocalSpacing.current.small))
+            Text(
+                text = buildAnnotatedString {
+                    append("$completedSessionCount ")
+                    appendInlineContent(
+                        id = "completed_icon",
+                        alternateText = stringResource(R.string.finished_session)
                     )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(R.string.finished_session),
-                        tint = foregroundColor,
+                },
+                inlineContent = mapOf(
+                    "completed_icon" to InlineTextContent(
+                        placeholder = Placeholder(
+                            width = 1.2.em,
+                            height = 1.2.em,
+                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(R.string.finished_session),
+                            tint = foregroundColor,
+                        )
+                    }
+                ),
+                color = foregroundColor
+            )
+            Text(
+                text = buildAnnotatedString {
+                    append("$cancelledSessionCount ")
+                    appendInlineContent(
+                        id = "cancelled_icon",
+                        alternateText = stringResource(R.string.cancelled_session)
                     )
-                }
-            ),
-            color = foregroundColor
-        )
-        Text(
-            text = buildAnnotatedString {
-                append("$cancelledSessionCount ")
-                appendInlineContent(id = "cancelled_icon", alternateText = stringResource(R.string.cancelled_session))
-            },
-            inlineContent = mapOf(
-                "cancelled_icon" to InlineTextContent(
-                    placeholder = Placeholder(
-                        width = 1.2.em,
-                        height = 1.2.em,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.cancelled_session),
-                        tint = foregroundColor
-                    )
-                }
-            ),
-            color = foregroundColor
-        )
+                },
+                inlineContent = mapOf(
+                    "cancelled_icon" to InlineTextContent(
+                        placeholder = Placeholder(
+                            width = 1.2.em,
+                            height = 1.2.em,
+                            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(R.string.cancelled_session),
+                            tint = foregroundColor
+                        )
+                    }
+                ),
+                color = foregroundColor
+            )
+        }
     }
+
 }
 
 @Preview

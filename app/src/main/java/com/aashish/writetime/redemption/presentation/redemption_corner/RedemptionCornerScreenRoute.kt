@@ -30,7 +30,6 @@ fun RedemptionCornerScreenRoute(
     viewModel: RedemptionCornerViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    RedemptionCornerScreen(uiState, viewModel::onEvent, modifier)
 
     val context = LocalContext.current
 
@@ -52,6 +51,8 @@ fun RedemptionCornerScreenRoute(
             }
         }
     }
+
+    RedemptionCornerScreen(uiState = uiState, onEvent = viewModel::onEvent, modifier = modifier)
 }
 
 @Composable

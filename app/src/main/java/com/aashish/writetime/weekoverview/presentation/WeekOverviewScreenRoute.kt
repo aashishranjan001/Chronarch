@@ -1,6 +1,7 @@
 package com.aashish.writetime.weekoverview.presentation
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +25,7 @@ fun WeekOverviewScreenRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    WeekOverviewScreen(uiState, viewModel::onEvent, modifier)
+    WeekOverviewScreen(uiState = uiState, onEvent = viewModel::onEvent, modifier = modifier)
 }
 
 @Composable
@@ -35,9 +36,9 @@ fun WeekOverviewScreen(
 ) {
     val spacing = LocalSpacing.current
     LazyColumn(
+        contentPadding = PaddingValues(spacing.medium),
         modifier = modifier
-            .fillMaxSize()
-            .padding(spacing.medium),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
     ) {

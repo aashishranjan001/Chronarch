@@ -2,6 +2,7 @@ package com.aashish.writetime.redemption.presentation.redemption_corner.componen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -54,9 +55,8 @@ fun RedemptionCornerContent(
                 )
             } else {
                 LazyColumn(
+                    contentPadding = PaddingValues(spacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .padding(spacing.medium),
                     verticalArrangement = Arrangement.spacedBy(space = spacing.medium)
                 ) {
                     items(items = uiState.rewardsList, key = { it.id }) { reward ->

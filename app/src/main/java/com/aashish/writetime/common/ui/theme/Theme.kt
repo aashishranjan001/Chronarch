@@ -8,9 +8,11 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.aashish.writetime.common.ui.LocalRewardColors
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -241,6 +243,25 @@ private val highContrastDarkColorScheme = darkColorScheme(
 )
 
 @Immutable
+data class RewardColors(
+    val credit: Color,
+    val bonus: Color,
+    val redemption: Color,
+)
+
+private val lightRewardColors = RewardColors(
+    credit = lightModeCreditColor,
+    bonus = lightModeBonusColor,
+    redemption = lightModeRedemptionColor
+)
+
+private val darkRewardColors = RewardColors(
+    credit = darkModeCreditsColor,
+    bonus = darkModeBonusColor,
+    redemption = darkModeRedemptionsColor
+)
+
+@Immutable
 data class ColorFamily(
     val color: Color,
     val onColor: Color,
@@ -269,9 +290,15 @@ fun WriteTimeTheme(
         else -> lightScheme
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = AppTypography,
-        content = content
-    )
+    val rewardsColorScheme = if (darkTheme) darkRewardColors else lightRewardColors
+
+    CompositionLocalProvider(
+        LocalRewardColors provides rewardsColorScheme
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography,
+            content = content
+        )
+    }
 }

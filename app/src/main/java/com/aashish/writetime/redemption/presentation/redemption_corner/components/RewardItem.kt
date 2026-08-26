@@ -8,14 +8,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +33,9 @@ fun RewardItem(
     val spacing = LocalSpacing.current
 
     Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = spacing.extraSmall
+        ),
         modifier = modifier,
         onClick = onItemClick,
         enabled = isEnabled,
@@ -41,7 +44,7 @@ fun RewardItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(80.dp)
                 .padding(spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -54,7 +57,12 @@ fun RewardItem(
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(spacing.small))
-            FocusPointCurrency(value = value)
+            FocusPointCurrency(
+                value = value,
+                contentColor = if (isEnabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(
+                    alpha = 0.4f
+                )
+            )
 
 
         }

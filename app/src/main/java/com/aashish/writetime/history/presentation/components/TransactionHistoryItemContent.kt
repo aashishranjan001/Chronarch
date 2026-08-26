@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,9 @@ fun TransactionHistoryItemContent(
 
     val spacing = LocalSpacing.current
     Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
         modifier = modifier,
         shape = RoundedCornerShape(spacing.large)
     ) {
@@ -68,7 +72,8 @@ fun TransactionHistoryItemContent(
             }
             Spacer(modifier = Modifier.width(spacing.small))
             FocusPointCurrency(
-                value = if (transactionType == FocusPointTransactionType.REDEMPTION_DEBIT) -amount else amount
+                value = if (transactionType == FocusPointTransactionType.REDEMPTION_DEBIT) -amount else amount,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }

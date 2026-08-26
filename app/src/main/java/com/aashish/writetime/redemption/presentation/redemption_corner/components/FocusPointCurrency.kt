@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,11 @@ import com.aashish.writetime.common.ui.LocalSpacing
 import com.aashish.writetime.common.ui.theme.WriteTimeTheme
 
 @Composable
-fun FocusPointCurrency(value: Int, modifier: Modifier = Modifier) {
+fun FocusPointCurrency(
+    value: Int,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
+    modifier: Modifier = Modifier
+) {
     val spacing = LocalSpacing.current
     Row(
         modifier = modifier
@@ -41,11 +46,13 @@ fun FocusPointCurrency(value: Int, modifier: Modifier = Modifier) {
                 bottom = spacing.small
             ),
             imageVector = Icons.Default.Diamond,
+            tint = contentColor,
             contentDescription = stringResource(R.string.rewards_icon)
         )
         Spacer(modifier = Modifier.width(spacing.extraSmall))
         Text(
             text = value.toString(),
+            color = contentColor,
             modifier = Modifier.padding(
                 start = 0.dp,
                 end = spacing.small,

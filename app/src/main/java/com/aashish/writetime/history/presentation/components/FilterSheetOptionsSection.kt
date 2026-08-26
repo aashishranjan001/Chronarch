@@ -2,9 +2,9 @@ package com.aashish.writetime.history.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -38,12 +38,15 @@ fun FilterSheetOptionsSection(
 
     val spacing = LocalSpacing.current
 
-    LazyColumn(modifier = modifier
-        .fillMaxWidth()
-        .padding(spacing.medium), verticalArrangement = Arrangement.spacedBy(spacing.medium)) {
+    LazyColumn(
+        contentPadding = PaddingValues(spacing.medium),
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+    ) {
         options.forEach { option ->
             item {
-                when(option) {
+                when (option) {
                     is FilterOptionItem.DateRange -> {
                         DateRangeFilterOption(
                             option = option,
@@ -51,6 +54,7 @@ fun FilterSheetOptionsSection(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
+
                     is FilterOptionItem.Radio -> {
                         val labelRes = when (option.option) {
                             FilterOption.Date.ThisMonth -> R.string.option_date_this_month
@@ -66,8 +70,9 @@ fun FilterSheetOptionsSection(
                             )
                         }
                     }
+
                     is FilterOptionItem.Checkbox -> {
-                        val labelRes = when(option.option) {
+                        val labelRes = when (option.option) {
                             FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
                             FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
                             FilterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
@@ -83,7 +88,8 @@ fun FilterSheetOptionsSection(
                                 labelRes = it,
                                 option.isSelected,
                                 onCheckedChange = { onFilterCheckboxOptionClicked(option, it) },
-                                modifier = Modifier.fillMaxWidth())
+                                modifier = Modifier.fillMaxWidth()
+                            )
                         }
 
                     }
@@ -95,9 +101,14 @@ fun FilterSheetOptionsSection(
 }
 
 @Composable
-fun DateRangeFilterOption(option: FilterOptionItem.DateRange, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically
-        ) {
+fun DateRangeFilterOption(
+    option: FilterOptionItem.DateRange,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+    ) {
         IconButton(onClick = onClick) {
             Icon(
                 imageVector = Icons.Default.CalendarMonth,
@@ -107,14 +118,18 @@ fun DateRangeFilterOption(option: FilterOptionItem.DateRange, onClick: () -> Uni
         TextButton(onClick = onClick) {
             if (option.startDate != null && option.endDate != null) {
                 Text(
-                    stringResource(
+                    text = stringResource(
                         R.string.date_from_x_to_y,
                         option.startDate.toReadableLocalDate(),
                         option.endDate.toReadableLocalDate()
-                    )
+                    ),
+                    style = MaterialTheme.typography.titleSmall
                 )
             } else {
-                Text(stringResource(R.string.option_date_custom_range))
+                Text(
+                    stringResource(R.string.option_date_custom_range),
+                    style = MaterialTheme.typography.titleSmall
+                )
             }
         }
     }
@@ -125,7 +140,8 @@ fun RadioFilterOption(
     @StringRes labelRes: Int,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
     Row(
         modifier = modifier,
@@ -141,7 +157,7 @@ fun RadioFilterOption(
         ) {
             Text(
                 text = stringResource(labelRes),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }
@@ -153,7 +169,8 @@ fun CheckboxFilterOption(
     @StringRes labelRes: Int,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
 
     Row(
         modifier = modifier,
@@ -169,7 +186,7 @@ fun CheckboxFilterOption(
         ) {
             Text(
                 text = stringResource(labelRes),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleSmall
             )
         }
     }
@@ -181,7 +198,10 @@ private fun FilterSheetOptionsSectionPreview() {
     WriteTimeTheme {
         FilterSheetOptionsSection(
             options = listOf(
-                FilterOptionItem.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionItem.Checkbox(
+                    FilterOption.SessionFilter.CompletionStatus.Finished,
+                    true
+                ),
                 FilterOptionItem.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false),
                 FilterOptionItem.DateRange(null, null)
             ),

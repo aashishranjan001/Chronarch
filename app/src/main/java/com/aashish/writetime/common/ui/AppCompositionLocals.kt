@@ -3,9 +3,14 @@ package com.aashish.writetime.common.ui
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.aashish.writetime.common.ui.theme.RewardColors
 
 val LocalSpacing = staticCompositionLocalOf<Spacing> {
     Spacing()
+}
+
+val LocalRewardColors = staticCompositionLocalOf<RewardColors> {
+    error("RewardColors not provided")
 }
 
 data class Spacing(
