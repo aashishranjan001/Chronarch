@@ -37,7 +37,7 @@ fun TransactionHistoryItemContent(
     val spacing = LocalSpacing.current
     Card(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = spacing.extraSmall
         ),
         modifier = modifier,
         shape = RoundedCornerShape(spacing.large)

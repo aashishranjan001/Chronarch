@@ -36,10 +36,16 @@ fun HistoryScreenTopBar(
     showFilterAppliedBadge: Boolean,
     onTabClick: (Int) -> Unit,
     onFilterMenuClick: () -> Unit,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     val spacing = LocalSpacing.current
 
-    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = spacing.small),
+        contentAlignment = Alignment.Center
+    ) {
         PrimaryTabRow(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onSurface,
