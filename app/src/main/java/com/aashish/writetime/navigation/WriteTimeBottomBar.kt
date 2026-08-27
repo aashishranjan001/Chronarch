@@ -8,7 +8,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -24,8 +23,8 @@ fun WriteTimeBottomBar(
     BottomAppBar(
         modifier = modifier
     ) {
-        bottomNavTabs.forEach { tab ->
-            AddItem(tab = tab,
+        navigationTabItems.forEach { tab ->
+            AddTab(tab = tab,
                 currentDestination = currentDestination,
                 onClick = {
                     navController.navigateTopLevel(tab.route)
@@ -36,8 +35,8 @@ fun WriteTimeBottomBar(
 }
 
 @Composable
-fun RowScope.AddItem(
-    tab: BottomBarTabItem,
+fun RowScope.AddTab(
+    tab: NavigationTabItem,
     onClick: () -> Unit,
     currentDestination: NavDestination?,
 ) {
@@ -60,7 +59,3 @@ fun RowScope.AddItem(
         )
     )
 }
-
-val bottomNavTabs = listOf(
-    BottomBarTabItem.Home, BottomBarTabItem.WeekOverview, BottomBarTabItem.Redemption, BottomBarTabItem.History
-)

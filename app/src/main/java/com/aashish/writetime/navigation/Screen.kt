@@ -7,3 +7,5 @@ sealed class Screen(val route: String) {
     object RewardsSetup: Screen("rewards_setup")
     object History: Screen("history")
 }
+
+val START_DESTINATION = Screen.Home
