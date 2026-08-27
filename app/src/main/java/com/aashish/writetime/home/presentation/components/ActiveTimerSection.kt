@@ -58,8 +58,7 @@ fun ActiveTimerSection(
             Timer(
                 secondsRemaining = activeTimer.durationRemainingInSeconds,
                 totalSeconds = activeTimer.duration.inWholeSeconds,
-                endTime = activeTimer.idealEndTime,
-                modifier = modifier.padding(spacing.medium)
+                endTime = activeTimer.idealEndTime
             )
             Spacer(modifier = Modifier.height(spacing.medium))
             OutlinedButton (
