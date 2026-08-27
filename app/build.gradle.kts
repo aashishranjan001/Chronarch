@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.aashish.writetime"
+    namespace = "com.aashish.chronarch"
     compileSdk {
         version = release(37) {
             minorApiLevel = 1
@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.aashish.writetime"
+        applicationId = "com.aashish.chronarch"
         minSdk = 27
         targetSdk = 37
         versionCode = 1

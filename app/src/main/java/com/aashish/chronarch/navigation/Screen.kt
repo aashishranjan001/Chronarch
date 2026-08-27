@@ -1,0 +1,11 @@
+package com.aashish.chronarch.navigation
+
+sealed class Screen(val route: String) {
+    object Home: Screen("home")
+    object WeekOverview: Screen("week_overview")
+    object RedemptionCorner: Screen("redemption_corner")
+    object RewardsSetup: Screen("rewards_setup")
+    object History: Screen("history")
+}
+
+val START_DESTINATION = Screen.Home

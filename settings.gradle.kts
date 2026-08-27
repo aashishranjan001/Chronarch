@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Write Time"
+rootProject.name = "Chronarch"
 include(":app")

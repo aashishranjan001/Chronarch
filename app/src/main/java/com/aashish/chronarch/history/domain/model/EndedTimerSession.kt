@@ -1,0 +1,13 @@
+package com.aashish.chronarch.history.domain.model
+
+import com.aashish.chronarch.common.domain.model.DurationType
+import java.time.Instant
+import kotlin.time.Duration
+
+data class EndedTimerSession(
+    val id: Long,
+    val startTime: Instant,
+    val endTime: Instant,
+    val durationType: DurationType,
+    val runDuration: Duration
+)

@@ -1,0 +1,155 @@
+package com.aashish.chronarch.home.presentation
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.aashish.chronarch.common.domain.model.DurationType
+import com.aashish.chronarch.common.domain.usecase.CalculateDailyEarningUseCase
+import com.aashish.chronarch.common.ui.toCeilSeconds
+import com.aashish.chronarch.home.domain.usecase.AddNewTimerSessionUseCase
+import com.aashish.chronarch.home.domain.usecase.GetCurrentDaySessionsOverview
+import com.aashish.chronarch.home.domain.usecase.EndTimerSessionUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDate
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
+
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getCurrentDateEarningUseCase: CalculateDailyEarningUseCase,
+    private val getCurrentDaySessionsOverview: GetCurrentDaySessionsOverview,
+    private val endTimerSessionUseCase: EndTimerSessionUseCase,
+    private val addNewTimerSessionUseCase: AddNewTimerSessionUseCase
+): ViewModel() {
+
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState = _uiState.asStateFlow()
+
+    private val _uiEffect = Channel<HomeUiEffect>()
+    val uiEffect = _uiEffect.receiveAsFlow()
+
+    init {
+        observeEarningsOverview()
+        observerSessionsOverview()
+    }
+
+    private fun observeEarningsOverview() {
+        viewModelScope.launch {
+            getCurrentDateEarningUseCase(LocalDate.now()).collectLatest { earningOverview ->
+                _uiState.update {
+                    it.copy(
+                        currentDateTotalCreditFocusPoints = earningOverview.taskCreditFocusPoints + earningOverview.bonusFocusPoints,
+                        currentDateDebitFocusPoints = earningOverview.redeemedFocusPoints
+                    )
+                }
+            }
+        }
+    }
+
+    private fun observerSessionsOverview() {
+        viewModelScope.launch {
+            getCurrentDaySessionsOverview().collectLatest { sessionsOverview ->
+                _uiState.update {
+                    it.copy(
+                        totalSessionsStarted = sessionsOverview.totalStartedCount,
+                        totalSessionsCompleted = sessionsOverview.successfulCompletionCount,
+                        totalSessionsCancelled = sessionsOverview.cancelledCount,
+                        streaksCount = sessionsOverview.totalStreaks,
+                        activeTimer = sessionsOverview.activeSession?.let { activeSessionInfo ->
+                            ActiveTimer(
+                                sessionId = activeSessionInfo.id,
+                                durationRemainingInSeconds = Duration.between(
+                                    Instant.now(),
+                                    activeSessionInfo.idealCompletionTime
+                                ).toCeilSeconds(),
+                                idealEndTime = activeSessionInfo.idealCompletionTime,
+                                duration = activeSessionInfo.durationType.duration
+                            )
+                        },
+                        streakProgressFraction = sessionsOverview.currentStreakProgressionFraction
+                    )
+                }
+
+                sessionsOverview.activeSession?.let { activeSession ->
+                    while (Instant.now() <= activeSession.idealCompletionTime) {
+                        _uiState.update {
+                            delay(1.seconds)
+                            it.copy(
+                                activeTimer = it.activeTimer?.copy(
+                                    durationRemainingInSeconds = Duration.between(Instant.now(), activeSession.idealCompletionTime).toCeilSeconds()
+                                )
+                            )
+                        }
+                    }
+                    _uiState.update {
+                        it.copy(dialog = HomeDialog.TimerFinishedInformation(activeSession.durationType.duration.inWholeMinutes))
+                    }
+                    endTimerSessionUseCase(
+                        sessionId = sessionsOverview.activeSession.id,
+                        idealCompletionTime = Instant.now(), // todo: change to activeSession.idealCompletionTime
+                        durationType = sessionsOverview.activeSession.durationType,
+                        streakProgressFraction = _uiState.value.streakProgressFraction
+                    )
+                }
+            }
+        }
+    }
+
+    fun onEvent(event: HomeEvent) {
+        when(event) {
+            HomeEvent.CancelTimerClick -> {
+                _uiState.update {
+                    it.copy(dialog = HomeDialog.TimerCancelConfirmation)
+                }
+            }
+            HomeEvent.StartTimer -> {
+                viewModelScope.launch {
+                    addNewTimerSessionUseCase(
+                        durationType = _uiState.value.selectedNewTimerDurationType,
+                        runningStreakProgressFraction = _uiState.value.streakProgressFraction,
+                    )
+                }
+            }
+
+            is HomeEvent.SelectNewTimerDurationType -> {
+                _uiState.update {
+                    it.copy(
+                        selectedNewTimerDurationType = event.durationType
+                    )
+                }
+            }
+
+            HomeEvent.CancelTimerConfirmed -> {
+                _uiState.update {
+                    it.copy(dialog = null)
+                }
+                viewModelScope.launch {
+                    _uiState.value.activeTimer?.let {
+                        endTimerSessionUseCase(
+                            sessionId = it.sessionId,
+                            idealCompletionTime = it.idealEndTime,
+                            durationType = DurationType.fromDuration(it.duration.inWholeMilliseconds),
+                            streakProgressFraction = _uiState.value.streakProgressFraction
+
+                        )
+                        _uiEffect.send(HomeUiEffect.ShowTimerCancelledSnackbar)
+                    }
+                }
+            }
+            HomeEvent.TimerCompletedDialogDismiss, HomeEvent.CancelTimerDismissed -> {
+                _uiState.update {
+                    it.copy(dialog = null)
+                }
+            }
+        }
+    }
+}
