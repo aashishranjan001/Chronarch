@@ -2,6 +2,7 @@ package com.aashish.chronarch.common.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -41,11 +43,13 @@ fun NoDataScreen(
     actionClick: (() -> Unit)? = null,
     titleTextStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     messageTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
     Column(
-        modifier = modifier.fillMaxSize().padding(spacing.medium),
+        modifier = modifier.fillMaxSize().background(backgroundColor).padding(spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
@@ -74,7 +78,7 @@ fun NoDataScreen(
                 text = title,
                 style = titleTextStyle,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = textColor,
             )
             message?.let {
                 Spacer(modifier = Modifier.height(spacing.medium))
@@ -82,7 +86,7 @@ fun NoDataScreen(
                     text = message,
                     style = messageTextStyle,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = textColor
                 )
             }
             Spacer(modifier = modifier.height(spacing.medium))
@@ -109,7 +113,10 @@ fun NoDataScreen(
 private fun NoDataScreenPreview() {
     ChronarchTheme {
         NoDataScreen(
-            R.drawable.app_error, "No sessions found", "Complete sessions to see the history here", actionText = "Retry"
+            thumbnailResId = R.drawable.app_error,
+            contentDescription = "No sessions found",
+            title = "Complete sessions to see the history here",
+            actionText = "Retry"
         )
     }
 }
