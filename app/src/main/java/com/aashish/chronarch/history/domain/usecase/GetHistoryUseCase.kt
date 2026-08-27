@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import java.time.Duration
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toKotlinDuration
 
 class GetHistoryUseCase @Inject constructor(
     private val focusPointsTransactionsRepository: FocusPointsTransactionsRepository,
@@ -28,7 +28,10 @@ class GetHistoryUseCase @Inject constructor(
                             startTime = session.startTime,
                             endTime = it,
                             durationType = session.durationType,
-                            runDuration = Duration.between(session.startTime, it).seconds.seconds
+                            runDuration = minOf(
+                                Duration.between(session.startTime, it).toKotlinDuration(),
+                                session.durationType.duration
+                            )
                         )
                     }
                 }

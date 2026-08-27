@@ -25,7 +25,7 @@ data class SessionHistoryItem(
     }
 
     fun toCompletionStatusFilterLabel(): FilterOption.SessionFilter.CompletionStatus {
-        return if (runDuration >= durationType.duration) FilterOption.SessionFilter.CompletionStatus.Finished
+        return if (runDuration >= durationType.duration) FilterOption.SessionFilter.CompletionStatus.Finished // should ideally be runDuration == durationType.duraiton
         else FilterOption.SessionFilter.CompletionStatus.Cancelled
     }
 }
