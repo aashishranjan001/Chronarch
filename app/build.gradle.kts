@@ -1,8 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
+}
+
+val versionProps = Properties().apply {
+    load(FileInputStream(rootProject.file("version.properties")))
 }
 
 android {
@@ -17,9 +24,8 @@ android {
         applicationId = "com.aashish.chronarch"
         minSdk = 27
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
-
+        versionCode = versionProps["APP_VERSION_CODE"].toString().toInt()
+        versionName = versionProps["APP_VERSION_NAME"].toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -28,6 +34,11 @@ android {
             optimization {
                 enable = false
             }
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
