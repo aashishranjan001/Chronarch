@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
                     }
                     endTimerSessionUseCase(
                         sessionId = sessionsOverview.activeSession.id,
-                        idealCompletionTime = Instant.now(), // todo: change to activeSession.idealCompletionTime
+                        idealCompletionTime = activeSession.idealCompletionTime,
                         durationType = sessionsOverview.activeSession.durationType,
                         streakProgressFraction = _uiState.value.streakProgressFraction
                     )
