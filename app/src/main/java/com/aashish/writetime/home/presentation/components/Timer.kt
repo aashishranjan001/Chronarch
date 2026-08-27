@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
@@ -38,6 +39,8 @@ fun Timer(
     secondsRemaining: Long,
     totalSeconds: Long,
     endTime: Instant,
+    outlineColor: Color = MaterialTheme.colorScheme.outline,
+    progressRimColor: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier) {
 
     val spacing = LocalSpacing.current
@@ -52,11 +55,7 @@ fun Timer(
         )
     }
 
-    val outlineColor = MaterialTheme.colorScheme.primaryFixedDim
-    val progressRimColor = MaterialTheme.colorScheme.primary
-
-
-    Box(modifier = modifier.aspectRatio(1f).padding(LocalSpacing.current.medium).drawWithContent{
+    Box(modifier = modifier.aspectRatio(1f).padding(spacing.medium).drawWithContent{
         drawArc(
             color = outlineColor,
             startAngle = 0f,
