@@ -3,6 +3,7 @@ package com.aashish.chronarch.common.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -44,7 +45,7 @@ fun NoDataScreen(
     titleTextStyle: TextStyle = MaterialTheme.typography.bodyLarge,
     messageTextStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
-    textColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    foregroundColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     modifier: Modifier = Modifier
 ) {
     val spacing = LocalSpacing.current
@@ -72,13 +73,18 @@ fun NoDataScreen(
                         maxHeight = 400.dp
                     )
                     .aspectRatio(1f)
+                    .border(
+                        width = 2.dp,
+                        shape = CircleShape,
+                        color = foregroundColor
+                    )
                     .clip(CircleShape)
             )
             Text(
                 text = title,
                 style = titleTextStyle,
                 textAlign = TextAlign.Center,
-                color = textColor,
+                color = foregroundColor,
             )
             message?.let {
                 Spacer(modifier = Modifier.height(spacing.medium))
@@ -86,7 +92,7 @@ fun NoDataScreen(
                     text = message,
                     style = messageTextStyle,
                     textAlign = TextAlign.Center,
-                    color = textColor
+                    color = foregroundColor
                 )
             }
             Spacer(modifier = modifier.height(spacing.medium))

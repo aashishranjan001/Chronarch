@@ -29,7 +29,7 @@ fun SessionsHistorySection(
 
     if (sessionList.isEmpty()) {
         NoDataScreen(
-            thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_session_history else R.drawable.no_sessions_found,
+            thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_sessions_found else R.drawable.no_sessions_found,
             contentDescription = stringResource(R.string.no_session_history_found_title),
             title = stringResource(R.string.no_session_history_found_title),
             message = stringResource(
