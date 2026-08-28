@@ -19,7 +19,7 @@ class EndTimerSessionUseCase @Inject constructor(
         durationType: DurationType,
         streakProgressFraction: Double
     ) {
-        val endTime = Instant.now()
+        val currentTime = Instant.now()
 
         val associatedFocusPoints = when (durationType) {
             DurationType.LongDuration -> 2
@@ -27,7 +27,7 @@ class EndTimerSessionUseCase @Inject constructor(
         }
 
         val newStreakProgressFraction =
-            if (endTime >= idealCompletionTime) { // // successful completion
+            if (currentTime >= idealCompletionTime) { // // successful completion
                 streakProgressFraction + associatedFocusPoints.toDouble() / 4
             } else {
                 floor(streakProgressFraction) // reset the streak level progress
@@ -35,11 +35,11 @@ class EndTimerSessionUseCase @Inject constructor(
 
         sessionRepository.updateTimerSession(
             sessionId = sessionId,
-            endTime = endTime,
+            endTime = minOf(idealCompletionTime, currentTime),
             streakProgressFraction = newStreakProgressFraction
         )
 
-        if (endTime >= idealCompletionTime) { // successful completion
+        if (currentTime >= idealCompletionTime) { // successful completion
             // focus points credit transaction
             val focusPointTransactionList =
                 buildList<FocusPointTransaction> { // insert of credit and bonus must be an atomic operation to prevent reactive reads side effects
@@ -48,7 +48,7 @@ class EndTimerSessionUseCase @Inject constructor(
                             id = 0,
                             value = associatedFocusPoints,
                             transactionType = FocusPointTransactionType.COMPLETION_CREDIT,
-                            timestamp = endTime,
+                            timestamp = currentTime,
                             message = "Earned for completing ${durationType.duration.inWholeMinutes} min session"
                         )
                     )
@@ -59,7 +59,7 @@ class EndTimerSessionUseCase @Inject constructor(
                                 id = 0,
                                 value = streakLevel, // n points for completing nth streak
                                 transactionType = FocusPointTransactionType.BONUS_CREDIT,
-                                timestamp = endTime,
+                                timestamp = currentTime,
                                 message = "Bonus for reaching streak level: $streakLevel"
                             )
                         )
