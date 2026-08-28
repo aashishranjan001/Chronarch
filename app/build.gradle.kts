@@ -36,6 +36,11 @@ android {
             }
             isMinifyEnabled = true
             isShrinkResources = true
+
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
