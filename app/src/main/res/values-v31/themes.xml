@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Chronarch.Splash" parent="@style/Theme.SplashScreen">
+        <item name="android:windowSplashScreenBackground">@color/primary</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_app_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.Chronarch</item>
+    </style>
+</resources>

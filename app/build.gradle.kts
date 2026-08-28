@@ -88,4 +88,7 @@ dependencies {
 
     // Adaptive layout
     implementation(libs.compose.adaptive)
+
+    // Splash
+    implementation(libs.androidx.splash)
 }
