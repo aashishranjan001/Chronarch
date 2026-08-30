@@ -128,4 +128,9 @@
     <string name="rewards_fetch_error_message">Something went wrong while loading the rewards. Please try again</string>
     <string name="history_fetch_error_message">Something went wrong while fetching the history. Please try again</string>
     <string name="retry">Retry</string>
+    <string name="timer_notification_channel_description">Notification for displaying ongoing timer progress</string>
+    <string name="active_timer_notification_title">Timer running</string>
+    <string name="stopped_timer_notification_title">Timer completed</string>
+    <string name="active_timer_notification_content">%1$s / %2$s</string>
+    <string name="timer_notification_stop_action_text">Stop</string>
 </resources>
