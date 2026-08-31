@@ -13,6 +13,7 @@ import com.aashish.chronarch.common.ui.toCeilSeconds
 import com.aashish.chronarch.home.domain.usecase.EndTimerSessionUseCase
 import com.aashish.chronarch.home.domain.usecase.GetLatestTimerSessionUseCase
 import com.aashish.chronarch.home.notification.TimerNotificationManager
+import com.aashish.chronarch.navigation.Screen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -111,7 +112,7 @@ class TimerForegroundService : Service() {
     private fun getTapPendingIntent() = PendingIntent.getActivity(
         this,
         1001,
-        MainActivity.getIntent(this),
+        MainActivity.getIntent(this, Screen.Home),
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
