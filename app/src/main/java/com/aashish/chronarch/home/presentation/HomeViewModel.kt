@@ -80,7 +80,6 @@ class HomeViewModel @Inject constructor(
                 }
 
                 sessionsOverview.activeSession?.let { activeSession ->
-                    _uiEffect.send(HomeUiEffect.StartTimerNotification)
                     while (Instant.now() <= activeSession.idealCompletionTime) {
                         _uiState.update {
                             delay(1.seconds)
@@ -118,6 +117,7 @@ class HomeViewModel @Inject constructor(
                         durationType = _uiState.value.selectedNewTimerDurationType,
                         runningStreakProgressFraction = _uiState.value.streakProgressFraction,
                     )
+                    _uiEffect.send(HomeUiEffect.StartTimerNotification)
                 }
             }
 

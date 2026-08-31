@@ -28,7 +28,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
-class TimerForegroundService: Service() {
+class TimerForegroundService : Service() {
 
     private var serviceScope: CoroutineScope? = null
     private var sessionJob: Job? = null
@@ -63,14 +63,16 @@ class TimerForegroundService: Service() {
         sessionJob?.cancel()
         sessionJob = serviceScope?.launch {
             latestTimerSessionUseCase().collectLatest { latestSession ->
-                if (latestSession != null && latestSession.sessionEndTime == null) { // latest session is available and has not ended => start timer service
-                    updateNotificationTimerContent(latestSession.idealEndTime, latestSession.durationType.duration)
-                } else {
-                    stopSelf()
+                if (latestSession != null && (latestSession.sessionEndTime == null || latestSession.sessionEndTime >= latestSession.idealEndTime)) { // latest session is available and is either running or has completely finished
+                    updateNotificationTimerContent(
+                        latestSession.idealEndTime,
+                        latestSession.durationType.duration
+                    )
                 }
+                stopSelf()
             }
         }
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onDestroy() {
@@ -104,7 +106,6 @@ class TimerForegroundService: Service() {
         timerNotificationManager.safePostTimerCompletedNotification(
             sessionDurationMins = totalDuration.inWholeMinutes, tapPendingIntent = tapPendingIntent
         )
-        stopSelf()
     }
 
     private fun getTapPendingIntent() = PendingIntent.getActivity(
