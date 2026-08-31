@@ -91,10 +91,12 @@ class TimerForegroundService: Service() {
 
         while (Instant.now() <= completionTime) {
             timerNotificationManager.safePostActiveTimerNotification(
-                durationRemainingInSeconds =  Duration.between(Instant.now(), completionTime).toCeilSeconds(),
+                durationRemainingInSeconds = Duration.between(Instant.now(), completionTime)
+                    .toCeilSeconds(),
                 totalDurationInSeconds = totalDurationInSeconds,
+                completionTime = completionTime,
                 tapPendingIntent = tapPendingIntent,
-                stopPendingIntent =  stopPendingIntent
+                stopPendingIntent = stopPendingIntent
             )
             delay(1.seconds)
         }

@@ -14,6 +14,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.aashish.chronarch.R
 import com.aashish.chronarch.common.ui.formatDurationHhMmSs
+import com.aashish.chronarch.common.ui.toHumanReadableDurationFormat
+import com.aashish.chronarch.common.ui.toReadableLocalTime
+import java.time.Instant
 
 class TimerNotificationManager(private val context: Context) {
 
@@ -59,6 +62,7 @@ class TimerNotificationManager(private val context: Context) {
     fun safePostActiveTimerNotification(
         durationRemainingInSeconds: Long,
         totalDurationInSeconds: Long,
+        completionTime: Instant,
         tapPendingIntent: PendingIntent,
         stopPendingIntent: PendingIntent
     ) {
@@ -66,12 +70,12 @@ class TimerNotificationManager(private val context: Context) {
 
         val activeTimerNotification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_timer_active_notification)
-            .setContentTitle(context.getString(R.string.active_timer_notification_title))
+            .setContentTitle(context.getString(R.string.active_timer_notification_title, formatDurationHhMmSs(durationRemainingInSeconds)))
             .setContentText(
                 context.getString(
-                    R.string.active_timer_notification_content,
-                    formatDurationHhMmSs(durationRemainingInSeconds),
-                    formatDurationHhMmSs(totalDurationInSeconds)
+                    R.string.active_timer_notification_description,
+                    toHumanReadableDurationFormat(totalDurationInSeconds),
+                    completionTime.toReadableLocalTime()
                 )
             )
             .setContentIntent(tapPendingIntent)
