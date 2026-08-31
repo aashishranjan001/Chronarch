@@ -20,6 +20,7 @@ class EndTimerSessionUseCase @Inject constructor(
         streakProgressFraction: Double
     ) {
         val currentTime = Instant.now()
+        val sessionEndTime = minOf(idealCompletionTime, currentTime)
 
         val associatedFocusPoints = when (durationType) {
             DurationType.LongDuration -> 2
@@ -35,7 +36,7 @@ class EndTimerSessionUseCase @Inject constructor(
 
         sessionRepository.updateTimerSession(
             sessionId = sessionId,
-            endTime = minOf(idealCompletionTime, currentTime),
+            endTime = sessionEndTime,
             streakProgressFraction = newStreakProgressFraction
         )
 
@@ -48,7 +49,7 @@ class EndTimerSessionUseCase @Inject constructor(
                             id = 0,
                             value = associatedFocusPoints,
                             transactionType = FocusPointTransactionType.COMPLETION_CREDIT,
-                            timestamp = currentTime,
+                            timestamp = sessionEndTime,
                             message = "Earned for completing ${durationType.duration.inWholeMinutes} min session"
                         )
                     )
@@ -59,7 +60,7 @@ class EndTimerSessionUseCase @Inject constructor(
                                 id = 0,
                                 value = streakLevel, // n points for completing nth streak
                                 transactionType = FocusPointTransactionType.BONUS_CREDIT,
-                                timestamp = currentTime,
+                                timestamp = sessionEndTime,
                                 message = "Bonus for reaching streak level: $streakLevel"
                             )
                         )
