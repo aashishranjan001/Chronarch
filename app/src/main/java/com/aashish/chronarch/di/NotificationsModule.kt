@@ -1,7 +1,7 @@
 package com.aashish.chronarch.di
 
 import android.content.Context
-import com.aashish.chronarch.home.notification.ChronarchNotificationManager
+import com.aashish.chronarch.home.notification.TimerNotificationManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object NotificationsModule {
 
     @Singleton
     @Provides
-    fun providesNotificationManager(@ApplicationContext context: Context): ChronarchNotificationManager {
-        return ChronarchNotificationManager(context)
+    fun providesNotificationManager(@ApplicationContext context: Context): TimerNotificationManager {
+        return TimerNotificationManager(context)
     }
 }

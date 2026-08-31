@@ -2,6 +2,7 @@ package com.aashish.chronarch.home.notification
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,9 +13,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.aashish.chronarch.R
-import kotlin.time.Duration
+import com.aashish.chronarch.common.ui.formatDurationHhMmSs
 
-class ChronarchNotificationManager(private val context: Context) {
+class TimerNotificationManager(private val context: Context) {
 
     private val notificationManagerCompat = NotificationManagerCompat.from(context)
 
@@ -25,8 +26,8 @@ class ChronarchNotificationManager(private val context: Context) {
     private fun createTimerNotificationChannel() {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val mChannel = NotificationChannel(
-            TIMER_NOTIFICATION_CHANNEL_ID,
-            TIMER_NOTIFICATION_CHANNEL_NAME,
+            NOTIFICATION_CHANNEL_ID,
+            NOTIFICATION_CHANNEL_NAME,
             importance
         ).apply {
             description = context.getString(R.string.timer_notification_channel_description)
@@ -36,7 +37,7 @@ class ChronarchNotificationManager(private val context: Context) {
         notificationManager?.createNotificationChannel(mChannel)
     }
 
-    private fun canPostNotificationToChannel(channelId: String): Boolean {
+    fun canPostNotificationToChannel(channelId: String): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Check runtime permission (Android 13+)
             val hasPermission = ContextCompat.checkSelfPermission(
                 context,
@@ -54,25 +55,23 @@ class ChronarchNotificationManager(private val context: Context) {
 
         return true
     }
-
     @SuppressLint("MissingPermission")
-    fun showActiveTimerNotification(
-        notificationId: Int,
-        remainingTime: String,
-        totalTime: String,
+    fun safePostActiveTimerNotification(
+        durationRemainingInSeconds: Long,
+        totalDurationInSeconds: Long,
         tapPendingIntent: PendingIntent,
         stopPendingIntent: PendingIntent
     ) {
-        if (!canPostNotificationToChannel(TIMER_NOTIFICATION_CHANNEL_ID)) return
+        if (!canPostNotificationToChannel(NOTIFICATION_CHANNEL_ID)) return
 
-        val notification = NotificationCompat.Builder(context, TIMER_NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_timer_notification)
+        val activeTimerNotification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_timer_active_notification)
             .setContentTitle(context.getString(R.string.active_timer_notification_title))
             .setContentText(
                 context.getString(
                     R.string.active_timer_notification_content,
-                    remainingTime,
-                    totalTime
+                    formatDurationHhMmSs(durationRemainingInSeconds),
+                    formatDurationHhMmSs(totalDurationInSeconds)
                 )
             )
             .setContentIntent(tapPendingIntent)
@@ -81,42 +80,54 @@ class ChronarchNotificationManager(private val context: Context) {
                 context.getString(R.string.timer_notification_stop_action_text),
                 stopPendingIntent
             )
-            .setAutoCancel(true)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
             .build()
 
-        notificationManagerCompat.notify(notificationId, notification)
+        // suppressLint because canPostNotificationToChannel already makes the permission check
+        notificationManagerCompat.notify(NOTIFICATION_ID, activeTimerNotification)
     }
 
     @SuppressLint("MissingPermission")
-    fun showTimerCompletedNotification(
-        notificationId: Int,
-        sessionDuration: Duration,
+    fun safePostTimerCompletedNotification(
+        sessionDurationMins: Long,
         tapPendingIntent: PendingIntent
     ) {
-        if (!canPostNotificationToChannel(TIMER_NOTIFICATION_CHANNEL_ID)) return
+        if (!canPostNotificationToChannel(NOTIFICATION_CHANNEL_ID)) return
 
-        val notification = NotificationCompat.Builder(context, TIMER_NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_timer_notification)
+        val timerCompletedNotification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_timer_completed_notification)
             .setContentTitle(context.getString(R.string.stopped_timer_notification_title))
             .setContentText(
                 context.getString(
                     R.string.session_completed_message,
-                    sessionDuration.inWholeMinutes
+                    sessionDurationMins
                 )
             )
             .setContentIntent(tapPendingIntent)
             .setAutoCancel(true)
+            .setOnlyAlertOnce(false)
             .build()
 
-        notificationManagerCompat.notify(notificationId, notification)
+        // suppressLint because canPostNotificationToChannel already makes the permission check
+        notificationManagerCompat.notify(NOTIFICATION_ID, timerCompletedNotification)
     }
-
-    fun dismissNotification(notificationId: Int) {
-        notificationManagerCompat.cancel(notificationId)
+    fun getPlaceholderNotification(
+        tapPendingIntent: PendingIntent
+    ): Notification {
+        return NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_timer_active_notification)
+            .setContentTitle(context.getString(R.string.active_timer_notification_title))
+            .setContentText(context.getString(R.string.timer_starting))
+            .setContentIntent(tapPendingIntent)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .build()
     }
 
     companion object {
-        private const val TIMER_NOTIFICATION_CHANNEL_ID = "timer_notification"
-        private const val TIMER_NOTIFICATION_CHANNEL_NAME = "Timer notifications"
+        private const val NOTIFICATION_CHANNEL_ID = "timer_notification"
+        private const val NOTIFICATION_CHANNEL_NAME = "Timer notifications"
+        const val NOTIFICATION_ID = 1001
     }
 }

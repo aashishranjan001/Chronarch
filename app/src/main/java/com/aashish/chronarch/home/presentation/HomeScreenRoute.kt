@@ -18,8 +18,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass
@@ -29,6 +31,7 @@ import com.aashish.chronarch.common.ui.components.ConfirmationDialog
 import com.aashish.chronarch.common.ui.theme.ChronarchTheme
 import com.aashish.chronarch.home.presentation.components.HomeStatsSection
 import com.aashish.chronarch.home.presentation.components.HomeTimerSection
+import com.aashish.chronarch.home.services.TimerForegroundService
 import java.time.Instant
 import kotlin.time.Duration.Companion.seconds
 
@@ -40,14 +43,16 @@ fun HomeScreenRoute(
 ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     val timerCancelledMessage =
         stringResource(R.string.timer_stopped_message)
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { uiEffect ->
             when(uiEffect) {
-                is HomeUiEffect.ShowTimerCancelledSnackbar -> {
-                    snackbarHostState.showSnackbar(timerCancelledMessage)
+                is HomeUiEffect.ShowTimerCancelledSnackbar -> { snackbarHostState.showSnackbar(timerCancelledMessage) }
+                is HomeUiEffect.StartTimerNotification -> {
+                    ContextCompat.startForegroundService(context, TimerForegroundService.getIntent(context))
                 }
                 else -> {}
             }
