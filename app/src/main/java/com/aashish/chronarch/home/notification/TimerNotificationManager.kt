@@ -30,7 +30,7 @@ class TimerNotificationManager(private val context: Context) {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val mChannel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
-            NOTIFICATION_CHANNEL_NAME,
+            context.getString(R.string.timer_notification_channel_name),
             importance
         ).apply {
             description = context.getString(R.string.timer_notification_channel_description)
@@ -131,7 +131,6 @@ class TimerNotificationManager(private val context: Context) {
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "timer_notification"
-        private const val NOTIFICATION_CHANNEL_NAME = "Timer notifications"
         const val NOTIFICATION_ID = 1001
     }
 }
