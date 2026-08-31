@@ -10,6 +10,8 @@ import android.os.IBinder
 import androidx.core.app.ServiceCompat
 import com.aashish.chronarch.MainActivity
 import com.aashish.chronarch.common.ui.toCeilSeconds
+import com.aashish.chronarch.home.broadcast.NotificationActionClickReceiver
+import com.aashish.chronarch.home.domain.model.LatestTimerSession
 import com.aashish.chronarch.home.domain.usecase.EndTimerSessionUseCase
 import com.aashish.chronarch.home.domain.usecase.GetLatestTimerSessionUseCase
 import com.aashish.chronarch.home.notification.TimerNotificationManager
@@ -29,9 +31,9 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
-class TimerForegroundService : Service() {
+class TimerNotificationForegroundService : Service() {
 
-    private var serviceScope: CoroutineScope? = null
+    private val serviceScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var sessionJob: Job? = null
 
     @Inject
@@ -42,11 +44,6 @@ class TimerForegroundService : Service() {
 
     @Inject
     lateinit var endTimerSessionUseCase: EndTimerSessionUseCase
-
-    override fun onCreate() {
-        super.onCreate()
-        serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    }
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -62,14 +59,12 @@ class TimerForegroundService : Service() {
         )
 
         sessionJob?.cancel()
-        sessionJob = serviceScope?.launch {
+        sessionJob = serviceScope.launch {
             latestTimerSessionUseCase().collectLatest { latestSession ->
                 if (latestSession != null && (latestSession.sessionEndTime == null || latestSession.sessionEndTime >= latestSession.idealEndTime)) { // latest session is available and is either running or has completely finished
-                    updateNotificationTimerContent(
-                        latestSession.idealEndTime,
-                        latestSession.durationType.duration
-                    )
+                    updateNotificationTimerContent(latestSession)
                 }
+                // stop once we've finished handling this session (active or otherwise)
                 stopSelf()
             }
         }
@@ -77,27 +72,26 @@ class TimerForegroundService : Service() {
     }
 
     override fun onDestroy() {
-        sessionJob?.cancel()
-        sessionJob = null
-        serviceScope?.cancel()
-        serviceScope = null
+        serviceScope.cancel()
         super.onDestroy()
     }
 
     private suspend fun updateNotificationTimerContent(
-        completionTime: Instant,
-        totalDuration: kotlin.time.Duration
+        latestTimerSession: LatestTimerSession
     ) {
-        val totalDurationInSeconds = totalDuration.inWholeSeconds
+        val totalDurationInSeconds = latestTimerSession.durationType.duration.inWholeSeconds
         val tapPendingIntent = getTapPendingIntent()
-        val stopPendingIntent = getStopPendingIntent()
+        val stopPendingIntent = getStopPendingIntent(latestTimerSession)
 
-        while (Instant.now() <= completionTime) {
+        while (Instant.now() <= latestTimerSession.idealEndTime) {
             timerNotificationManager.safePostActiveTimerNotification(
-                durationRemainingInSeconds = Duration.between(Instant.now(), completionTime)
+                durationRemainingInSeconds = Duration.between(
+                    Instant.now(),
+                    latestTimerSession.idealEndTime
+                )
                     .toCeilSeconds(),
                 totalDurationInSeconds = totalDurationInSeconds,
-                completionTime = completionTime,
+                completionTime = latestTimerSession.idealEndTime,
                 tapPendingIntent = tapPendingIntent,
                 stopPendingIntent = stopPendingIntent
             )
@@ -105,22 +99,30 @@ class TimerForegroundService : Service() {
         }
         stopForeground(STOP_FOREGROUND_REMOVE)
         timerNotificationManager.safePostTimerCompletedNotification(
-            sessionDurationMins = totalDuration.inWholeMinutes, tapPendingIntent = tapPendingIntent
+            sessionDurationMins = latestTimerSession.durationType.duration.inWholeMinutes,
+            tapPendingIntent = tapPendingIntent
         )
     }
 
     private fun getTapPendingIntent() = PendingIntent.getActivity(
         this,
-        1001,
+        TAP_PENDING_INTENT_REQUEST_CODE,
         MainActivity.getIntent(this, Screen.Home),
-        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    private fun getStopPendingIntent(): PendingIntent {
-        return getTapPendingIntent() // temp stub. todo: change this with stop pending intent
+    private fun getStopPendingIntent(latestTimerSession: LatestTimerSession): PendingIntent {
+        return PendingIntent.getBroadcast(
+            this,
+            STOP_PENDING_INTENT_REQUEST_CODE,
+            NotificationActionClickReceiver.getIntent(this, latestTimerSession),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
     }
 
     companion object {
-        fun getIntent(context: Context) = Intent(context, TimerForegroundService::class.java)
+        fun getIntent(context: Context) = Intent(context, TimerNotificationForegroundService::class.java)
+        const val TAP_PENDING_INTENT_REQUEST_CODE = 1001
+        const val STOP_PENDING_INTENT_REQUEST_CODE = 1002
     }
 }
