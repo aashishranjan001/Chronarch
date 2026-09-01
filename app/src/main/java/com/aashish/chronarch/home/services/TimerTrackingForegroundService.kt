@@ -62,8 +62,8 @@ class TimerTrackingForegroundService : Service() {
         sessionJob = serviceScope.launch {
             latestTimerSessionUseCase().collectLatest { latestSession ->
 
-                // latest timer session is available and is either an active timer or finished timer
-                if (latestSession != null && (latestSession.sessionEndTime == null || latestSession.sessionEndTime >= latestSession.idealEndTime)) {
+                // run timer only if an incomplete session is available
+                if (latestSession != null && latestSession.sessionEndTime == null) {
                     runTimer(latestSession)
                 }
                 // stop once we've finished handling this session (active or otherwise)
