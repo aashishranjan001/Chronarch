@@ -131,7 +131,6 @@
     <string name="timer_notification_channel_name">Timer notifications</string>
     <string name="timer_notification_channel_description">Notification for displaying ongoing timer progress</string>
     <string name="active_timer_notification_title">Timer running · %s</string>
-    <string name="stopped_timer_notification_title">Timer completed</string>
     <string name="active_timer_notification_description">%1$s total · Ends at %2$s</string>
     <string name="timer_starting">Starting…</string>
     <string name="timer_notification_stop_action_text">Stop</string>

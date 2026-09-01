@@ -101,7 +101,7 @@ class TimerNotificationManager(private val context: Context) {
 
         val timerCompletedNotification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_timer_completed_notification)
-            .setContentTitle(context.getString(R.string.stopped_timer_notification_title))
+            .setContentTitle(context.getString(R.string.timer_ended))
             .setContentText(
                 context.getString(
                     R.string.session_completed_message,
