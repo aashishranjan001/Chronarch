@@ -31,7 +31,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
-class TimerNotificationForegroundService : Service() {
+class TimerTrackingForegroundService : Service() {
 
     private val serviceScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private var sessionJob: Job? = null
@@ -61,8 +61,10 @@ class TimerNotificationForegroundService : Service() {
         sessionJob?.cancel()
         sessionJob = serviceScope.launch {
             latestTimerSessionUseCase().collectLatest { latestSession ->
-                if (latestSession != null && (latestSession.sessionEndTime == null || latestSession.sessionEndTime >= latestSession.idealEndTime)) { // latest session is available and is either running or has completely finished
-                    updateNotificationTimerContent(latestSession)
+
+                // latest timer session is available and is either an active timer or finished timer
+                if (latestSession != null && (latestSession.sessionEndTime == null || latestSession.sessionEndTime >= latestSession.idealEndTime)) {
+                    runTimer(latestSession)
                 }
                 // stop once we've finished handling this session (active or otherwise)
                 stopSelf()
@@ -76,7 +78,7 @@ class TimerNotificationForegroundService : Service() {
         super.onDestroy()
     }
 
-    private suspend fun updateNotificationTimerContent(
+    private suspend fun runTimer(
         latestTimerSession: LatestTimerSession
     ) {
         val totalDurationInSeconds = latestTimerSession.durationType.duration.inWholeSeconds
@@ -97,6 +99,12 @@ class TimerNotificationForegroundService : Service() {
             )
             delay(1.seconds)
         }
+        endTimerSessionUseCase(
+            sessionId = latestTimerSession.id,
+            idealCompletionTime = latestTimerSession.idealEndTime,
+            durationType = latestTimerSession.durationType,
+            streakProgressFraction = latestTimerSession.runningStreakProgressionFraction
+        )
         stopForeground(STOP_FOREGROUND_REMOVE)
         timerNotificationManager.safePostTimerCompletedNotification(
             sessionDurationMins = latestTimerSession.durationType.duration.inWholeMinutes,
@@ -121,7 +129,7 @@ class TimerNotificationForegroundService : Service() {
     }
 
     companion object {
-        fun getIntent(context: Context) = Intent(context, TimerNotificationForegroundService::class.java)
+        fun getIntent(context: Context) = Intent(context, TimerTrackingForegroundService::class.java)
         const val TAP_PENDING_INTENT_REQUEST_CODE = 1001
         const val STOP_PENDING_INTENT_REQUEST_CODE = 1002
     }

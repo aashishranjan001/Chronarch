@@ -15,5 +15,5 @@ sealed class HomeEvent {
 
 sealed class HomeUiEffect {
     data object ShowTimerCancelledSnackbar: HomeUiEffect()
-    data object StartTimerNotification: HomeUiEffect()
+    data object StartTimerTracking: HomeUiEffect()
 }

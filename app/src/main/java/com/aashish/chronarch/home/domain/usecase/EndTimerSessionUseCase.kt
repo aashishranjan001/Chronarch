@@ -43,7 +43,7 @@ class EndTimerSessionUseCase @Inject constructor(
         if (currentTime >= idealCompletionTime) { // successful completion
             // focus points credit transaction
             val focusPointTransactionList =
-                buildList<FocusPointTransaction> { // insert of credit and bonus must be an atomic operation to prevent reactive reads side effects
+                buildList { // insert of credit and bonus must be an atomic operation to prevent reactive reads side effects
                     add(
                         FocusPointTransaction(
                             id = 0,

@@ -28,12 +28,12 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".home.services.TimerNotificationForegroundService"
+            android:name=".home.services.TimerTrackingForegroundService"
             android:foregroundServiceType="specialUse"
             android:exported="false">
 
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="To display notification for ongoing timer progress"/>
+                android:value="Tracks active timer sessions while the user is away from the app"/>
         </service>
         <receiver android:name=".home.broadcast.NotificationActionClickReceiver"
             android:exported="false">
