@@ -134,7 +134,7 @@ fun CompactHeightHomeScreen(
             sessionsCancelled = uiState.totalSessionsCancelled,
             currentDateFocusPoints = uiState.currentDateTotalCreditFocusPoints,
             streaksCount = uiState.streaksCount,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
         )
         Spacer(modifier = Modifier.width(spacing.medium))
         HomeTimerSection(

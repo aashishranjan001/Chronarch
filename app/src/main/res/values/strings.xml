@@ -56,7 +56,7 @@
     <string name="action_setup_image">Action setup image</string>
     <string name="go_back">Back</string>
     <string name="proceed">Proceed</string>
-    <string name="setup_actions_message">Add things you enjoy as rewards and set the focus points needed to earn them.</string>
+    <string name="setup_actions_message">Add your favourite activities or hobbies as rewards and set the focus points needed to unlock them.</string>
     <string name="note_one_time_action">Note: This is a one time setup</string>
     <string name="rewards_icon">Rewards icon</string>
     <string name="title_redemption_corner">Redemption Corner</string>
@@ -128,6 +128,7 @@
     <string name="rewards_fetch_error_message">Something went wrong while loading the rewards. Please try again</string>
     <string name="history_fetch_error_message">Something went wrong while fetching the history. Please try again</string>
     <string name="retry">Retry</string>
+    <string name="title_todays_overview">Today\'s overview</string>
     <string name="timer_notification_channel_name">Timer notifications</string>
     <string name="timer_notification_channel_description">Notification for displaying ongoing timer progress</string>
     <string name="active_timer_notification_title">Timer running · %s</string>
