@@ -128,4 +128,5 @@
     <string name="rewards_fetch_error_message">Something went wrong while loading the rewards. Please try again</string>
     <string name="history_fetch_error_message">Something went wrong while fetching the history. Please try again</string>
     <string name="retry">Retry</string>
+    <string name="title_todays_overview">Today\'s overview</string>
 </resources>
