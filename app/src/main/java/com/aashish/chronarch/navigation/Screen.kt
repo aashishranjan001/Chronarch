@@ -1,10 +1,18 @@
 package com.aashish.chronarch.navigation
 
-sealed class Screen(val route: String) {
-    object Home: Screen("home")
-    object WeekOverview: Screen("week_overview")
-    object RedemptionCorner: Screen("redemption_corner")
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+sealed class Screen(val route: String): Parcelable {
+    data object Home: Screen("home")
+
+    data object WeekOverview: Screen("week_overview")
+
+    data object RedemptionCorner: Screen("redemption_corner")
+
     object RewardsSetup: Screen("rewards_setup")
+
     object History: Screen("history")
 }
 

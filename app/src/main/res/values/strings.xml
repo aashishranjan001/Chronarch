@@ -129,4 +129,10 @@
     <string name="history_fetch_error_message">Something went wrong while fetching the history. Please try again</string>
     <string name="retry">Retry</string>
     <string name="title_todays_overview">Today\'s overview</string>
+    <string name="timer_notification_channel_name">Timer notifications</string>
+    <string name="timer_notification_channel_description">Notification for displaying ongoing timer progress</string>
+    <string name="active_timer_notification_title">Timer running · %s</string>
+    <string name="active_timer_notification_description">%1$s total · Ends at %2$s</string>
+    <string name="timer_starting">Starting…</string>
+    <string name="timer_notification_stop_action_text">Stop</string>
 </resources>
