@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Active/running stopwatch. Monochrome for Android notification small-icon tinting. -->
+
+    <!-- Stopwatch body -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,5A7.5,7.5 0,1 0,12 20A7.5,7.5 0,1 0,12 5M12,6.8A5.7,5.7 0,1 1,12 18.2A5.7,5.7 0,1 1,12 6.8" />
+
+    <!-- Top button -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M10.2,2H13.8A0.9,0.9 0,0 1,14.7 2.9V4.1A0.9,0.9 0,0 1,13.8 5H10.2A0.9,0.9 0,0 1,9.3 4.1V2.9A0.9,0.9 0,0 1,10.2 2Z" />
+
+    <!-- Upper-right button -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M17.35,5.25L18.65,3.95A0.85,0.85 0,0 1,19.85 3.95L20.45,4.55A0.85,0.85 0,0 1,20.45 5.75L19.15,7.05Z" />
+
+    <!-- Running hand -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M11.25,12.75L15.25,8.75A0.85,0.85 0,0 1,16.45 9.95L12.45,13.95Z" />
+
+    <!-- Center pivot -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,11A1.5,1.5 0,1 0,12 14A1.5,1.5 0,1 0,12 11Z" />
+
+    <!-- Motion lines: timer is actively running -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M2.5,9.25H5.1A0.75,0.75 0,0 1,5.1 10.75H2.5A0.75,0.75 0,0 1,2.5 9.25ZM1.5,11.25H4.2A0.75,0.75 0,0 1,4.2 12.75H1.5A0.75,0.75 0,0 1,1.5 11.25ZM2.5,13.25H5.1A0.75,0.75 0,0 1,5.1 14.75H2.5A0.75,0.75 0,0 1,2.5 13.25Z" />
+</vector>

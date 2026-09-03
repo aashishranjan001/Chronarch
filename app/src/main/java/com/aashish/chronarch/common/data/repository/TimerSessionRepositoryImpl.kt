@@ -39,6 +39,10 @@ class TimerSessionRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getLatestTimer(): Flow<TimerSession?> {
+        return timerSessionDao.getLatestTimer().map { it?.toDomain() }
+    }
+
     override fun getAllEndedTimerSessions(): Flow<List<TimerSession>> {
         return timerSessionDao.getAllEndedSessions().map { sessionsList ->
             sessionsList.map { it.toDomain() }

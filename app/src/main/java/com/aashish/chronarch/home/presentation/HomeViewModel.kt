@@ -80,6 +80,7 @@ class HomeViewModel @Inject constructor(
                 }
 
                 sessionsOverview.activeSession?.let { activeSession ->
+                    _uiEffect.send(HomeUiEffect.StartTimerTracking)
                     while (Instant.now() <= activeSession.idealCompletionTime) {
                         _uiState.update {
                             delay(1.seconds)
@@ -93,12 +94,6 @@ class HomeViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(dialog = HomeDialog.TimerFinishedInformation(activeSession.durationType.duration.inWholeMinutes))
                     }
-                    endTimerSessionUseCase(
-                        sessionId = sessionsOverview.activeSession.id,
-                        idealCompletionTime = activeSession.idealCompletionTime,
-                        durationType = sessionsOverview.activeSession.durationType,
-                        streakProgressFraction = _uiState.value.streakProgressFraction
-                    )
                 }
             }
         }
