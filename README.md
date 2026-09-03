@@ -87,7 +87,7 @@ Each feature package keeps its `domain` layer (models, repository interfaces, us
 ## Getting started
 
 Chronarch is currently in **closed testing** on Google Play:
-1. Join the [chronarch-closed-testers](https://groups.google.com/g/chronarch-closed-testers) Google Group.
+1. Join the [chronarch-testers](https://groups.google.com/g/chronarch-testers) Google Group.
 2. Opt in to testing via the [Play Store testing link](https://play.google.com/apps/testing/com.aashish.chronarch).
 
 To build it from source instead:
