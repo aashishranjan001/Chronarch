@@ -56,7 +56,7 @@
     <string name="action_setup_image">Action setup image</string>
     <string name="go_back">Back</string>
     <string name="proceed">Proceed</string>
-    <string name="setup_actions_message">Add things you enjoy as rewards and set the focus points needed to earn them.</string>
+    <string name="setup_actions_message">Add your favourite activities or hobbies as rewards and set the focus points needed to unlock them.</string>
     <string name="note_one_time_action">Note: This is a one time setup</string>
     <string name="rewards_icon">Rewards icon</string>
     <string name="title_redemption_corner">Redemption Corner</string>
