@@ -49,8 +49,8 @@ Chronarch is a native Android app for people who want their focus time to feel l
 - **Weekly overview** — a bar chart of point earnings across the week, session counts by duration, and a completed-vs-cancelled breakdown.
 - **History with filters** — browse past sessions (by duration/status) and the full points transaction ledger (by type and date range).
 - **Streaks** — build a daily completion streak; stopping a session early resets your progress, keeping the incentive honest.
-- **Adaptive layout** — a bottom navigation bar on phones that switches to a navigation rail on tablets and foldables, driven by window size class.
-- **Material 3 theming** with dynamic color and a native splash screen.
+- **Adaptive layout** — driven by window size class: a bottom navigation bar on phones switches to a navigation rail on tablets and foldables, and the home screen reflows from a stacked layout to a side-by-side one in landscape / compact-height windows.
+- **Material 3 theming** with dynamic color, a themed (monochrome) launcher icon for Android 13+, and a native splash screen
 
 ## Tech stack
 
@@ -88,7 +88,7 @@ Each feature package keeps its `domain` layer (models, repository interfaces, us
 
 Chronarch is currently in **closed testing** on Google Play:
 1. Join the [chronarch-testers](https://groups.google.com/g/chronarch-testers) Google Group.
-2. Opt in to testing via the [Play Store testing link](https://play.google.com/apps/testing/com.aashish.chronarch).
+2. Opt in to testing via the [Play Store testing link](https://play.google.com/apps/testing/com.aashish.chronarch), then install Chronarch from the Play Store.
 
 To build it from source instead:
 
@@ -107,7 +107,7 @@ Open the project in Android Studio, let Gradle sync, then run the `app` configur
 ## Project info
 
 - **Package:** `com.aashish.chronarch`
-- **Version:** 1.2.0 (build 4)
+- **Version:** 1.2.0 (4)
 
 ## License
 
