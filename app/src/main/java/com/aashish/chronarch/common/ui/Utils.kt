@@ -30,7 +30,7 @@ fun toHumanReadableDurationFormat(seconds: Long): String {
         if (hh != 0L) append("${hh}h ")
         if (mm != 0L) append("${mm}m ")
         if (ss != 0L) append("${ss}s")
-    }
+    }.trim()
 }
 
 fun calculatePercent(value: Double, total: Double): Double {
