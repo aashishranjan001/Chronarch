@@ -32,7 +32,7 @@ import com.aashish.chronarch.common.ui.LocalSpacing
 import com.aashish.chronarch.common.ui.theme.ChronarchTheme
 import com.aashish.chronarch.history.presentation.model.FilterCategory
 import com.aashish.chronarch.history.presentation.model.FilterCategoryItemUiState
-import com.aashish.chronarch.history.presentation.model.FilterOption
+import com.aashish.chronarch.history.presentation.model.filterOption
 import com.aashish.chronarch.history.presentation.model.FilterOptionItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -164,8 +164,8 @@ private fun FilterBottomSheetPreview() {
                 FilterCategoryItemUiState(FilterCategory.Date, false, false),
             ),
             options = listOf(
-                FilterOptionItem.Checkbox(FilterOption.SessionFilter.CompletionStatus.Finished, true),
-                FilterOptionItem.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false)
+                FilterOptionItem.Checkbox(filterOption.SessionFilter.CompletionStatus.Finished, true),
+                FilterOptionItem.Checkbox(filterOption.SessionFilter.DurationType.LongType, false)
             ),
             onDismiss = {},
             onClearFilter = {},

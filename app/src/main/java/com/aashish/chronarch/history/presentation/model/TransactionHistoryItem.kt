@@ -11,11 +11,11 @@ data class TransactionHistoryItem(
     val timestamp: Instant,
     val message: String
 ) {
-    fun toTransactionTypeFilterLabel(): FilterOption.TransactionFilter.Type {
+    fun toTransactionTypeFilterLabel(): filterOption.TransactionFilter.Type {
         return when(transactionType) {
-            FocusPointTransactionType.COMPLETION_CREDIT -> FilterOption.TransactionFilter.Type.TaskCredit
-            FocusPointTransactionType.BONUS_CREDIT -> FilterOption.TransactionFilter.Type.Bonus
-            FocusPointTransactionType.REDEMPTION_DEBIT -> FilterOption.TransactionFilter.Type.Redemption
+            FocusPointTransactionType.COMPLETION_CREDIT -> filterOption.TransactionFilter.Type.TaskCredit
+            FocusPointTransactionType.BONUS_CREDIT -> filterOption.TransactionFilter.Type.Bonus
+            FocusPointTransactionType.REDEMPTION_DEBIT -> filterOption.TransactionFilter.Type.Redemption
         }
     }
 }

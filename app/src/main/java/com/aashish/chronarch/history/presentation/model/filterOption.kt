@@ -2,8 +2,8 @@ package com.aashish.chronarch.history.presentation.model
 
 import java.time.LocalDate
 
-sealed class FilterOption {
-    sealed class SessionFilter: FilterOption() {
+sealed class filterOption {
+    sealed class SessionFilter: filterOption() {
         sealed class DurationType: SessionFilter() {
             data object ShortType: DurationType()
             data object LongType: DurationType()
@@ -27,7 +27,7 @@ sealed class FilterOption {
         }
     }
 
-    sealed class TransactionFilter: FilterOption() {
+    sealed class TransactionFilter: filterOption() {
         sealed class Type: TransactionFilter() {
             data object TaskCredit: Type()
             data object Bonus: Type()
@@ -41,7 +41,7 @@ sealed class FilterOption {
         }
     }
 
-    sealed class Date: FilterOption() {
+    sealed class Date: filterOption() {
         data object ThisWeek: Date()
         data object ThisMonth: Date()
         data class CustomRange(val startDate: LocalDate, val endDate: LocalDate):Date()

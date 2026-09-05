@@ -9,8 +9,8 @@ import com.aashish.chronarch.history.domain.usecase.GetHistoryUseCase
 import com.aashish.chronarch.history.presentation.HistoryUiEffect.*
 import com.aashish.chronarch.history.presentation.model.FilterCategory
 import com.aashish.chronarch.history.presentation.model.FilterCategoryItemUiState
-import com.aashish.chronarch.history.presentation.model.FilterOption
-import com.aashish.chronarch.history.presentation.model.FilterOption.Date.*
+import com.aashish.chronarch.history.presentation.model.filterOption
+import com.aashish.chronarch.history.presentation.model.filterOption.Date.*
 import com.aashish.chronarch.history.presentation.model.FilterOptionItem
 import com.aashish.chronarch.history.presentation.model.HistoryTab
 import com.aashish.chronarch.history.presentation.model.HistoryUiState
@@ -101,7 +101,7 @@ class HistoryViewModel @Inject constructor(
     }
 
     private fun meetsDateFilterConstraint(
-        dateFilter: FilterOption.Date?,
+        dateFilter: filterOption.Date?,
         timestamp: Instant
     ): Boolean {
         if (dateFilter == null) return true
@@ -366,14 +366,14 @@ class HistoryViewModel @Inject constructor(
                         }
                     }
                     FilterCategory.SessionFilter.CompletionStatus -> {
-                        FilterOption.SessionFilter.CompletionStatus.entries.forEach { completionStatusFilterOption ->
+                        filterOption.SessionFilter.CompletionStatus.entries.forEach { completionStatusFilterOption ->
                             add(
                                 FilterOptionItem.Checkbox(completionStatusFilterOption, sessionFilters.appliedCompletionStatusFilters.contains(completionStatusFilterOption))
                             )
                         }
                     }
                     FilterCategory.SessionFilter.DurationType -> {
-                        FilterOption.SessionFilter.DurationType.entries.forEach { durationTypeFilterOption ->
+                        filterOption.SessionFilter.DurationType.entries.forEach { durationTypeFilterOption ->
                             add(
                                 FilterOptionItem.Checkbox(durationTypeFilterOption, sessionFilters.appliedDurationTypeFilters.contains(durationTypeFilterOption))
                             )
@@ -385,7 +385,7 @@ class HistoryViewModel @Inject constructor(
             uiState.value.draftTransactionsFilters?.let { transactionsFilter ->
                 when(filterCategory) {
                     FilterCategory.TransactionFilter.Type -> {
-                        FilterOption.TransactionFilter.Type.entries.forEach { transactionTypeFilterOption ->
+                        filterOption.TransactionFilter.Type.entries.forEach { transactionTypeFilterOption ->
                             add(
                                 FilterOptionItem.Checkbox(transactionTypeFilterOption, transactionsFilter.appliedTypeFilters.contains(transactionTypeFilterOption))
                             )
@@ -462,7 +462,7 @@ class HistoryViewModel @Inject constructor(
             }
         }
         when (optionItem.option) {
-            is FilterOption.SessionFilter.CompletionStatus.Cancelled, is FilterOption.SessionFilter.CompletionStatus.Finished -> {
+            is filterOption.SessionFilter.CompletionStatus.Cancelled, is filterOption.SessionFilter.CompletionStatus.Finished -> {
                 _uiState.update {
                     it.copy(
                         draftSessionsFilters = it.draftSessionsFilters?.copy(
@@ -476,7 +476,7 @@ class HistoryViewModel @Inject constructor(
                 }
             }
 
-            is FilterOption.SessionFilter.DurationType.LongType, is FilterOption.SessionFilter.DurationType.ShortType -> {
+            is filterOption.SessionFilter.DurationType.LongType, is filterOption.SessionFilter.DurationType.ShortType -> {
                 _uiState.update {
                     it.copy(
                         draftSessionsFilters = it.draftSessionsFilters?.copy(
@@ -490,7 +490,7 @@ class HistoryViewModel @Inject constructor(
                 }
             }
 
-            is FilterOption.TransactionFilter.Type.TaskCredit, is FilterOption.TransactionFilter.Type.Redemption, is FilterOption.TransactionFilter.Type.Bonus -> {
+            is filterOption.TransactionFilter.Type.TaskCredit, is filterOption.TransactionFilter.Type.Redemption, is filterOption.TransactionFilter.Type.Bonus -> {
                 _uiState.update {
                     it.copy(
                         draftTransactionsFilters = it.draftTransactionsFilters?.copy(

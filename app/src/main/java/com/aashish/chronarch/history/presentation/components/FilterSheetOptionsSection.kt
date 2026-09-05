@@ -24,7 +24,7 @@ import com.aashish.chronarch.R
 import com.aashish.chronarch.common.ui.LocalSpacing
 import com.aashish.chronarch.common.ui.theme.ChronarchTheme
 import com.aashish.chronarch.common.ui.toReadableLocalDate
-import com.aashish.chronarch.history.presentation.model.FilterOption
+import com.aashish.chronarch.history.presentation.model.filterOption
 import com.aashish.chronarch.history.presentation.model.FilterOptionItem
 
 @Composable
@@ -57,8 +57,8 @@ fun FilterSheetOptionsSection(
 
                     is FilterOptionItem.Radio -> {
                         val labelRes = when (option.option) {
-                            FilterOption.Date.ThisMonth -> R.string.option_date_this_month
-                            FilterOption.Date.ThisWeek -> R.string.option_date_this_week
+                            filterOption.Date.ThisMonth -> R.string.option_date_this_month
+                            filterOption.Date.ThisWeek -> R.string.option_date_this_week
                             else -> null
                         }
                         labelRes?.let {
@@ -73,13 +73,13 @@ fun FilterSheetOptionsSection(
 
                     is FilterOptionItem.Checkbox -> {
                         val labelRes = when (option.option) {
-                            FilterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
-                            FilterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
-                            FilterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
-                            FilterOption.SessionFilter.DurationType.ShortType -> R.string.option_short_duration
-                            FilterOption.TransactionFilter.Type.TaskCredit -> R.string.option_task_credit_earning
-                            FilterOption.TransactionFilter.Type.Redemption -> R.string.option_redemption_debit
-                            FilterOption.TransactionFilter.Type.Bonus -> R.string.option_bonus_earning
+                            filterOption.SessionFilter.CompletionStatus.Cancelled -> R.string.option_failed_completion_status
+                            filterOption.SessionFilter.CompletionStatus.Finished -> R.string.option_successful_completion_status
+                            filterOption.SessionFilter.DurationType.LongType -> R.string.option_long_duration
+                            filterOption.SessionFilter.DurationType.ShortType -> R.string.option_short_duration
+                            filterOption.TransactionFilter.Type.TaskCredit -> R.string.option_task_credit_earning
+                            filterOption.TransactionFilter.Type.Redemption -> R.string.option_redemption_debit
+                            filterOption.TransactionFilter.Type.Bonus -> R.string.option_bonus_earning
                             else -> null
                         }
 
@@ -199,10 +199,10 @@ private fun FilterSheetOptionsSectionPreview() {
         FilterSheetOptionsSection(
             options = listOf(
                 FilterOptionItem.Checkbox(
-                    FilterOption.SessionFilter.CompletionStatus.Finished,
+                    filterOption.SessionFilter.CompletionStatus.Finished,
                     true
                 ),
-                FilterOptionItem.Checkbox(FilterOption.SessionFilter.DurationType.LongType, false),
+                FilterOptionItem.Checkbox(filterOption.SessionFilter.DurationType.LongType, false),
                 FilterOptionItem.DateRange(null, null)
             ),
             onFilterCheckboxOptionClicked = { _, _ -> },

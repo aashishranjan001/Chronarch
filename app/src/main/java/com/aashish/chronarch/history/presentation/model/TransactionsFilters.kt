@@ -1,6 +1,6 @@
 package com.aashish.chronarch.history.presentation.model
 
 data class TransactionsFilters(
-    val appliedTypeFilters: Set<FilterOption.TransactionFilter.Type> = emptySet(),
-    val appliedDateFilter: FilterOption.Date? = null
+    val appliedTypeFilters: Set<filterOption.TransactionFilter.Type> = emptySet(),
+    val appliedDateFilter: filterOption.Date? = null
 )
