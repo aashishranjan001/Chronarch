@@ -239,7 +239,7 @@
     <ID>NewLineAtEndOfFile:FilterBottomSheet.kt:com.aashish.chronarch.history.presentation.components.FilterBottomSheet.kt</ID>
     <ID>NewLineAtEndOfFile:FilterCategory.kt:com.aashish.chronarch.history.presentation.model.FilterCategory.kt</ID>
     <ID>NewLineAtEndOfFile:FilterCategoryItemUiState.kt:com.aashish.chronarch.history.presentation.model.FilterCategoryItemUiState.kt</ID>
-    <ID>NewLineAtEndOfFile:filterOption.kt:com.aashish.chronarch.history.presentation.model.filterOption.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterOption.kt:com.aashish.chronarch.history.presentation.model.FilterOption.kt</ID>
     <ID>NewLineAtEndOfFile:FilterOptionItem.kt:com.aashish.chronarch.history.presentation.model.FilterOptionItem.kt</ID>
     <ID>NewLineAtEndOfFile:FilterSheetCategoriesSection.kt:com.aashish.chronarch.history.presentation.components.FilterSheetCategoriesSection.kt</ID>
     <ID>NewLineAtEndOfFile:FilterSheetOptionsSection.kt:com.aashish.chronarch.history.presentation.components.FilterSheetOptionsSection.kt</ID>
@@ -356,7 +356,7 @@
     <ID>TooManyFunctions:Utils.kt:com.aashish.chronarch.common.ui.Utils.kt</ID>
     <ID>WildcardImport:ExampleUnitTest.kt:import org.junit.Assert.*</ID>
     <ID>WildcardImport:HistoryViewModel.kt:import com.aashish.chronarch.history.presentation.HistoryUiEffect.*</ID>
-    <ID>WildcardImport:HistoryViewModel.kt:import com.aashish.chronarch.history.presentation.model.filterOption.Date.*</ID>
+    <ID>WildcardImport:HistoryViewModel.kt:import com.aashish.chronarch.history.presentation.model.FilterOption.Date.*</ID>
     <ID>WildcardImport:SetupRewardsViewModel.kt:import com.aashish.chronarch.redemption.presentation.rewards_setup.RewardsSetupOverlayType.*</ID>
   </CurrentIssues>
 </SmellBaseline>

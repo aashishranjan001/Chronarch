@@ -17,16 +17,16 @@ data class SessionHistoryItem(
     val date
         get() = startTime.toLocalDate()
 
-    fun toDurationFilterLabel(): filterOption.SessionFilter.DurationType {
+    fun toDurationFilterLabel(): FilterOption.SessionFilter.DurationType {
         return when (durationType) {
-            DurationType.LongDuration -> filterOption.SessionFilter.DurationType.LongType
-            DurationType.ShortDuration -> filterOption.SessionFilter.DurationType.ShortType
+            DurationType.LongDuration -> FilterOption.SessionFilter.DurationType.LongType
+            DurationType.ShortDuration -> FilterOption.SessionFilter.DurationType.ShortType
         }
     }
 
-    fun toCompletionStatusFilterLabel(): filterOption.SessionFilter.CompletionStatus {
-        return if (runDuration >= durationType.duration) filterOption.SessionFilter.CompletionStatus.Finished // should ideally be runDuration == durationType.duraiton
-        else filterOption.SessionFilter.CompletionStatus.Cancelled
+    fun toCompletionStatusFilterLabel(): FilterOption.SessionFilter.CompletionStatus {
+        return if (runDuration >= durationType.duration) FilterOption.SessionFilter.CompletionStatus.Finished // should ideally be runDuration == durationType.duraiton
+        else FilterOption.SessionFilter.CompletionStatus.Cancelled
     }
 }
 
