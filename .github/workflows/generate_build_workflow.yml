@@ -1,0 +1,41 @@
+name: Generate Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: "Build Debug APK"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Build Selection
+        if: ${{ !inputs.debug }}
+        run: |
+          echo "You must select at least one build type."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Debug APK
+        if: ${{ inputs.debug }}
+        run: ./gradlew assembleDebug
+
+      - name: Upload Debug APK
+        if: ${{ inputs.debug }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/outputs/apk/debug/*.apk
