@@ -1,4 +1,4 @@
-name: Detekt
+name: PR checks
 
 on:
   pull_request:
@@ -19,7 +19,10 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 11
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Run Detekt
         id: detekt
@@ -35,3 +38,21 @@ jobs:
         if: steps.detekt.outcome == 'failure'
         run: exit 1
 
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        run: ./gradlew assembleDebug
