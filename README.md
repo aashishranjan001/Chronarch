@@ -4,7 +4,7 @@
 
 Run timed focus sessions, earn Focus Points for every session you complete, and cash those points in on rewards you define yourself — a movie night, a cheat meal, twenty guilt-free minutes of Instagram. Chronarch gamifies productivity instead of just tracking it.
 
-![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-7F52FF?logo=kotlin&logoColor=white)
+![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white)
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Min SDK](https://img.shields.io/badge/minSdk-27-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -63,7 +63,7 @@ Chronarch is a native Android app for people who want their focus time to feel l
 | Persistence | Room |
 | Concurrency | Kotlin Coroutines + Flow |
 | Navigation | Navigation Compose |
-| Build | Gradle Kotlin DSL, AGP 9.2.1, Kotlin 2.4.10, KSP |
+| Build | Gradle Kotlin DSL, AGP, KSP |
 
 ## Architecture
 
@@ -107,7 +107,6 @@ Open the project in Android Studio, let Gradle sync, then run the `app` configur
 ## Project info
 
 - **Package:** `com.aashish.chronarch`
-- **Version:** 1.2.0 (4)
 
 ## License
 
