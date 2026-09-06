@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.detekt)
 }
 
 val versionProps = Properties().apply {
@@ -31,6 +32,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            manifestPlaceholders["appName"] = "Chronarch Debug"
+        }
+
+
         release {
             optimization {
                 enable = false
@@ -45,6 +53,7 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+            manifestPlaceholders["appName"] = "Chronarch"
         }
     }
     compileOptions {
@@ -53,6 +62,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -92,4 +102,19 @@ dependencies {
 
     // Splash
     implementation(libs.androidx.splash)
+}
+
+detekt {
+    config.from("$rootDir/config/detekt/detekt.yml")
+    baseline = file("$rootDir/config/detekt/detekt-baseline.xml")
+    buildUponDefaultConfig = true
+}
+
+tasks.withType<dev.detekt.gradle.Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+        checkstyle.required.set(true)
+        sarif.required.set(true)
+        markdown.required.set(true)
+    }
 }
