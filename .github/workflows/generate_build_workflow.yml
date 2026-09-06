@@ -9,19 +9,13 @@ on:
         default: false
         type: boolean
 
-      release:
-        description: "Build Release APK"
-        required: false
-        default: false
-        type: boolean
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Validate Build Selection
-        if: ${{ !inputs.debug && !inputs.release }}
+        if: ${{ !inputs.debug }}
         run: |
           echo "You must select at least one build type."
           exit 1
@@ -45,14 +39,3 @@ jobs:
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
-
-      - name: Build Release APK
-        if: ${{ inputs.release }}
-        run: ./gradlew assembleRelease
-
-      - name: Upload Release APK
-        if: ${{ inputs.release }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: app/build/outputs/apk/release/*.apk
