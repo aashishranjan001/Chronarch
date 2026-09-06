@@ -1,0 +1,362 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:FilterSheetOptionsSection.kt:@Composable fun FilterSheetOptionsSection</ID>
+    <ID>CyclomaticComplexMethod:HistoryViewModel.kt:HistoryViewModel$fun onEvent</ID>
+    <ID>CyclomaticComplexMethod:HistoryViewModel.kt:HistoryViewModel$private fun handleFilterMenuCategoryClick</ID>
+    <ID>FunctionNaming:ActiveTimerSection.kt:@Composable fun ActiveTimerSection</ID>
+    <ID>FunctionNaming:ActiveTimerSection.kt:@Preview(showBackground = true) @Composable private fun ActiveTimerSectionPreview</ID>
+    <ID>FunctionNaming:AppNavHost.kt:@Composable fun AppNavHost</ID>
+    <ID>FunctionNaming:BarGraph.kt:@Composable fun BarGraph</ID>
+    <ID>FunctionNaming:BarGraph.kt:@Preview(showBackground = true) @Composable private fun BarGraphPreview</ID>
+    <ID>FunctionNaming:BottomBarRailScaffoldHost.kt:@Composable fun BottomBarRailScaffoldHost</ID>
+    <ID>FunctionNaming:ChronarchBottomBar.kt:@Composable fun ChronarchBottomBar</ID>
+    <ID>FunctionNaming:ChronarchBottomBar.kt:@Composable fun RowScope.AddTab</ID>
+    <ID>FunctionNaming:ChronarchNavigationRail.kt:@Composable fun ChronarchNavigationRail</ID>
+    <ID>FunctionNaming:ChronarchNavigationRail.kt:@Composable fun ColumnScope.AddTab</ID>
+    <ID>FunctionNaming:CircularProgressIndicator.kt:@Composable fun CircularProgressIndicator</ID>
+    <ID>FunctionNaming:CircularProgressIndicator.kt:@Preview(showBackground = true) @Composable private fun CircularProgressIndicatorPreview</ID>
+    <ID>FunctionNaming:ConfirmationBottomSheet.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun ConfirmationBottomSheet</ID>
+    <ID>FunctionNaming:ConfirmationBottomSheet.kt:@Preview @Composable private fun ConfirmationBottomSheetPreview</ID>
+    <ID>FunctionNaming:ConfirmationDialog.kt:@Composable fun ConfirmationDialog</ID>
+    <ID>FunctionNaming:ConfirmationDialog.kt:@Preview @Composable private fun ConfirmationDialogPreview</ID>
+    <ID>FunctionNaming:FilterBottomSheet.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun FilterBottomSheet</ID>
+    <ID>FunctionNaming:FilterBottomSheet.kt:@Preview(showBackground = true) @Composable private fun FilterBottomSheetPreview</ID>
+    <ID>FunctionNaming:FilterSheetCategoriesSection.kt:@Composable fun FilterSheetCategoriesSection</ID>
+    <ID>FunctionNaming:FilterSheetCategoriesSection.kt:@Preview @Composable private fun FilterSheetCategoriesSectionPreview</ID>
+    <ID>FunctionNaming:FilterSheetOptionsSection.kt:@Composable fun CheckboxFilterOption</ID>
+    <ID>FunctionNaming:FilterSheetOptionsSection.kt:@Composable fun DateRangeFilterOption</ID>
+    <ID>FunctionNaming:FilterSheetOptionsSection.kt:@Composable fun FilterSheetOptionsSection</ID>
+    <ID>FunctionNaming:FilterSheetOptionsSection.kt:@Composable fun RadioFilterOption</ID>
+    <ID>FunctionNaming:FilterSheetOptionsSection.kt:@Preview @Composable private fun FilterSheetOptionsSectionPreview</ID>
+    <ID>FunctionNaming:FocusPointCurrency.kt:@Composable fun FocusPointCurrency</ID>
+    <ID>FunctionNaming:FocusPointCurrency.kt:@Preview @Composable private fun FocusPointCurrencyPreview</ID>
+    <ID>FunctionNaming:FocusPointsTransactionsBreakdownCard.kt:@Composable fun FocusPointsTransactionsBreakdown</ID>
+    <ID>FunctionNaming:FocusPointsTransactionsBreakdownCard.kt:@Preview @Composable private fun FocusPointsTransactionsBreakdownPreview</ID>
+    <ID>FunctionNaming:FocusPointsTransactionsGraphCard.kt:@Composable fun FocusPointsTransactionsGraphCard</ID>
+    <ID>FunctionNaming:FocusPointsTransactionsGraphCard.kt:@Preview @Composable private fun FocusPointsTransactionsGraphCardPreview</ID>
+    <ID>FunctionNaming:HistoryContent.kt:@Composable fun HistoryContent</ID>
+    <ID>FunctionNaming:HistoryContent.kt:@Preview @Composable private fun HistoryContentPreview</ID>
+    <ID>FunctionNaming:HistoryScreenRoute.kt:@Composable fun HistoryScreen</ID>
+    <ID>FunctionNaming:HistoryScreenRoute.kt:@Composable fun HistoryScreenRoute</ID>
+    <ID>FunctionNaming:HistoryScreenRoute.kt:@Preview @Composable private fun HistoryScreenPreview</ID>
+    <ID>FunctionNaming:HistoryScreenTopBar.kt:@Composable fun HistoryScreenTopBar</ID>
+    <ID>FunctionNaming:HistoryScreenTopBar.kt:@Preview @Composable private fun HistoryScreenTopBarPreview</ID>
+    <ID>FunctionNaming:HomeScreenRoute.kt:@Composable fun CompactHeightHomeScreen</ID>
+    <ID>FunctionNaming:HomeScreenRoute.kt:@Composable fun HomeScreen</ID>
+    <ID>FunctionNaming:HomeScreenRoute.kt:@Composable fun HomeScreenRoute</ID>
+    <ID>FunctionNaming:HomeScreenRoute.kt:@Composable fun LargeHeightHomeScreen</ID>
+    <ID>FunctionNaming:HomeScreenRoute.kt:@Preview @Composable private fun HomeScreenPreview</ID>
+    <ID>FunctionNaming:HomeStatsSection.kt:@Composable fun HomeStatsSection</ID>
+    <ID>FunctionNaming:HomeStatsSection.kt:@Preview(showBackground = true) @Composable private fun HomeStatsSectionPreview</ID>
+    <ID>FunctionNaming:HomeTimerSection.kt:@Composable fun HomeTimerSection</ID>
+    <ID>FunctionNaming:HomeTimerSection.kt:@Preview @Composable private fun HomeTimerSectionPreview</ID>
+    <ID>FunctionNaming:IconText.kt:@Composable fun IconText</ID>
+    <ID>FunctionNaming:IconText.kt:@Preview @Composable private fun IconTextPreview</ID>
+    <ID>FunctionNaming:NavigationRailScaffoldHost.kt:@Composable fun NavigationRailScaffoldHost</ID>
+    <ID>FunctionNaming:NewTimerSection.kt:@Composable fun NewTimerSection</ID>
+    <ID>FunctionNaming:NewTimerSection.kt:@Preview @Composable private fun NewTimerSectionPreview</ID>
+    <ID>FunctionNaming:NoDataScreen.kt:@Composable fun NoDataScreen</ID>
+    <ID>FunctionNaming:NoDataScreen.kt:@Preview(showBackground = true) @Composable private fun NoDataScreenPreview</ID>
+    <ID>FunctionNaming:ProgressIndicatorBox.kt:@Composable fun ProgressIndicatorBox</ID>
+    <ID>FunctionNaming:ProgressIndicatorBox.kt:@Preview(showBackground = true) @PreviewScreenSizes @Composable private fun ProgressIndicatorBoxPreview</ID>
+    <ID>FunctionNaming:RedemptionCornerAppBar.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun RedemptionCornerTopAppBar</ID>
+    <ID>FunctionNaming:RedemptionCornerAppBar.kt:@Preview @Composable fun RedemptionCornerTopAppBarPreview</ID>
+    <ID>FunctionNaming:RedemptionCornerContent.kt:@Composable fun RedemptionCornerContent</ID>
+    <ID>FunctionNaming:RedemptionCornerContent.kt:@Preview @Composable private fun RedemptionCornerContentPreview</ID>
+    <ID>FunctionNaming:RedemptionCornerScreenRoute.kt:@Composable fun RedemptionCornerScreen</ID>
+    <ID>FunctionNaming:RedemptionCornerScreenRoute.kt:@Preview @Composable private fun RedemptionCornerScreenPreview</ID>
+    <ID>FunctionNaming:RedemptionCornerScreenRoute.kt:@SuppressLint("LocalContextGetResourceValueCall") @Composable fun RedemptionCornerScreenRoute</ID>
+    <ID>FunctionNaming:RewardInputBottomSheet.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun RewardInputBottomSheet</ID>
+    <ID>FunctionNaming:RewardInputBottomSheet.kt:@Preview @Composable private fun RewardInputBottomSheetPreview</ID>
+    <ID>FunctionNaming:RewardItem.kt:@Composable fun RewardItem</ID>
+    <ID>FunctionNaming:RewardItem.kt:@Preview @Composable private fun RewardItemPreview</ID>
+    <ID>FunctionNaming:SessionHistoryItemContent.kt:@Composable fun SessionHistoryItemContent</ID>
+    <ID>FunctionNaming:SessionHistoryItemContent.kt:@Preview @Composable private fun SessionHistoryItemContentPreview</ID>
+    <ID>FunctionNaming:SessionsCard.kt:@Composable fun SessionsCard</ID>
+    <ID>FunctionNaming:SessionsCard.kt:@Preview(showBackground = true, backgroundColor = 0xFFF) @Composable private fun SessionsCardPreview</ID>
+    <ID>FunctionNaming:SessionsHistorySection.kt:@Composable fun SessionsHistorySection</ID>
+    <ID>FunctionNaming:SessionsHistorySection.kt:@Preview @Composable private fun SessionsHistorySectionPreview</ID>
+    <ID>FunctionNaming:SessionsStatsSection.kt:@Composable fun SessionCompletionCountTile</ID>
+    <ID>FunctionNaming:SessionsStatsSection.kt:@Composable fun SessionsStatsSection</ID>
+    <ID>FunctionNaming:SessionsStatsSection.kt:@Preview @Composable private fun SessionsStatsSectionPreview</ID>
+    <ID>FunctionNaming:SetupRewardActionsAppBar.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun SetupRewardActionsAppBar</ID>
+    <ID>FunctionNaming:SetupRewardActionsAppBar.kt:@Preview @Composable fun SetupRewardActionsAppBarPreview</ID>
+    <ID>FunctionNaming:SetupRewardItem.kt:@Composable fun SetupRewardItem</ID>
+    <ID>FunctionNaming:SetupRewardItem.kt:@Preview @Composable private fun SetupRewardItemPreview</ID>
+    <ID>FunctionNaming:SetupRewardsScreenRoute.kt:@Composable fun SetupRewardsScreen</ID>
+    <ID>FunctionNaming:SetupRewardsScreenRoute.kt:@Preview @Composable private fun SetupRewardsScreenPreview</ID>
+    <ID>FunctionNaming:SetupRewardsScreenRoute.kt:@SuppressLint("LocalContextGetResourceValueCall") @Composable fun SetupRewardsScreenRoute</ID>
+    <ID>FunctionNaming:SingleValueTile.kt:@Composable fun SingleValueTile</ID>
+    <ID>FunctionNaming:SingleValueTile.kt:@Preview(showBackground = true, backgroundColor = 0xFFF) @Composable private fun SingleValueTilePreview</ID>
+    <ID>FunctionNaming:Theme.kt:@Composable fun ChronarchTheme</ID>
+    <ID>FunctionNaming:Timer.kt:@Composable fun Timer</ID>
+    <ID>FunctionNaming:Timer.kt:@Preview(showBackground = true) @Composable private fun TimerPreview</ID>
+    <ID>FunctionNaming:TransactionHistoryItemContent.kt:@Composable fun TransactionHistoryItemContent</ID>
+    <ID>FunctionNaming:TransactionHistoryItemContent.kt:@Preview @Composable private fun TransactionHistoryItemContentPreview</ID>
+    <ID>FunctionNaming:TransactionTypeFilterMenu.kt:@Composable fun TransactionTypeFilterMenu</ID>
+    <ID>FunctionNaming:TransactionTypeFilterMenu.kt:@Preview(showBackground = true) @Composable private fun TransactionTypeFilterMenuPreview</ID>
+    <ID>FunctionNaming:TransactionsHistorySection.kt:@Composable fun TransactionsHistorySection</ID>
+    <ID>FunctionNaming:TransactionsHistorySection.kt:@Preview @Composable private fun TransactionsHistorySectionPreview</ID>
+    <ID>FunctionNaming:VerticalUnitText.kt:@Composable fun VerticalLabelledValue</ID>
+    <ID>FunctionNaming:VerticalUnitText.kt:@Preview(showBackground = true) @Composable private fun VerticalLabelledValuePreview</ID>
+    <ID>FunctionNaming:WeekOverviewScreenRoute.kt:@Composable fun WeekOverviewScreen</ID>
+    <ID>FunctionNaming:WeekOverviewScreenRoute.kt:@Composable fun WeekOverviewScreenRoute</ID>
+    <ID>FunctionNaming:WeekOverviewScreenRoute.kt:@Preview @Composable private fun WeekOverviewScreenPreview</ID>
+    <ID>LongMethod:BarGraph.kt:@Composable fun BarGraph</ID>
+    <ID>LongMethod:FilterBottomSheet.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun FilterBottomSheet</ID>
+    <ID>LongMethod:FocusPointsTransactionsBreakdownCard.kt:@Composable fun FocusPointsTransactionsBreakdown</ID>
+    <ID>LongMethod:FocusPointsTransactionsGraphCard.kt:@Composable fun FocusPointsTransactionsGraphCard</ID>
+    <ID>LongMethod:HistoryContent.kt:@Composable fun HistoryContent</ID>
+    <ID>LongMethod:HistoryScreenTopBar.kt:@Composable fun HistoryScreenTopBar</ID>
+    <ID>LongMethod:HistoryViewModel.kt:HistoryViewModel$fun onEvent</ID>
+    <ID>LongMethod:HistoryViewModel.kt:HistoryViewModel$private fun handleFilterMenuCategoryClick</ID>
+    <ID>LongMethod:NewTimerSection.kt:@Composable fun NewTimerSection</ID>
+    <ID>LongMethod:NoDataScreen.kt:@Composable fun NoDataScreen</ID>
+    <ID>LongMethod:RedemptionCornerContent.kt:@Composable fun RedemptionCornerContent</ID>
+    <ID>LongMethod:RewardInputBottomSheet.kt:@OptIn(ExperimentalMaterial3Api::class) @Composable fun RewardInputBottomSheet</ID>
+    <ID>LongMethod:SessionsCard.kt:@Composable fun SessionsCard</ID>
+    <ID>LongMethod:SessionsStatsSection.kt:@Composable fun SessionCompletionCountTile</ID>
+    <ID>LongMethod:SessionsStatsSection.kt:@Composable fun SessionsStatsSection</ID>
+    <ID>LongMethod:SetupRewardsScreenRoute.kt:@Composable fun SetupRewardsScreen</ID>
+    <ID>LongMethod:SetupRewardsViewModel.kt:SetupRewardsViewModel$fun onEvent</ID>
+    <ID>LongMethod:TransactionTypeFilterMenu.kt:@Composable fun TransactionTypeFilterMenu</ID>
+    <ID>MagicNumber:ActiveTimerSection.kt:25</ID>
+    <ID>MagicNumber:BarGraph.kt:18</ID>
+    <ID>MagicNumber:BarGraph.kt:22</ID>
+    <ID>MagicNumber:BarGraph.kt:33</ID>
+    <ID>MagicNumber:BarGraph.kt:40</ID>
+    <ID>MagicNumber:CircularProgressIndicator.kt:67.0</ID>
+    <ID>MagicNumber:FilterBottomSheet.kt:4f</ID>
+    <ID>MagicNumber:FilterBottomSheet.kt:6f</ID>
+    <ID>MagicNumber:FocusPointsTransactionsBreakdownCard.kt:10</ID>
+    <ID>MagicNumber:FocusPointsTransactionsBreakdownCard.kt:3</ID>
+    <ID>MagicNumber:GetCurrentWeekEarningsOverviewUseCase.kt:GetCurrentWeekEarningsOverviewUseCase$6L</ID>
+    <ID>MagicNumber:HistoryScreenTopBar.kt:0.65f</ID>
+    <ID>MagicNumber:HomeScreenRoute.kt:25</ID>
+    <ID>MagicNumber:HomeTimerSection.kt:25</ID>
+    <ID>MagicNumber:ProgressIndicatorBox.kt:0.5f</ID>
+    <ID>MagicNumber:ProgressIndicatorBox.kt:120</ID>
+    <ID>MagicNumber:ProgressIndicatorBox.kt:200</ID>
+    <ID>MagicNumber:RedemptionCornerAppBar.kt:3009</ID>
+    <ID>MagicNumber:RewardInputBottomSheet.kt:3f</ID>
+    <ID>MagicNumber:RewardItem.kt:20</ID>
+    <ID>MagicNumber:SessionsCard.kt:10</ID>
+    <ID>MagicNumber:SessionsCard.kt:3</ID>
+    <ID>MagicNumber:SessionsCard.kt:7</ID>
+    <ID>MagicNumber:SessionsStatsSection.kt:0.4f</ID>
+    <ID>MagicNumber:SessionsStatsSection.kt:3</ID>
+    <ID>MagicNumber:SessionsStatsSection.kt:7</ID>
+    <ID>MagicNumber:SessionsStatsSection.kt:8</ID>
+    <ID>MagicNumber:SessionsStatsSection.kt:9</ID>
+    <ID>MagicNumber:SetupRewardItem.kt:20</ID>
+    <ID>MagicNumber:Timer.kt:200L</ID>
+    <ID>MagicNumber:Timer.kt:20L</ID>
+    <ID>MagicNumber:TransactionHistoryItemContent.kt:3</ID>
+    <ID>MagicNumber:Utils.kt:100</ID>
+    <ID>MagicNumber:Utils.kt:1000</ID>
+    <ID>MagicNumber:Utils.kt:999</ID>
+    <ID>MatchingDeclarationName:FocusPointType.kt:FocusPointTransactionType</ID>
+    <ID>MaxLineLength:ActiveTimerSection.kt:MaterialTheme.colorScheme.surfaceVariant</ID>
+    <ID>MaxLineLength:CalculateDailyEarningUseCase.kt:CalculateDailyEarningUseCase$redeemedFocusPoints</ID>
+    <ID>MaxLineLength:CalculateDailyEarningUseCase.kt:CalculateDailyEarningUseCase$return</ID>
+    <ID>MaxLineLength:CalculateDailyEarningUseCase.kt:CalculateDailyEarningUseCase$taskCreditFocusPoints</ID>
+    <ID>MaxLineLength:CommonBindsModule.kt:CommonBindsModule$abstract</ID>
+    <ID>MaxLineLength:ConfirmationBottomSheet.kt:Row</ID>
+    <ID>MaxLineLength:EndTimerSessionUseCase.kt:EndTimerSessionUseCase$buildList</ID>
+    <ID>MaxLineLength:EndTimerSessionUseCase.kt:EndTimerSessionUseCase$if</ID>
+    <ID>MaxLineLength:FilterSheetCategoriesSection.kt:.</ID>
+    <ID>MaxLineLength:FilterSheetOptionsSection.kt:FilterOption.SessionFilter.CompletionStatus.Cancelled -&gt; R.string.option_failed_completion_status</ID>
+    <ID>MaxLineLength:FilterSheetOptionsSection.kt:FilterOption.SessionFilter.CompletionStatus.Finished -&gt; R.string.option_successful_completion_status</ID>
+    <ID>MaxLineLength:GetCurrentDaySessionsOverview.kt:GetCurrentDaySessionsOverview$successfulCompletionCount = sessions.filter { it.endTime != null &amp;&amp; it.endTime &gt;= it.idealCompletionTime}.size</ID>
+    <ID>MaxLineLength:HistoryEvent.kt:HistoryEvent$FilterCheckboxOptionSelected : HistoryEvent</ID>
+    <ID>MaxLineLength:HistoryUiState.kt:HistoryUiState$get() = (selectedTab == HistoryTab.SESSIONS &amp;&amp; areSessionFilteredApplied) || (selectedTab == HistoryTab.TRANSACTIONS &amp;&amp; areTransactionFiltersApplied)</ID>
+    <ID>MaxLineLength:HistoryUiState.kt:HistoryUiState$get() = appliedTransactionsFilters.appliedDateFilter != null || appliedTransactionsFilters.appliedTypeFilters.isNotEmpty()</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$&amp;&amp;</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$FilterOptionItem.Checkbox(completionStatusFilterOption, sessionFilters.appliedCompletionStatusFilters.contains(completionStatusFilterOption))</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$FilterOptionItem.Checkbox(durationTypeFilterOption, sessionFilters.appliedDurationTypeFilters.contains(durationTypeFilterOption))</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$FilterOptionItem.Checkbox(transactionTypeFilterOption, transactionsFilter.appliedTypeFilters.contains(transactionTypeFilterOption))</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$HistoryTab.SESSIONS -&gt; it.copy(draftSessionsFilters = null, filterCategories = emptyList(), filterOptions = emptyList())</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$HistoryTab.TRANSACTIONS -&gt; it.copy(draftTransactionsFilters = null, filterCategories = emptyList(), filterOptions = emptyList())</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$appliedCompletionStatusFilters</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$draftTransactionsFilters = it.draftTransactionsFilters?.copy(appliedDateFilter = newDateFilter)</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$is FilterOption.SessionFilter.CompletionStatus.Cancelled</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$is FilterOption.SessionFilter.DurationType.LongType</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$is FilterOption.TransactionFilter.Type.TaskCredit</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$is FilterOptionItem.Checkbox -&gt; if (item.option == optionItem.option) item.copy(isSelected = isSelected) else item</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$is FilterOptionItem.DateRange</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$private</ID>
+    <ID>MaxLineLength:HistoryViewModel.kt:HistoryViewModel$sessionFilters.appliedCompletionStatusFilters.isEmptyOrContains(it.toCompletionStatusFilterLabel())</ID>
+    <ID>MaxLineLength:HomeViewModel.kt:HomeViewModel$currentDateTotalCreditFocusPoints = earningOverview.taskCreditFocusPoints + earningOverview.bonusFocusPoints</ID>
+    <ID>MaxLineLength:HomeViewModel.kt:HomeViewModel$durationRemainingInSeconds = Duration.between(Instant.now(), activeSession.idealCompletionTime).toCeilSeconds()</ID>
+    <ID>MaxLineLength:HomeViewModel.kt:HomeViewModel$it.copy(dialog = HomeDialog.TimerFinishedInformation(activeSession.durationType.duration.inWholeMinutes))</ID>
+    <ID>MaxLineLength:NavigationTabItem.kt:NavigationTabItem$WeekOverview : NavigationTabItem</ID>
+    <ID>MaxLineLength:NewTimerSection.kt:MaterialTheme.colorScheme.surfaceVariant</ID>
+    <ID>MaxLineLength:RewardItem.kt:contentColor</ID>
+    <ID>MaxLineLength:SessionHistoryItem.kt:SessionHistoryItem$return</ID>
+    <ID>MaxLineLength:SessionsHistorySection.kt:thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_sessions_found else R.drawable.no_sessions_found</ID>
+    <ID>MaxLineLength:SessionsStatsSection.kt:.</ID>
+    <ID>MaxLineLength:SessionsStatsSection.kt:cancelledSessionCount = totalShortSessionsCount + totalLongSessionsCount - shortSessionsSuccessCount - longSessionsSuccessCount</ID>
+    <ID>MaxLineLength:SessionsStatsSection.kt:if</ID>
+    <ID>MaxLineLength:SetupRewardsViewModel.kt:SetupRewardsViewModel$UpdateRewardBottomSheet -&gt; it.addedRewardItems.map { rewardItem -&gt; if (rewardItem.id == transformedRewardItem.id) transformedRewardItem else rewardItem }</ID>
+    <ID>MaxLineLength:SetupRewardsViewModel.kt:SetupRewardsViewModel$addedRewardItems = it.addedRewardItems.mapNotNull {listItem -&gt; if (listItem.id == overlayType.reward.id) null else listItem }</ID>
+    <ID>MaxLineLength:Timer.kt:Column</ID>
+    <ID>MaxLineLength:Timer.kt:Row</ID>
+    <ID>MaxLineLength:TimerNotificationManager.kt:TimerNotificationManager$.</ID>
+    <ID>MaxLineLength:TimerNotificationManager.kt:TimerNotificationManager$if</ID>
+    <ID>MaxLineLength:TimerSessionDao.kt:TimerSessionDao$@Query("SELECT * FROM timer_session WHERE startedAt &gt;= :startTimeEpoch AND startedAt &lt; :endTimeEpoch ORDER BY startedAt")</ID>
+    <ID>MaxLineLength:TimerTrackingForegroundService.kt:TimerTrackingForegroundService$/* foregroundServiceType = */</ID>
+    <ID>MaxLineLength:TransactionsHistorySection.kt:thumbnailResId = if (areFiltersApplied) R.drawable.no_filtered_transactions_found else R.drawable.no_transactions_found</ID>
+    <ID>MaxLineLength:WeekOverviewScreenRoute.kt:longSessionsSuccessCount = uiState.weekSessionOverview?.longSessionsOverview?.successfulCompletionCount ?: 0</ID>
+    <ID>MaxLineLength:WeekOverviewScreenRoute.kt:shortSessionsSuccessCount = uiState.weekSessionOverview?.shortSessionsOverview?.successfulCompletionCount ?: 0</ID>
+    <ID>MaxLineLength:WeekOverviewScreenRoute.kt:totalLongSessionsCount = uiState.weekSessionOverview?.longSessionsOverview?.totalAttemptedSessionsCount ?: 0</ID>
+    <ID>MaxLineLength:WeekOverviewScreenRoute.kt:totalShortSessionsCount = uiState.weekSessionOverview?.shortSessionsOverview?.totalAttemptedSessionsCount ?: 0</ID>
+    <ID>NewLineAtEndOfFile:ActiveTimerSection.kt:com.aashish.chronarch.home.presentation.components.ActiveTimerSection.kt</ID>
+    <ID>NewLineAtEndOfFile:AddNewTimerSessionUseCase.kt:com.aashish.chronarch.home.domain.usecase.AddNewTimerSessionUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:AddRewardsUseCase.kt:com.aashish.chronarch.redemption.domain.usecase.AddRewardsUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:AppCompositionLocals.kt:com.aashish.chronarch.common.ui.AppCompositionLocals.kt</ID>
+    <ID>NewLineAtEndOfFile:AppDatabase.kt:com.aashish.chronarch.data.local.database.AppDatabase.kt</ID>
+    <ID>NewLineAtEndOfFile:AppNavHost.kt:com.aashish.chronarch.navigation.AppNavHost.kt</ID>
+    <ID>NewLineAtEndOfFile:BarGraph.kt:com.aashish.chronarch.weekoverview.presentation.components.BarGraph.kt</ID>
+    <ID>NewLineAtEndOfFile:BottomBarRailScaffoldHost.kt:com.aashish.chronarch.navigation.BottomBarRailScaffoldHost.kt</ID>
+    <ID>NewLineAtEndOfFile:CalculateDailyEarningUseCase.kt:com.aashish.chronarch.common.domain.usecase.CalculateDailyEarningUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:ChronarchApplication.kt:com.aashish.chronarch.ChronarchApplication.kt</ID>
+    <ID>NewLineAtEndOfFile:ChronarchBottomBar.kt:com.aashish.chronarch.navigation.ChronarchBottomBar.kt</ID>
+    <ID>NewLineAtEndOfFile:ChronarchNavigationRail.kt:com.aashish.chronarch.navigation.ChronarchNavigationRail.kt</ID>
+    <ID>NewLineAtEndOfFile:CircularProgressIndicator.kt:com.aashish.chronarch.history.presentation.components.CircularProgressIndicator.kt</ID>
+    <ID>NewLineAtEndOfFile:Color.kt:com.aashish.chronarch.common.ui.theme.Color.kt</ID>
+    <ID>NewLineAtEndOfFile:CommonBindsModule.kt:com.aashish.chronarch.common.CommonBindsModule.kt</ID>
+    <ID>NewLineAtEndOfFile:ConfirmationBottomSheet.kt:com.aashish.chronarch.common.ui.components.ConfirmationBottomSheet.kt</ID>
+    <ID>NewLineAtEndOfFile:ConfirmationDialog.kt:com.aashish.chronarch.common.ui.components.ConfirmationDialog.kt</ID>
+    <ID>NewLineAtEndOfFile:CurrentDateSessionOverview.kt:com.aashish.chronarch.home.domain.model.CurrentDateSessionOverview.kt</ID>
+    <ID>NewLineAtEndOfFile:DatabaseModule.kt:com.aashish.chronarch.di.DatabaseModule.kt</ID>
+    <ID>NewLineAtEndOfFile:DurationType.kt:com.aashish.chronarch.common.domain.model.DurationType.kt</ID>
+    <ID>NewLineAtEndOfFile:EarningOverview.kt:com.aashish.chronarch.common.domain.model.EarningOverview.kt</ID>
+    <ID>NewLineAtEndOfFile:EndTimerSessionUseCase.kt:com.aashish.chronarch.home.domain.usecase.EndTimerSessionUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:EndedTimerSession.kt:com.aashish.chronarch.history.domain.model.EndedTimerSession.kt</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt:com.aashish.chronarch.ExampleUnitTest.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterBottomSheet.kt:com.aashish.chronarch.history.presentation.components.FilterBottomSheet.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterCategory.kt:com.aashish.chronarch.history.presentation.model.FilterCategory.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterCategoryItemUiState.kt:com.aashish.chronarch.history.presentation.model.FilterCategoryItemUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterOption.kt:com.aashish.chronarch.history.presentation.model.FilterOption.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterOptionItem.kt:com.aashish.chronarch.history.presentation.model.FilterOptionItem.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterSheetCategoriesSection.kt:com.aashish.chronarch.history.presentation.components.FilterSheetCategoriesSection.kt</ID>
+    <ID>NewLineAtEndOfFile:FilterSheetOptionsSection.kt:com.aashish.chronarch.history.presentation.components.FilterSheetOptionsSection.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointCurrency.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.components.FocusPointCurrency.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointTransaction.kt:com.aashish.chronarch.common.domain.model.FocusPointTransaction.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointTransactionTypeConvertor.kt:com.aashish.chronarch.common.data.local.mappers.FocusPointTransactionTypeConvertor.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointType.kt:com.aashish.chronarch.common.domain.model.FocusPointType.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsTransactionEntity.kt:com.aashish.chronarch.common.data.local.model.FocusPointsTransactionEntity.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsTransactionsBreakdownCard.kt:com.aashish.chronarch.weekoverview.presentation.components.FocusPointsTransactionsBreakdownCard.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsTransactionsGraphCard.kt:com.aashish.chronarch.weekoverview.presentation.components.FocusPointsTransactionsGraphCard.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsTransactionsRepository.kt:com.aashish.chronarch.common.domain.repository.FocusPointsTransactionsRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsTransactionsRepositoryImpl.kt:com.aashish.chronarch.common.data.repository.FocusPointsTransactionsRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:FocusPointsViewFilter.kt:com.aashish.chronarch.weekoverview.presentation.FocusPointsViewFilter.kt</ID>
+    <ID>NewLineAtEndOfFile:GetCurrentDaySessionsOverview.kt:com.aashish.chronarch.home.domain.usecase.GetCurrentDaySessionsOverview.kt</ID>
+    <ID>NewLineAtEndOfFile:GetCurrentWeekEarningsOverviewUseCase.kt:com.aashish.chronarch.weekoverview.domain.usecase.GetCurrentWeekEarningsOverviewUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:GetCurrentWeekSessionsOverviewUseCase.kt:com.aashish.chronarch.weekoverview.domain.usecase.GetCurrentWeekSessionsOverviewUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:GetHistoryUseCase.kt:com.aashish.chronarch.history.domain.usecase.GetHistoryUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:GetLatestTimerSessionUseCase.kt:com.aashish.chronarch.home.domain.usecase.GetLatestTimerSessionUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:GetRedemptionCornerOverviewUseCase.kt:com.aashish.chronarch.redemption.domain.usecase.GetRedemptionCornerOverviewUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:History.kt:com.aashish.chronarch.history.domain.model.History.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryEvent.kt:com.aashish.chronarch.history.presentation.HistoryEvent.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryScreenRoute.kt:com.aashish.chronarch.history.presentation.HistoryScreenRoute.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryScreenTopBar.kt:com.aashish.chronarch.history.presentation.components.HistoryScreenTopBar.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryTab.kt:com.aashish.chronarch.history.presentation.model.HistoryTab.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryUiState.kt:com.aashish.chronarch.history.presentation.model.HistoryUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:HistoryViewModel.kt:com.aashish.chronarch.history.presentation.HistoryViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeEvent.kt:com.aashish.chronarch.home.presentation.HomeEvent.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeScreenRoute.kt:com.aashish.chronarch.home.presentation.HomeScreenRoute.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeStatsSection.kt:com.aashish.chronarch.home.presentation.components.HomeStatsSection.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeTimerSection.kt:com.aashish.chronarch.home.presentation.components.HomeTimerSection.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeUiState.kt:com.aashish.chronarch.home.presentation.HomeUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:HomeViewModel.kt:com.aashish.chronarch.home.presentation.HomeViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:IconText.kt:com.aashish.chronarch.common.ui.components.IconText.kt</ID>
+    <ID>NewLineAtEndOfFile:LatestTimerSession.kt:com.aashish.chronarch.home.domain.model.LatestTimerSession.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt:com.aashish.chronarch.MainActivity.kt</ID>
+    <ID>NewLineAtEndOfFile:ModifierExtensions.kt:com.aashish.chronarch.common.ui.components.ModifierExtensions.kt</ID>
+    <ID>NewLineAtEndOfFile:NavControllerExtensions.kt:com.aashish.chronarch.navigation.NavControllerExtensions.kt</ID>
+    <ID>NewLineAtEndOfFile:NavigationRailScaffoldHost.kt:com.aashish.chronarch.navigation.NavigationRailScaffoldHost.kt</ID>
+    <ID>NewLineAtEndOfFile:NewTimerSection.kt:com.aashish.chronarch.home.presentation.components.NewTimerSection.kt</ID>
+    <ID>NewLineAtEndOfFile:NoDataScreen.kt:com.aashish.chronarch.common.ui.components.NoDataScreen.kt</ID>
+    <ID>NewLineAtEndOfFile:NotificationActionClickReceiver.kt:com.aashish.chronarch.home.broadcast.NotificationActionClickReceiver.kt</ID>
+    <ID>NewLineAtEndOfFile:ProgressIndicatorBox.kt:com.aashish.chronarch.weekoverview.presentation.components.ProgressIndicatorBox.kt</ID>
+    <ID>NewLineAtEndOfFile:RedeemRewardUseCase.kt:com.aashish.chronarch.redemption.domain.usecase.RedeemRewardUseCase.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerAppBar.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.components.RedemptionCornerAppBar.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerContent.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.components.RedemptionCornerContent.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerOverview.kt:com.aashish.chronarch.redemption.domain.model.RedemptionCornerOverview.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerScreenRoute.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.RedemptionCornerScreenRoute.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerUiState.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.RedemptionCornerUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:RedemptionCornerViewModel.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.RedemptionCornerViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:Reward.kt:com.aashish.chronarch.redemption.domain.model.Reward.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardEntity.kt:com.aashish.chronarch.redemption.data.local.model.RewardEntity.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardInputBottomSheet.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.components.RewardInputBottomSheet.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardItem.kt:com.aashish.chronarch.redemption.presentation.redemption_corner.components.RewardItem.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardsDao.kt:com.aashish.chronarch.redemption.data.local.dao.RewardsDao.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardsModule.kt:com.aashish.chronarch.redemption.di.RewardsModule.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardsRepository.kt:com.aashish.chronarch.redemption.domain.repository.RewardsRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:RewardsRepositoryImpl.kt:com.aashish.chronarch.redemption.data.repository.RewardsRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:Screen.kt:com.aashish.chronarch.navigation.Screen.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionHistoryItem.kt:com.aashish.chronarch.history.presentation.model.SessionHistoryItem.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionHistoryItemContent.kt:com.aashish.chronarch.history.presentation.components.SessionHistoryItemContent.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionsCard.kt:com.aashish.chronarch.home.presentation.components.SessionsCard.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionsFilterMenuOption.kt:com.aashish.chronarch.history.presentation.model.SessionsFilterMenuOption.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionsFilters.kt:com.aashish.chronarch.history.presentation.model.SessionsFilters.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionsHistorySection.kt:com.aashish.chronarch.history.presentation.components.SessionsHistorySection.kt</ID>
+    <ID>NewLineAtEndOfFile:SessionsStatsSection.kt:com.aashish.chronarch.weekoverview.presentation.components.SessionsStatsSection.kt</ID>
+    <ID>NewLineAtEndOfFile:SetupRewardActionsAppBar.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.components.SetupRewardActionsAppBar.kt</ID>
+    <ID>NewLineAtEndOfFile:SetupRewardItem.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.components.SetupRewardItem.kt</ID>
+    <ID>NewLineAtEndOfFile:SetupRewardsEvent.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.SetupRewardsEvent.kt</ID>
+    <ID>NewLineAtEndOfFile:SetupRewardsScreenRoute.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.SetupRewardsScreenRoute.kt</ID>
+    <ID>NewLineAtEndOfFile:SetupRewardsUiState.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.SetupRewardsUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:SingleValueTile.kt:com.aashish.chronarch.home.presentation.components.SingleValueTile.kt</ID>
+    <ID>NewLineAtEndOfFile:Theme.kt:com.aashish.chronarch.common.ui.theme.Theme.kt</ID>
+    <ID>NewLineAtEndOfFile:Timer.kt:com.aashish.chronarch.home.presentation.components.Timer.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerNotificationManager.kt:com.aashish.chronarch.home.notification.TimerNotificationManager.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerSession.kt:com.aashish.chronarch.common.domain.model.TimerSession.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerSessionDao.kt:com.aashish.chronarch.common.data.local.dao.TimerSessionDao.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerSessionEntity.kt:com.aashish.chronarch.common.data.local.model.TimerSessionEntity.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerSessionRepository.kt:com.aashish.chronarch.common.domain.repository.TimerSessionRepository.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerSessionRepositoryImpl.kt:com.aashish.chronarch.common.data.repository.TimerSessionRepositoryImpl.kt</ID>
+    <ID>NewLineAtEndOfFile:TimerTrackingForegroundService.kt:com.aashish.chronarch.home.services.TimerTrackingForegroundService.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionFilterMenuOption.kt:com.aashish.chronarch.history.presentation.model.TransactionFilterMenuOption.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionHistoryDao.kt:com.aashish.chronarch.common.data.local.dao.TransactionHistoryDao.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionHistoryItem.kt:com.aashish.chronarch.history.presentation.model.TransactionHistoryItem.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionHistoryItemContent.kt:com.aashish.chronarch.history.presentation.components.TransactionHistoryItemContent.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionTypeFilterMenu.kt:com.aashish.chronarch.weekoverview.presentation.components.TransactionTypeFilterMenu.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionsFilters.kt:com.aashish.chronarch.history.presentation.model.TransactionsFilters.kt</ID>
+    <ID>NewLineAtEndOfFile:TransactionsHistorySection.kt:com.aashish.chronarch.history.presentation.components.TransactionsHistorySection.kt</ID>
+    <ID>NewLineAtEndOfFile:Transformers.kt:com.aashish.chronarch.redemption.data.local.Transformers.kt</ID>
+    <ID>NewLineAtEndOfFile:Transformers.kt:com.aashish.chronarch.redemption.presentation.rewards_setup.transformers.Transformers.kt</ID>
+    <ID>NewLineAtEndOfFile:Utils.kt:com.aashish.chronarch.common.ui.Utils.kt</ID>
+    <ID>NewLineAtEndOfFile:VerticalUnitText.kt:com.aashish.chronarch.common.ui.components.VerticalUnitText.kt</ID>
+    <ID>NewLineAtEndOfFile:WeekEarningOverview.kt:com.aashish.chronarch.weekoverview.domain.model.WeekEarningOverview.kt</ID>
+    <ID>NewLineAtEndOfFile:WeekOverviewEvent.kt:com.aashish.chronarch.weekoverview.presentation.WeekOverviewEvent.kt</ID>
+    <ID>NewLineAtEndOfFile:WeekOverviewUiState.kt:com.aashish.chronarch.weekoverview.presentation.WeekOverviewUiState.kt</ID>
+    <ID>NewLineAtEndOfFile:WeekOverviewViewModel.kt:com.aashish.chronarch.weekoverview.presentation.WeekOverviewViewModel.kt</ID>
+    <ID>NewLineAtEndOfFile:WeekSessionOverview.kt:com.aashish.chronarch.weekoverview.domain.model.WeekSessionOverview.kt</ID>
+    <ID>PackageNaming:FocusPointCurrency.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner.components</ID>
+    <ID>PackageNaming:RedemptionCornerAppBar.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner.components</ID>
+    <ID>PackageNaming:RedemptionCornerContent.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner.components</ID>
+    <ID>PackageNaming:RedemptionCornerEvent.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner</ID>
+    <ID>PackageNaming:RedemptionCornerScreenRoute.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner</ID>
+    <ID>PackageNaming:RedemptionCornerUiState.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner</ID>
+    <ID>PackageNaming:RedemptionCornerViewModel.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner</ID>
+    <ID>PackageNaming:RewardInputBottomSheet.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup.components</ID>
+    <ID>PackageNaming:RewardItem.kt:package com.aashish.chronarch.redemption.presentation.redemption_corner.components</ID>
+    <ID>PackageNaming:SetupRewardActionsAppBar.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup.components</ID>
+    <ID>PackageNaming:SetupRewardItem.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup.components</ID>
+    <ID>PackageNaming:SetupRewardsEvent.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup</ID>
+    <ID>PackageNaming:SetupRewardsScreenRoute.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup</ID>
+    <ID>PackageNaming:SetupRewardsUiState.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup</ID>
+    <ID>PackageNaming:SetupRewardsViewModel.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup</ID>
+    <ID>PackageNaming:Transformers.kt:package com.aashish.chronarch.redemption.presentation.rewards_setup.transformers</ID>
+    <ID>ReturnCount:TimerNotificationManager.kt:TimerNotificationManager$fun canPostNotificationToChannel: Boolean</ID>
+    <ID>TooManyFunctions:Utils.kt:com.aashish.chronarch.common.ui.Utils.kt</ID>
+    <ID>WildcardImport:ExampleUnitTest.kt:import org.junit.Assert.*</ID>
+    <ID>WildcardImport:HistoryViewModel.kt:import com.aashish.chronarch.history.presentation.HistoryUiEffect.*</ID>
+    <ID>WildcardImport:HistoryViewModel.kt:import com.aashish.chronarch.history.presentation.model.FilterOption.Date.*</ID>
+    <ID>WildcardImport:SetupRewardsViewModel.kt:import com.aashish.chronarch.redemption.presentation.rewards_setup.RewardsSetupOverlayType.*</ID>
+  </CurrentIssues>
+</SmellBaseline>
