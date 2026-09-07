@@ -21,7 +21,7 @@ Chronarch is a native Android app for people who want their focus time to feel l
   <tr>
     <td align="center"><b>Home</b></td>
     <td align="center"><b>Week Overview</b></td>
-    <td align="center"><b>Redemption Corner</b></td>
+    <td align="center"><b>Week Overview — Breakdown</b></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/home.webp" width="220"/></td>
@@ -29,9 +29,9 @@ Chronarch is a native Android app for people who want their focus time to feel l
     <td><img src="docs/screenshots/week-overview-2.webp" width="220"/></td>
   </tr>
   <tr>
+    <td align="center"><b>Redemption Corner</b></td>
     <td align="center"><b>History — Sessions</b></td>
     <td align="center"><b>History — Transactions</b></td>
-    <td align="center"><b>Week Overview — Breakdown</b></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/redemption-corner.webp" width="220"/></td>
