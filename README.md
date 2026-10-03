@@ -9,7 +9,7 @@ Run timed focus sessions, earn Focus Points for every session you complete, and 
 ![Min SDK](https://img.shields.io/badge/minSdk-27-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-[![Google Play](https://img.shields.io/badge/Google%20Play-Closed%20Testing-414141?logo=google-play&logoColor=white)](https://play.google.com/apps/testing/com.aashish.chronarch)
+[![Google Play](https://img.shields.io/badge/Get%20it%20on-Google%20Play-414141?logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.aashish.chronarch)
 
 ## Overview
 
@@ -86,9 +86,7 @@ Each feature package keeps its `domain` layer (models, repository interfaces, us
 
 ## Getting started
 
-Chronarch is currently in **closed testing** on Google Play:
-1. Join the [chronarch-testers](https://groups.google.com/g/chronarch-testers) Google Group.
-2. Opt in to testing via the [Play Store testing link](https://play.google.com/apps/testing/com.aashish.chronarch), then install Chronarch from the Play Store.
+Chronarch is available on [Google Play](https://play.google.com/store/apps/details?id=com.aashish.chronarch): install it from there to get started.
 
 To build it from source instead:
 
